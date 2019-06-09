@@ -31,6 +31,9 @@ $color-dark: #333;
 $color-light: #ccc;
 $color-gray: #888;
 
+@mixin longSkillWidth() {
+  width: calc(40% - 43px);;
+}
 @mixin triafter($color) {
   position:absolute;
   top: 0px;
@@ -47,7 +50,7 @@ $color-gray: #888;
   text-align: right;
   
   @if $index == 4 {
-    width: 25%;
+    @include longSkillWidth();
   } @else {
     width: 8%;
   }
@@ -59,19 +62,18 @@ $color-gray: #888;
 }
 @mixin trileft($color) {
   background-color: $color;
-  width: 12px;
+  width: 4%;
   text-align: center;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
 .skill-grid {
-  //height: 32px;
+  @include longSkillWidth();
   font-family: 'Alegreya, serif';
   font-size: 16px;
   padding: 8px;
   margin: 4px 0px 0px 0px;
-  width: 33%;
   display: inline-block;
   position: relative;
   color: $color-light;
