@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import MuiAppBar from '@material-ui/core/AppBar';
 import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
-import SkillGrid from './components/skillgrids/SkillGrid';
+import SkillBox from './components/skillgrids/SkillBox';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,35 +80,11 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <SkillGrid category='combat' tier='0' />
-          <SkillGrid category='combat' tier='1' name='Florentine' />
-          <SkillGrid category='combat' tier='2' name='II' />
-          <SkillGrid category='combat' tier='3' name='III' />
-          <SkillGrid category='combat' tier='4' name='Mercenary' />
-          <br />
-          <SkillGrid category='wasteland' tier='0' />
-          <SkillGrid category='wasteland' tier='1' name='Enhanced Movement' />
-          <SkillGrid category='wasteland' tier='2' name='II' />
-          <SkillGrid category='wasteland' tier='3' name='III' />
-          <SkillGrid category='wasteland' tier='4' name='Flanker' />
-          <br />
-          <SkillGrid category='anomaly' tier='0' />
-          <SkillGrid category='anomaly' tier='1' name='Pyrokinetics' />
-          <SkillGrid category='anomaly' tier='2' name='II' />
-          <SkillGrid category='anomaly' tier='3' name='III' />
-          <SkillGrid category='anomaly' tier='4' name='Incinerator' />
-          <br />
-          <SkillGrid category='civilized' tier='0' />
-          <SkillGrid category='civilized' tier='1' name='Financial Influence' />
-          <SkillGrid category='civilized' tier='2' name='II' />
-          <SkillGrid category='civilized' tier='3' name='III' />
-          <SkillGrid category='civilized' tier='4' name='Fiscal Mysticist' />
-          <br />
-          <SkillGrid category='civilized' tier='0' />
-          <SkillGrid category='civilized' tier='1' name='Artisan' unused />
-          <SkillGrid category='civilized' tier='2' name='II' unused />
-          <SkillGrid category='civilized' tier='3' name='III' unused />
-          <SkillGrid category='civilized' tier='4' name='Techno Savant' unused />
+          <SkillBox category='combat' t1='Florentine' t4='Mercenary' />
+          <SkillBox category='wasteland' t1='Enhanced Movement' t4='Flanker' />
+          <SkillBox category='anomaly' t1='Pyrokinetics' t4='Incinerator' />
+          <SkillBox category='civilized' t1='Financial Influence' t4='Fiscal Mysticist' />
+          <SkillBox category='civilized' t1='Artisan' t4='Techno Savant' />
         </Grid>
       </Grid>
       <Grid container className={classes.footer} justify='flex-end'>

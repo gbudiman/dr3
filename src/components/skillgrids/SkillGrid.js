@@ -1,16 +1,10 @@
 import React from 'react';
 
-function SkillGrid(props) {
-  let textual = props.name;
+function getClassName(props) {
   let className = 'skill-grid';
   let classNameGrid = 'skill-' + props.category + '-' + props.tier;
 
   if (props.tier === '0') {
-    switch(props.category) {
-      case 'civilized': textual = 'V'; break;
-      default: textual = props.category[0].toUpperCase();
-    }
-
     className += ' ' + classNameGrid + ' skill-lead-left';
   } else {
     if (props.unused) {
@@ -20,11 +14,28 @@ function SkillGrid(props) {
     }
   }
 
+  return className;
+}
+
+function getTextualRepresentation(props) {
+  let textual = props.name;
+
+  if (props.tier === '0') {
+    switch(props.category) {
+      case 'civilized': textual = 'V'; break;
+      default: textual = props.category[0].toUpperCase();
+    }
+  }
+
+  return textual;
+}
+
+function SkillGrid(props) {
   return(
     <div
-      className={className}
+      className={getClassName(props)}
     >
-      {textual}
+      {getTextualRepresentation(props)}
     </div>
   )
 }
