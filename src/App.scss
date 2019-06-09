@@ -77,6 +77,10 @@ $color-gray: #888;
   display: inline-block;
   position: relative;
   color: $color-light;
+  cursor: pointer;
+}
+.skill-grid.skill-lead-left {
+  cursor: default;
 }
 .skill-combat-0 {
   @include trileft($color-combat-4);

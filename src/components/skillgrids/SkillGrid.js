@@ -2,7 +2,7 @@ import React from 'react';
 
 function SkillGrid(props) {
   let textual = props.name;
-  let className = 'skill-grid'; //skill-' + props.cateogry + '-' + props.tier;
+  let className = 'skill-grid';
   let classNameGrid = 'skill-' + props.category + '-' + props.tier;
 
   if (props.tier === '0') {
@@ -11,7 +11,7 @@ function SkillGrid(props) {
       default: textual = props.category[0].toUpperCase();
     }
 
-    className += ' ' + classNameGrid;
+    className += ' ' + classNameGrid + ' skill-lead-left';
   } else {
     if (props.unused) {
       className += ' skill-unused-' + props.tier;
