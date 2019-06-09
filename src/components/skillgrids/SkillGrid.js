@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function getClassName(props) {
   let className = 'skill-grid';
@@ -30,10 +30,29 @@ function getTextualRepresentation(props) {
   return textual;
 }
 
+
+
 function SkillGrid(props) {
+  let handleClick = () => {  
+    //toggleState();
+    props.passClick(props.sid, props.tier);
+  };
+  let toggleState = () => {
+    // let next_state;
+
+    // switch(state) {
+    //   case 'init': next_state = 'acquired'; break;
+    //   case 'acquired': next_state = 'init'; break;
+    // }
+
+    // setState(next_state);
+  }
+  const [state, setState] = useState('init');
+
   return(
     <div
       className={getClassName(props)}
+      onClick={handleClick}
     >
       {getTextualRepresentation(props)}
     </div>

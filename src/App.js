@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import MuiAppBar from '@material-ui/core/AppBar';
 import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
-import SkillBox from './components/skillgrids/SkillBox';
+import SkillContainer from './components/skillgrids/SkillContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,6 +64,10 @@ const AppBar = withStyles({
 
 function App() {
   const classes = useStyles();
+  let handleClick = (sid, tier) => {
+    console.log(sid, tier);
+  }
+
   return (
     <div>
       <AppBar position='static'>
@@ -80,11 +84,7 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <SkillBox category='combat' t1='Florentine' t4='Mercenary' acquired={3}/>
-          <SkillBox category='wasteland' t1='Enhanced Movement' t4='Flanker' acquired={4}/>
-          <SkillBox category='anomaly' t1='Pyrokinetics' t4='Incinerator' acquired={4}/>
-          <SkillBox category='civilized' t1='Financial Influence' t4='Fiscal Mysticist' acquired={4}/>
-          <SkillBox category='civilized' t1='Artisan' t4='Techno Savant' acquired={0}/>
+          <SkillContainer passClick={handleClick}/>
         </Grid>
       </Grid>
       <Grid container className={classes.footer} justify='flex-end'>
