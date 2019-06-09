@@ -28,6 +28,7 @@ $color-unused-2: #727272;
 $color-unused-1: #828282;
 
 $color-dark: #333;
+$color-midtone: #777;
 $color-light: #ccc;
 $color-gray: #888;
 
@@ -80,7 +81,10 @@ $color-gray: #888;
   cursor: pointer;
 }
 .skill-grid.skill-lead-left {
-  cursor: default;
+  border-right: 1px solid $color-midtone;
+  &:hover {
+    filter: brightness(125%);
+  }
 }
 .skill-combat-0 {
   @include trileft($color-combat-4);
