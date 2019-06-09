@@ -6,8 +6,13 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     toonButton: {
       maxWidth: '320px',
-      margin: '0 0 0 auto',
+      margin: '-10px 0 -5px auto',
       textTransform: 'none',
+      color: '#ccc',
+      borderRadius: 0,
+      padding: '8px 16px',
+      fontFamily: 'Alegreya, serif',
+      fontSize: 22,
     },
   }),
 );

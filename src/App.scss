@@ -1,0 +1,271 @@
+$color-combat-0: #53331B;  // Main combat color */
+$color-combat-1: #543A26;
+$color-combat-2: #553721;
+$color-combat-3: #4F2D15;
+$color-combat-4: #49270E;
+
+$color-wasteland-0: #274817;  // Main Secondary color (1) */
+$color-wasteland-1: #2E4921;
+$color-wasteland-2: #2B491C;
+$color-wasteland-3: #224512;
+$color-wasteland-4: #1D3F0C;
+
+$color-anomaly-0: #46172C;  // Main Secondary color (2) */
+$color-anomaly-1: #462032;
+$color-anomaly-2: #471C30;
+$color-anomaly-3: #431128;
+$color-anomaly-4: #3E0C22;
+
+$color-civilized-0: #112F33; // Main civilized color */
+$color-civilized-1: #183033;
+$color-civilized-2: #153034;
+$color-civilized-3: #0D2C31;
+$color-civilized-4: #09292D;
+
+$color-unused-4: #525252;
+$color-unused-3: #626262;
+$color-unused-2: #727272;
+$color-unused-1: #828282;
+
+$color-dark: #333;
+$color-light: #ccc;
+$color-gray: #888;
+
+@mixin triafter($color) {
+  position:absolute;
+  top: 0px;
+  right:-21px;  
+  content: '';
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 17px 0 17px 21px;
+  border-color: transparent transparent transparent $color;
+}
+@mixin trixtend($color, $index) {
+  background-color: $color;
+  text-align: right;
+  
+  @if $index == 4 {
+    width: 25%;
+  } @else {
+    width: 8%;
+  }
+  z-index: 21 - $index;
+  margin-left: -1%;
+  &:hover {
+    filter: brightness(65%);
+  }
+}
+@mixin trileft($color) {
+  background-color: $color;
+  width: 12px;
+  text-align: center;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.skill-grid {
+  //height: 32px;
+  font-family: 'Alegreya, serif';
+  font-size: 16px;
+  padding: 8px;
+  margin: 4px 0px 0px 0px;
+  width: 33%;
+  display: inline-block;
+  position: relative;
+  color: $color-light;
+}
+.skill-combat-0 {
+  @include trileft($color-combat-4);
+}
+.skill-combat-1 {
+  background-color: $color-combat-4;
+  z-index: 20;
+  &:hover {
+    filter: brightness(65%);
+  }
+}
+.skill-combat-2 {
+  @include trixtend($color-combat-3, 2);
+}
+.skill-combat-3 {
+  @include trixtend($color-combat-2, 3);
+}
+.skill-combat-4 {
+  @include trixtend($color-combat-1, 4);
+}
+.skill-combat-1:after{
+  @include triafter($color-combat-4);
+}
+.skill-combat-2:after{
+  @include triafter($color-combat-3);
+}
+.skill-combat-3:after{
+  @include triafter($color-combat-2);
+}
+.skill-combat-4:after{
+  @include triafter($color-combat-1);
+}
+.skill-wasteland-0 {
+  @include trileft($color-wasteland-4);
+}
+.skill-wasteland-1 {
+  background-color: $color-wasteland-4;
+  z-index: 20;
+  &:hover {
+    filter: brightness(65%);
+  }
+}
+.skill-wasteland-2 {
+  @include trixtend($color-wasteland-3, 2);
+}
+.skill-wasteland-3 {
+  @include trixtend($color-wasteland-2, 3);
+}
+.skill-wasteland-4 {
+  @include trixtend($color-wasteland-1, 4);
+}
+.skill-wasteland-1:after{
+  @include triafter($color-wasteland-4);
+}
+.skill-wasteland-2:after{
+  @include triafter($color-wasteland-3);
+}
+.skill-wasteland-3:after{
+  @include triafter($color-wasteland-2);
+}
+.skill-wasteland-4:after{
+  @include triafter($color-wasteland-1);
+}
+.skill-anomaly-0 {
+  @include trileft($color-anomaly-4);
+}
+.skill-anomaly-1 {
+  background-color: $color-anomaly-4;
+  z-index: 20;
+  &:hover {
+    filter: brightness(65%);
+  }
+}
+.skill-anomaly-2 {
+  @include trixtend($color-anomaly-3, 2);
+}
+.skill-anomaly-3 {
+  @include trixtend($color-anomaly-2, 3);
+}
+.skill-anomaly-4 {
+  @include trixtend($color-anomaly-1, 4);
+}
+.skill-anomaly-1:after{
+  @include triafter($color-anomaly-4);
+}
+.skill-anomaly-2:after{
+  @include triafter($color-anomaly-3);
+}
+.skill-anomaly-3:after{
+  @include triafter($color-anomaly-2);
+}
+.skill-anomaly-4:after{
+  @include triafter($color-anomaly-1);
+}
+.skill-civilized-0 {
+  @include trileft($color-civilized-4);
+}
+.skill-civilized-1 {
+  background-color: $color-civilized-4;
+  z-index: 20;
+  &:hover {
+    filter: brightness(65%);
+  }
+}
+.skill-civilized-2 {
+  @include trixtend($color-civilized-3, 2);
+}
+.skill-civilized-3 {
+  @include trixtend($color-civilized-2, 3);
+}
+.skill-civilized-4 {
+  @include trixtend($color-civilized-1, 4);
+}
+.skill-civilized-1:after{
+  @include triafter($color-civilized-4);
+}
+.skill-civilized-2:after{
+  @include triafter($color-civilized-3);
+}
+.skill-civilized-3:after{
+  @include triafter($color-civilized-2);
+}
+.skill-civilized-4:after{
+  @include triafter($color-civilized-1);
+}
+.skill-unused-0 {
+  background-color: $color-unused-4;
+  width: 16px;
+}
+.skill-unused-1 {
+  background-color: $color-unused-4;
+  z-index: 20;
+  &:hover {
+    filter: brightness(65%);
+  }
+}
+.skill-unused-2 {
+  @include trixtend($color-unused-3, 2);
+}
+.skill-unused-3 {
+  @include trixtend($color-unused-2, 3);
+}
+.skill-unused-4 {
+  @include trixtend($color-unused-1, 4);
+}
+.skill-unused-1:after{
+  @include triafter($color-unused-4);
+}
+.skill-unused-2:after{
+  @include triafter($color-unused-3);
+}
+.skill-unused-3:after{
+  @include triafter($color-unused-2);
+}
+.skill-unused-4:after{
+  @include triafter($color-unused-1);
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.MuiPaper-root.MuiAppBar-colorPrimary {
+  background-color: $color-dark;
+  color: $color-light;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
