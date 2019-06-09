@@ -80,11 +80,11 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <SkillBox category='combat' t1='Florentine' t4='Mercenary' />
-          <SkillBox category='wasteland' t1='Enhanced Movement' t4='Flanker' />
-          <SkillBox category='anomaly' t1='Pyrokinetics' t4='Incinerator' />
-          <SkillBox category='civilized' t1='Financial Influence' t4='Fiscal Mysticist' />
-          <SkillBox category='civilized' t1='Artisan' t4='Techno Savant' />
+          <SkillBox category='combat' t1='Florentine' t4='Mercenary' acquired={3}/>
+          <SkillBox category='wasteland' t1='Enhanced Movement' t4='Flanker' acquired={4}/>
+          <SkillBox category='anomaly' t1='Pyrokinetics' t4='Incinerator' acquired={4}/>
+          <SkillBox category='civilized' t1='Financial Influence' t4='Fiscal Mysticist' acquired={4}/>
+          <SkillBox category='civilized' t1='Artisan' t4='Techno Savant' acquired={0}/>
         </Grid>
       </Grid>
       <Grid container className={classes.footer} justify='flex-end'>

@@ -7,10 +7,10 @@ function getClassName(props) {
   if (props.tier === '0') {
     className += ' ' + classNameGrid + ' skill-lead-left';
   } else {
-    if (props.unused) {
-      className += ' skill-unused-' + props.tier;
-    } else {
+    if (props.acquired) {
       className += ' ' + classNameGrid;
+    } else {
+      className += ' skill-unused-' + props.tier;
     }
   }
 
