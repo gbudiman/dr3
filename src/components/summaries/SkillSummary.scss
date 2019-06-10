@@ -1,28 +1,33 @@
 @import '../../colors.scss';
 
+.summary:last-of-type {
+  margin-bottom: 0px;
+}
 .summary {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin: 4px 0px;
   color: $color-light;
   display: flex;
+  justify-content: space-around;
 }
 .xp-summary {
   width: 100%;
 }
 .summary-combat {
-  background-color: $color-combat-0;
+  background-color: $color-combat-4;
 }
 .summary-civilized {
-  background-color: $color-civilized-0;
+  background-color: $color-civilized-4;
 }
 .summary-wasteland {
-  background-color: $color-wasteland-0;
+  background-color: $color-wasteland-4;
 }
 .summary-anomaly {
-  background-color: $color-anomaly-0;
+  background-color: $color-anomaly-4;
 }
 .summary.summary-skill {
-  width: 100%;
+  width: calc(50% - 20px);
   border-radius: 24px;
   padding: 8px;
+  margin: 0px;
 }
+
