@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme: Theme) =>
     builder: {
       width: '100vw',
       margin: '0px auto',
-      height: 'calc(100vh - 47px)',
+      height: 'calc(100vh - 0px)',
       overflow: 'auto',
       backgroundColor: '#3f3f3f',
     },
     builderItem: {
-      margin: '0px auto',
+      margin: '52px auto 0px auto',
       maxWidth: '480px',
       width: '100%',
       padding: '0px 8px',
@@ -108,7 +108,7 @@ function App() {
 
   return (
     <div>
-      <AppBar position='static'>
+      <AppBar position='fixed'>
         <Grid container className={classes.root} justify='space-evenly' spacing={1}>
           <Grid item xs={4}>
             <TypographyBanner>DRpaedia3.0</TypographyBanner>

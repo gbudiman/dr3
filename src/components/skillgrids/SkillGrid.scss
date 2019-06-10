@@ -36,6 +36,9 @@
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
+.buffer {
+  height: 32px;
+}
 .skill-grid {
   @include longSkillWidth();
   font-family: 'Alegreya, serif';
@@ -48,8 +51,12 @@
   cursor: pointer;
   text-overflow: ellipsis;
 }
+.skill-container {
+  height: calc(100vh - 128px);
+  overflow: auto;
+  margin-top: 4px;
+}
 .skill-hidden {
-  //visibility: hidden;
   display: none;
 }
 .skill-grid.skill-lead-left {

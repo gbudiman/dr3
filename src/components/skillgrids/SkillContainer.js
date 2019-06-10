@@ -26,8 +26,9 @@ function SkillContainer(props) {
   }
 
   return(
-    <div>
+    <div className='skill-container'>
       {buildBoxes()}
+      <div className='buffer' />
     </div>
   )
 }
