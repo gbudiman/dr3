@@ -97,7 +97,7 @@ function App() {
 
   let setSkillVisibility = (category, state) => {
     for (const key in skillState) {
-      let unacquired = skillState[key].acquired === 0 && skillState[key].innate === false;
+      let unacquired = skillState[key].acquired === 0;
       if (unacquired && skillState[key].category === category) {
         skillState[key].visible = state;
       }
