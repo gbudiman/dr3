@@ -30,23 +30,8 @@ function getTextualRepresentation(props) {
   return textual;
 }
 
-
-
 function SkillGrid(props) {
-  let handleClick = () => {  
-    //toggleState();
-    props.passClick(props.sid, props.tier);
-  };
-  let toggleState = () => {
-    // let next_state;
-
-    // switch(state) {
-    //   case 'init': next_state = 'acquired'; break;
-    //   case 'acquired': next_state = 'init'; break;
-    // }
-
-    // setState(next_state);
-  }
+  let handleClick = () => { props.passClick(props.sid, props.tier) };
   const [state, setState] = useState('init');
 
   return(

@@ -3,7 +3,6 @@ import SkillGrid from './SkillGrid';
 
 function SkillBox(props) {
   let isAcquired = (tier) => { 
-    //return _isAcquired(props, tier) 
     return props.acquired >= tier;
   };
   let sid = () => { return props.t1.replace(/\s+/, '_').toLowerCase() }
@@ -26,11 +25,12 @@ function SkillBox(props) {
     let jsxes = [...Array(props.maxTier + 1).keys()].map((tier) => {
       return(
         <SkillGrid 
+          key={props.t1 + '_' + tier}
           category={props.category} 
           sid={props.t1}
           tier={tier}
           name={getName(tier)} 
-          acquired={isAcquired(1)}
+          acquired={isAcquired(tier)}
           passClick={handleClick} />
       )
     })

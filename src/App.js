@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import { createStyles, Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -68,10 +68,14 @@ function App() {
   let [skillState, setSkillState] = useState(SkillInitializer());
 
   let handleClick = (sid, tier) => {
-    //console.log(sid, tier);
-    //setSkillState({ ab: 33 });
-    setSkillState(SkillInitializer());
-    //console.log(skillState);
+    updateSkillState(sid, tier);
+  }
+
+  let updateSkillState = (sid, tier) => {
+    //console.log(sid);
+    //console.log(skillState[sid].acquired);
+    skillState[sid].acquired = tier;
+    setSkillState(Object.assign({}, skillState));
   }
 
   return (
