@@ -1,5 +1,14 @@
 @import '../../colors.scss';
 
+@mixin striped($color) {
+  background: repeating-linear-gradient(
+    315deg,
+    $color,
+    $color 7px,
+    $color-dark 7px,
+    $color-dark 14px
+  );
+}
 .summary:last-of-type {
   margin-bottom: 0px;
 }
@@ -15,15 +24,27 @@
 }
 .summary-combat {
   background-color: $color-combat-4;
+  &.summary-filter-inactive {
+    @include striped($color-combat-1);
+  }
 }
 .summary-civilized {
   background-color: $color-civilized-4;
+  &.summary-filter-inactive {
+    @include striped($color-civilized-1);
+  }
 }
 .summary-wasteland {
   background-color: $color-wasteland-4;
+  &.summary-filter-inactive {
+    @include striped($color-wasteland-1);
+  }
 }
 .summary-anomaly {
   background-color: $color-anomaly-4;
+  &.summary-filter-inactive {
+    @include striped($color-anomaly-1);
+  }
 }
 .summary.summary-skill {
   width: calc(50% - 20px);
@@ -35,9 +56,8 @@
   }
 }
 .summary.summary-filter-inactive {
-  background-color: $color-dark;
   &:hover {
-    filter: brightness(200%);
+    filter: brightness(150%), saturate(50%);
   }
 }
 
