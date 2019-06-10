@@ -70,6 +70,7 @@ function App() {
 
   let handleClick = (sid, tier) => {
     updateSkillState(sid, tier);
+    console.log(skillState);
     let y = SkillCalc(skillState);
     console.log(y);
   }

@@ -1,7 +1,7 @@
 function SkillInitializer() {
   let autofill = (h) => {
     for (const key in h) {
-      h[key].innate = false;
+      h[key].innate = h[key].innate || false;
       if (!('maxTier' in h[key])) h[key].maxTier = 4;
       h[key].acquired = 0;
     }

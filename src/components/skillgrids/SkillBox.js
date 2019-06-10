@@ -3,7 +3,7 @@ import SkillGrid from './SkillGrid';
 
 function SkillBox(props) {
   let isAcquired = (tier) => { 
-    return props.acquired >= tier;
+    return (tier === 1 && props.innate === true) || props.acquired >= tier;
   };
   let sid = () => { return props.t1.replace(/\s+/, '_').toLowerCase() }
   let humanify = () => { 

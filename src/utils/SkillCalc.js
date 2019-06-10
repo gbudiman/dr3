@@ -9,7 +9,7 @@ function SkillCalc(h) {
       if (!(category in grid)) grid[category] = {};
       for (let tier = 1; tier <= acquiredTier; tier++) {
         if (!(tier in grid[category])) grid[category][tier] = 0;
-        grid[category][tier] += 1;
+        if (!(tier === 1 && h[key].innate === true)) grid[category][tier] += 1;
       }
     }
 
