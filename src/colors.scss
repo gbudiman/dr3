@@ -22,10 +22,12 @@ $color-civilized-2: #153034;
 $color-civilized-3: #0D2C31;
 $color-civilized-4: #09292D;
 
+$color-unused-4: #525252;
+$color-unused-3: #626262;
+$color-unused-2: #727272;
+$color-unused-1: #828282;
+
 $color-dark: #333;
+$color-midtone: #777;
 $color-light: #ccc;
 $color-gray: #888;
-
-:export {
-  colorDark: $color-dark;
-}

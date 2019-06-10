@@ -1,0 +1,28 @@
+@import '../../colors.scss';
+
+.summary {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: $color-light;
+  display: flex;
+}
+.xp-summary {
+  width: 100%;
+}
+.summary-combat {
+  background-color: $color-combat-0;
+}
+.summary-civilized {
+  background-color: $color-civilized-0;
+}
+.summary-wasteland {
+  background-color: $color-wasteland-0;
+}
+.summary-anomaly {
+  background-color: $color-anomaly-0;
+}
+.summary.summary-skill {
+  width: 100%;
+  border-radius: 24px;
+  padding: 8px;
+}

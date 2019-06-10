@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SkillBox from './SkillBox';
+import './SkillGrid.scss';
 
 function SkillContainer(props) {
   let handleClick = (sid, tier) => { props.passClick(sid, tier); }

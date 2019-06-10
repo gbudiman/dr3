@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: 'none',
       color: '#ccc',
       borderRadius: 0,
-      padding: '8px 16px',
+      padding: '8px',
       fontFamily: 'Alegreya, serif',
       fontSize: 22,
     },

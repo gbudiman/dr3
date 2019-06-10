@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: '0px auto',
       maxWidth: '480px',
       width: '100%',
+      padding: '0px 8px',
     },
     builderHalf: {
       width: '50%',
@@ -57,6 +58,7 @@ const TypographyBanner = withStyles({
     fontFamily: 'Alegreya, serif',
     fontSize: 22,
     marginTop: '2px',
+    marginLeft: '8px',
   },
 })(MuiTypography);
 const AppBar = withStyles({

@@ -1,4 +1,5 @@
 import React from 'react';
+import './SkillSummary.scss';
 
 function SkillSummary(props) {
   return(
