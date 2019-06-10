@@ -8,12 +8,12 @@ function SkillSummary(props) {
   return(
     <div>
       <div className='summary xp-summary'>
-        <SkillSubCategory category='combat' passClick={handleClick} />
-        <SkillSubCategory category='wasteland' passClick={handleClick} />
+        <SkillSubCategory category='combat' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.combat}/>
+        <SkillSubCategory category='wasteland' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.wasteland}/>
       </div>
       <div className='summary xp-summary'>
-        <SkillSubCategory category='civilized' passClick={handleClick} />
-        <SkillSubCategory category='anomaly' passClick={handleClick} />
+        <SkillSubCategory category='civilized' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.civilized}/>
+        <SkillSubCategory category='anomaly' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.anomaly}/>
       </div>
     </div>
   )

@@ -8,6 +8,7 @@
   color: $color-light;
   display: flex;
   justify-content: space-around;
+  font-family: 'Alegreya, serif';
 }
 .xp-summary {
   width: 100%;
@@ -29,5 +30,14 @@
   border-radius: 24px;
   padding: 8px;
   margin: 0px;
+  &:hover {
+    filter: brightness(125%);
+  }
+}
+.summary.summary-filter-inactive {
+  background-color: $color-dark;
+  &:hover {
+    filter: brightness(200%);
+  }
 }
 

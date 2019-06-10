@@ -79,7 +79,6 @@ function App() {
   }
 
   let handleSkillXpClick = (category) => {
-    
     if (!(category in skillHidden)) {
       skillHidden[category] = true;
     } else {
@@ -87,6 +86,7 @@ function App() {
     }
 
     setSkillVisibility(category, !skillHidden[category]);
+    setSkillHidden(Object.assign({}, skillHidden));
   }
 
   let updateSkillState = (sid, tier) => {
@@ -122,7 +122,7 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} />
+          <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </Grid>
       </Grid>

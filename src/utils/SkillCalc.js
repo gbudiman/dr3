@@ -1,6 +1,7 @@
 function SkillCalc(h) {
   let gridify = () => {
     let grid = {};
+    let xp = {};
 
     for (const key in h) {
       let category = h[key].category;
@@ -13,7 +14,23 @@ function SkillCalc(h) {
       }
     }
 
-    return grid;
+    for (const category in grid) {
+      xp[category] = {};
+      for (const _tier in grid[category]) {
+        let tier = parseInt(_tier)
+        let tierCount = grid[category][tier]
+        let tierCost = tier + 1;
+        switch(tier) {
+          case 4: xp[category][tier] = 10 * tierCount; break;
+          default: xp[category][tier] = tierCount * (tierCost + tierCost * tierCount) / 2;
+        }
+      }
+    }
+
+    return {
+      grid: grid,
+      xp: xp,
+    }
   }
   let compute = (grid) => {
     let costs = {};
@@ -24,7 +41,7 @@ function SkillCalc(h) {
 
       for (const _tier in tiers) {
         let tier = parseInt(_tier);
-        let tierCost = parseInt(tier) + 1;
+        let tierCost = tier + 1;
         let tierCount = tiers[tier];
         let subSum;
 
@@ -62,8 +79,8 @@ function SkillCalc(h) {
   }
 
   let grid = gridify();
-  let sum = compute(grid);
-  let nextCosts = nextCostify(grid);
+  let sum = compute(grid.grid);
+  let nextCosts = nextCostify(grid.grid);
   let total = totalize(sum);
   
   return({
