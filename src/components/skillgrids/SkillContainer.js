@@ -4,7 +4,6 @@ import SkillBox from './SkillBox';
 function SkillContainer(props) {
   let handleClick = (sid, tier) => { props.passClick(sid, tier); }
   let buildBoxes = () => {
-    console.log('bbx called');
     let jsxes = Object.keys(props.skillState).map((key) => {
       let value = props.skillState[key];
       return(

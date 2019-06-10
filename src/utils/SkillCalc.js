@@ -22,10 +22,17 @@ function SkillCalc(h) {
       let tiers = grid[category];
       if (!(category in costs)) costs[category] = 0;
 
-      for (const tier in tiers) {
+      for (const _tier in tiers) {
+        let tier = parseInt(_tier);
         let tierCost = parseInt(tier) + 1;
         let tierCount = tiers[tier];
-        let subSum = tierCount * (tierCost + tierCost * tierCount) / 2;
+        let subSum;
+
+        switch(tier) {
+          case 4: subSum = 10 * tierCount; break;
+          default: subSum = tierCount * (tierCost + tierCost * tierCount) / 2;
+        }
+        
         costs[category] += subSum;
       }
     }
@@ -36,8 +43,15 @@ function SkillCalc(h) {
     let nextCosts = {};
     for (const category in grid) {
       nextCosts[category] = {};
-      for (const tier in grid[category]) {
-        nextCosts[category][tier] = grid[category][tier] * (parseInt(tier) + 1);
+      for (const _tier in grid[category]) {
+        let tier = parseInt(_tier);
+        let nextCost;
+
+        switch(tier) {
+          case 4: nextCost = 10; break;
+          default: nextCost = grid[category][tier] * (parseInt(tier) + 1) + (tier + 1);
+        }
+        nextCosts[category][tier] = nextCost;
       }
     }
 

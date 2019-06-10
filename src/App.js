@@ -8,6 +8,7 @@ import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillState';
 import SkillCalc from './utils/SkillCalc';
+import SkillSummary from './components/summaries/SkillSummary';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -96,6 +97,7 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
+          <SkillSummary />
           <SkillContainer passClick={handleClick} skillState={skillState} />
         </Grid>
       </Grid>
