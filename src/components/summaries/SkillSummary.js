@@ -1,24 +1,19 @@
 import React from 'react';
 import './SkillSummary.scss';
+import SkillSubCategory from './SkillSubCategory';
 
 function SkillSummary(props) {
+  let handleClick = (category) => { props.passClick(category) };
+
   return(
     <div>
       <div className='summary xp-summary'>
-        <div className='summary summary-skill summary-combat'>
-          XYZ
-        </div>
-        <div className='summary summary-skill summary-civilized'>
-          XYZ
-        </div>
+        <SkillSubCategory category='combat' passClick={handleClick} />
+        <SkillSubCategory category='wasteland' passClick={handleClick} />
       </div>
       <div className='summary xp-summary'>
-        <div className='summary summary-skill summary-wasteland'>
-          XYZ
-        </div>
-        <div className='summary summary-skill summary-anomaly'>
-          XYZ
-        </div>
+        <SkillSubCategory category='civilized' passClick={handleClick} />
+        <SkillSubCategory category='anomaly' passClick={handleClick} />
       </div>
     </div>
   )

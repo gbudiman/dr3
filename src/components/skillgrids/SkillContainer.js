@@ -16,6 +16,7 @@ function SkillContainer(props) {
           innate={value.innate}
           maxTier={value.maxTier}  
           acquired={value.acquired}
+          visible={value.visible}
           passClick={handleClick} />
       )
     })

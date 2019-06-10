@@ -14,6 +14,8 @@ function getClassName(props) {
     }
   }
 
+  className += props.visible === false ? ' skill-hidden' : '';
+
   return className;
 }
 

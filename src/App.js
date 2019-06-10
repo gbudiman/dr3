@@ -70,15 +70,39 @@ const AppBar = withStyles({
 function App() {
   const classes = useStyles();
   let [skillState, setSkillState] = useState(SkillInitializer());
+  let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
+  let [skillHidden, setSkillHidden] = useState({})
 
-  let handleClick = (sid, tier) => {
+  let handleSkillGridClick = (sid, tier) => {
     updateSkillState(sid, tier);
-    SkillCalc(skillState);
+    setSkillXp(SkillCalc(skillState));
+  }
+
+  let handleSkillXpClick = (category) => {
+    
+    if (!(category in skillHidden)) {
+      skillHidden[category] = true;
+    } else {
+      skillHidden[category] = !skillHidden[category];
+    }
+
+    setSkillVisibility(category, !skillHidden[category]);
   }
 
   let updateSkillState = (sid, tier) => {
     let deacquire = skillState[sid].acquired === tier && skillState[sid].innate === false
     skillState[sid].acquired = tier - (deacquire ? 1 : 0);
+    setSkillState(Object.assign({}, skillState));
+  }
+
+  let setSkillVisibility = (category, state) => {
+    for (const key in skillState) {
+      let unacquired = skillState[key].acquired === 0 && skillState[key].innate === false;
+      if (unacquired && skillState[key].category === category) {
+        skillState[key].visible = state;
+      }
+    }
+
     setSkillState(Object.assign({}, skillState));
   }
 
@@ -98,8 +122,8 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <SkillSummary />
-          <SkillContainer passClick={handleClick} skillState={skillState} />
+          <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} />
+          <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </Grid>
       </Grid>
       <Grid container className={classes.footer} justify='flex-end'>

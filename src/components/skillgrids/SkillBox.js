@@ -31,6 +31,7 @@ function SkillBox(props) {
           tier={tier}
           name={getName(tier)} 
           acquired={isAcquired(tier)}
+          visible={props.visible}
           passClick={handleClick} />
       )
     })

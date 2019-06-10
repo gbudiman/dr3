@@ -1,7 +1,7 @@
 @import '../../colors.scss';
 
 @mixin longSkillWidth() {
-  width: calc(40% - 43px);;
+  width: calc(40% - 48px);;
 }
 @mixin triafter($color) {
   position:absolute;
@@ -47,6 +47,10 @@
   color: $color-light;
   cursor: pointer;
   text-overflow: ellipsis;
+}
+.skill-hidden {
+  //visibility: hidden;
+  display: none;
 }
 .skill-grid.skill-lead-left {
   border-right: 1px solid $color-midtone;
