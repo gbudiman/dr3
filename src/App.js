@@ -7,6 +7,7 @@ import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillState';
+import SkillCalc from './utils/SkillCalc';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,11 +70,11 @@ function App() {
 
   let handleClick = (sid, tier) => {
     updateSkillState(sid, tier);
+    let y = SkillCalc(skillState);
+    console.log(y);
   }
 
   let updateSkillState = (sid, tier) => {
-    //console.log(sid);
-    //console.log(skillState[sid].acquired);
     skillState[sid].acquired = tier;
     setSkillState(Object.assign({}, skillState));
   }
