@@ -4,7 +4,7 @@ function getClassName(props) {
   let className = 'skill-grid';
   let classNameGrid = 'skill-' + props.category + '-' + props.tier;
 
-  if (props.tier === '0') {
+  if (props.tier === 0) {
     className += ' ' + classNameGrid + ' skill-lead-left';
   } else {
     if (props.acquired) {
@@ -20,7 +20,7 @@ function getClassName(props) {
 function getTextualRepresentation(props) {
   let textual = props.name;
 
-  if (props.tier === '0') {
+  if (props.tier === 0) {
     switch(props.category) {
       case 'civilized': textual = 'V'; break;
       default: textual = props.category[0].toUpperCase();

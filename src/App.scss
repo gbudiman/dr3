@@ -79,6 +79,7 @@ $color-gray: #888;
   position: relative;
   color: $color-light;
   cursor: pointer;
+  text-overflow: ellipsis;
 }
 .skill-grid.skill-lead-left {
   border-right: 1px solid $color-midtone;

@@ -1,50 +1,46 @@
 import React from 'react';
 import SkillGrid from './SkillGrid';
 
-function _isAcquired(props, tier) {
-  return props.acquired >= tier;
-}
-
 function SkillBox(props) {
-  let isAcquired = (tier) => { return _isAcquired(props, tier) };
+  let isAcquired = (tier) => { 
+    //return _isAcquired(props, tier) 
+    return props.acquired >= tier;
+  };
   let sid = () => { return props.t1.replace(/\s+/, '_').toLowerCase() }
+  let humanify = () => { 
+    return props.t1.split('_').map((x) => { 
+      return x[0].toUpperCase() + x.slice(1) 
+    }).join(' ')
+  }
   let handleClick = (sid, tier) => { props.passClick(sid, tier) };
+  let getName = (tier) => {
+    switch(tier) {
+      case 0: return null;
+      case 1: return humanify();
+      case 2: return 'II';
+      case 3: return 'III';
+      case 4: return props.t4;
+    }
+  }
+  let buildGrids = () => {
+    let jsxes = [...Array(props.maxTier + 1).keys()].map((tier) => {
+      return(
+        <SkillGrid 
+          category={props.category} 
+          sid={props.t1}
+          tier={tier}
+          name={getName(tier)} 
+          acquired={isAcquired(1)}
+          passClick={handleClick} />
+      )
+    })
+
+    return jsxes;
+  }
 
   return(
     <div>
-      <SkillGrid 
-        category={props.category} 
-        sid={sid()}
-        tier='0'
-        passClick={handleClick} />
-      <SkillGrid 
-        category={props.category} 
-        sid={sid()}
-        tier='1' 
-        name={props.t1} 
-        acquired={isAcquired(1)}
-        passClick={handleClick} />
-      <SkillGrid 
-        category={props.category} 
-        sid={sid()}
-        tier='2' 
-        name='II' 
-        acquired={isAcquired(2)}
-        passClick={handleClick} />
-      <SkillGrid 
-        category={props.category} 
-        sid={sid()}
-        tier='3' 
-        name='III' 
-        acquired={isAcquired(3)}
-        passClick={handleClick} />
-      <SkillGrid 
-        category={props.category} 
-        sid={sid()}
-        tier='4' 
-        name={props.t4} 
-        acquired={isAcquired(4)}
-        passClick={handleClick} />
+      {buildGrids()}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.scss';
 import { createStyles, Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -6,6 +6,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
+import SkillInitializer from './utils/SkillState';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,8 +65,13 @@ const AppBar = withStyles({
 
 function App() {
   const classes = useStyles();
+  let [skillState, setSkillState] = useState(SkillInitializer());
+
   let handleClick = (sid, tier) => {
-    console.log(sid, tier);
+    //console.log(sid, tier);
+    //setSkillState({ ab: 33 });
+    setSkillState(SkillInitializer());
+    //console.log(skillState);
   }
 
   return (
@@ -84,7 +90,7 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <SkillContainer passClick={handleClick}/>
+          <SkillContainer passClick={handleClick} skillState={skillState} />
         </Grid>
       </Grid>
       <Grid container className={classes.footer} justify='flex-end'>
