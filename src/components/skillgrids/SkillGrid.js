@@ -5,17 +5,12 @@ function SkillGrid(props) {
   const [state, setState] = useState('init');
 
   let getTextualRepresentation = () => {
-    let textual = props.name;
+    let textual = props.tier > 0 ? props.name : '|';
     let innateMarker = props.innate && props.tier === 1 ? '*' : '';
 
-    if (props.tier === 0) {
-      switch(props.category) {
-        case 'civilized': textual = 'V'; break;
-        default: textual = props.category[0].toUpperCase();
-      }
-    }
-
-    return textual + innateMarker;
+    return(
+      <span className='text'>{textual + innateMarker}</span>
+    );
   }
 
   let getClassName = () => {

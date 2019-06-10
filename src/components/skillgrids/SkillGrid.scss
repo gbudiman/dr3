@@ -1,7 +1,7 @@
 @import '../../colors.scss';
 
 @mixin longSkillWidth() {
-  width: calc(40% - 43px);;
+  width: calc(44% - 40px);;
 }
 @mixin triafter($color) {
   position:absolute;
@@ -13,6 +13,9 @@
   border-style: solid;
   border-width: 17px 0 16px 21px;
   border-color: transparent transparent transparent $color;
+  &:hover {
+    filter: brightness(125%);
+  }
 }
 @mixin trixtend($color, $index) {
   background-color: $color;
@@ -20,47 +23,57 @@
   
   @if $index == 4 {
     @include longSkillWidth();
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
   } @else {
-    width: 7%;
+    width: 6%;
   }
   z-index: 21 - $index;
-  margin-left: 0%;
+  margin-left: 0;
   &:hover {
     filter: brightness(125%);
   }
 }
 @mixin trileft($color) {
   background-color: $color;
-  width: 3%;
+  width: 0px;
+  content: 'x';
   text-align: center;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 .buffer {
-  height: 32px;
+  height: 16px;
 }
 .skill-grid {
   @include longSkillWidth();
-  font-family: 'Alegreya, serif';
-  font-size: 15px;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
   padding: 8px;
   margin: 4px 0px 0px 0px;
   display: inline-block;
   position: relative;
   color: $color-light;
   cursor: pointer;
-  text-overflow: ellipsis;
+  user-select: none;
+
+  .text {
+    margin-left: -4px;
+    margin-right: -4px;
+  }
 }
 .skill-container {
   height: calc(100vh - 128px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin-top: 4px;
 }
 .skill-hidden {
   display: none;
 }
 .skill-grid.skill-lead-left {
-  border-right: 1px solid $color-midtone;
+  //border-right: 1px solid $color-midtone;
+  color: transparent;
   &:hover {
     filter: brightness(125%);
   }
@@ -93,9 +106,6 @@
 .skill-combat-3:after{
   @include triafter($color-combat-2);
 }
-.skill-combat-4:after{
-  @include triafter($color-combat-1);
-}
 .skill-wasteland-0 {
   @include trileft($color-wasteland-4);
 }
@@ -123,9 +133,6 @@
 }
 .skill-wasteland-3:after{
   @include triafter($color-wasteland-2);
-}
-.skill-wasteland-4:after{
-  @include triafter($color-wasteland-1);
 }
 .skill-anomaly-0 {
   @include trileft($color-anomaly-4);
@@ -155,9 +162,6 @@
 .skill-anomaly-3:after{
   @include triafter($color-anomaly-2);
 }
-.skill-anomaly-4:after{
-  @include triafter($color-anomaly-1);
-}
 .skill-civilized-0 {
   @include trileft($color-civilized-4);
 }
@@ -185,9 +189,6 @@
 }
 .skill-civilized-3:after{
   @include triafter($color-civilized-2);
-}
-.skill-civilized-4:after{
-  @include triafter($color-civilized-1);
 }
 .skill-unused-0 {
   background-color: $color-unused-4;
@@ -217,7 +218,4 @@
 }
 .skill-unused-3:after{
   @include triafter($color-unused-2);
-}
-.skill-unused-4:after{
-  @include triafter($color-unused-1);
 }

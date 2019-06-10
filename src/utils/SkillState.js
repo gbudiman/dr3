@@ -39,7 +39,7 @@ function SkillInitializer() {
     unarmed_combat: { t4: 'Bone Breaker', innate: true },
   })
   let s_civilized = categorify('civilized', {
-    agricultural: { t4: 'Shepherd of Land' },
+    agricultural: { t4: 'Shepherd of the Land' },
     artisan: { t4: 'Techno Savant' },
     culinary: { t4: 'Artisanal Cuisiner' },
     education: { t4: 'Sage' },
