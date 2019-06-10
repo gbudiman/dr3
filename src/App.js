@@ -73,13 +73,12 @@ function App() {
 
   let handleClick = (sid, tier) => {
     updateSkillState(sid, tier);
-    console.log(skillState);
-    let y = SkillCalc(skillState);
-    console.log(y);
+    SkillCalc(skillState);
   }
 
   let updateSkillState = (sid, tier) => {
-    skillState[sid].acquired = tier;
+    let deacquire = skillState[sid].acquired === tier && skillState[sid].innate === false
+    skillState[sid].acquired = tier - (deacquire ? 1 : 0);
     setSkillState(Object.assign({}, skillState));
   }
 
