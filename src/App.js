@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.scss';
 import { createStyles, Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -88,7 +88,48 @@ function App() {
   });
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
+  let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(false);
   let statLimit = { rp: 6, inf: 8 };
+
+  useEffect(() => {
+    console.log('effected', localStorageHasBeenLoaded);
+    if (localStorageHasBeenLoaded === false) {
+      loadState();
+      setLocalStorageHasBeenLoaded(true);
+    } else {
+      saveState();  
+    }
+  })
+
+  let saveState = () => {
+    localStorage.setItem('default', JSON.stringify({
+      skill_state: skillState,
+      skill_xp: skillXp,
+      skill_hidden: skillHidden,
+      selected_strain: selectedStrain,
+      stat: stat,
+      stat_xp: statXp,
+      stat_control: statControl,
+      innate: innate,
+      total_xp: totalXp
+    }))
+  }
+
+  let loadState = () => {
+    const j = JSON.parse(localStorage.getItem('default'));
+
+    if (j === null) return;
+
+    setSkillState(j.skill_state);
+    setSkillXp(j.skill_xp);
+    setSkillHidden(j.skill_hidden);
+    setSelectedStrain(j.selected_strain);
+    setStat(j.stat);
+    setStatXp(j.stat_xp);
+    setStatControl(j.stat_control);
+    setInnate(j.innate);
+    setTotalXp(j.total_xp);
+  }
 
   let handleStrainChange = (newStrain) => {
     let lineage = StrainDictionary()[newStrain];
