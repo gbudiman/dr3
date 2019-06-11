@@ -37,10 +37,14 @@
 @mixin trileft($color) {
   background-color: $color;
   width: 0px;
-  content: 'x';
   text-align: center;
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
+  cursor: default;
+  color: transparent;
+  &:hover {
+    filter: none;
+  }
 }
 .buffer {
   height: 16px;
@@ -71,13 +75,13 @@
 .skill-hidden {
   display: none;
 }
-.skill-grid.skill-lead-left {
+/*.skill-grid.skill-lead-left {
   //border-right: 1px solid $color-midtone;
   color: transparent;
   &:hover {
     filter: brightness(125%);
   }
-}
+}*/
 .skill-combat-0 {
   @include trileft($color-combat-4);
 }

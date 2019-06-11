@@ -257,9 +257,11 @@ function App() {
   }
 
   let updateSkillState = (sid, tier) => {
-    let deacquire = skillState[sid].acquired === tier && (tier > 1 || skillState[sid].innate === false)
-    skillState[sid].acquired = tier - (deacquire ? 1 : 0);
-    setSkillState(Object.assign({}, skillState));
+    if (tier > 0) {
+      let deacquire = skillState[sid].acquired === tier && (tier > 1 || skillState[sid].innate === false)
+      skillState[sid].acquired = tier - (deacquire ? 1 : 0);
+      setSkillState(Object.assign({}, skillState));
+    }
   }
 
   let setSkillVisibility = (category, state) => {
