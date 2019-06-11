@@ -9,9 +9,9 @@ function StatElement(props) {
       <div className='stat-lead'>{props.stat}</div>
       <div className='stat-innate'>{props.innate}</div>
       <div className='stat-acquired'>
-        <button className='stat-control' onClick={handleSubtract}>&laquo;</button>
+        <button className='stat-control' onClick={handleSubtract} disabled={!props.statControl.dec}>&laquo;</button>
         <div className='value'>{props.acquired}</div>
-        <button className='stat-control' onClick={handleAdd}>&raquo;</button>
+        <button className='stat-control' onClick={handleAdd} disabled={!props.statControl.inc}>&raquo;</button>
       </div>
       <div className='stat-total'>
         <span className='total'>{props.innate + props.acquired}</span>

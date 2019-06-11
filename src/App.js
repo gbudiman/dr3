@@ -80,6 +80,12 @@ function App() {
   let [selectedStrain, setSelectedStrain] = useState(null);
   let [stat, setStat] = useState({});
   let [statXp, setStatXp] = useState({});
+  let [statControl, setStatControl] = useState({ 
+    hp: { inc: true, dec: false },
+    mp: { inc: true, dec: false },
+    rp: { inc: true, dec: false },
+    inf: { inc: true, dec: false },
+  });
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
   let statLimit = { rp: 6, inf: 8 };
@@ -105,6 +111,8 @@ function App() {
         stat[lstat] -= diff;
         setStat(Object.assign({}, stat));
         calcXp(lstat, stat[lstat]);
+        updateStatControl(lstat, 'inc', false);
+        updateStatControl(lstat, 'dec', true);
       }
     }
   }
@@ -112,19 +120,44 @@ function App() {
   let handleStatClick = (changedStat, adjustment) => {
     let currentStat = changedStat in stat ? stat[changedStat] : 0;
     let newStat = currentStat + adjustment;
-    
+    let controlHasBeenAdjusted = false;
     
     if ((innate[changedStat] || 0) + newStat >= 0 && newStat >= 0) {
       if (changedStat in statLimit) {
         if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment > statLimit[changedStat]) {
           return;
+        } else {
+          if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment == statLimit[changedStat]) {
+            console.log('to false');
+            updateStatControl(changedStat, 'inc', false);
+            controlHasBeenAdjusted = true;
+          } else {
+            console.log('to true');
+            updateStatControl(changedStat, 'inc', true);
+            updateStatControl(changedStat, 'dec', true);
+            //controlHasBeenAdjusted = true
+          }
         }
       }
 
       stat[changedStat] = newStat;
       setStat(Object.assign({}, stat));
       calcXp(changedStat, newStat);
+
+      if (!controlHasBeenAdjusted) {
+        if (newStat == 0) {
+          updateStatControl(changedStat, 'dec', false);
+        } else {
+          updateStatControl(changedStat, 'dec', true);
+          updateStatControl(changedStat, 'inc', true);
+        }
+      }
     }
+  }
+
+  let updateStatControl = (stat, direction, state) => {
+    statControl[stat][direction] = state;
+    setStatControl(Object.assign({}, statControl));
   }
 
   let calcXp = (changedStat, acquired) => {
@@ -223,6 +256,7 @@ function App() {
             passClick={handleStatClick} 
             stat={stat}
             statXp={statXp}
+            statControl={statControl}
             innate={innate} />
           <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />

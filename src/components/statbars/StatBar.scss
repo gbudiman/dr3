@@ -8,6 +8,7 @@
   color: $color-light;
   flex-wrap: wrap;
   margin: 2px 0 -2px 0;
+  user-select: none;
 }
 
 .stat-element {
@@ -52,6 +53,13 @@
       }
       &:focus {
         outline: none;
+      }
+      &:disabled {
+        cursor: default;
+        &:hover { 
+          filter: none;
+        }
+        color: $color-dark;
       }
     }
 
