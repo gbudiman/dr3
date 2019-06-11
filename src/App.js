@@ -278,7 +278,7 @@ function App() {
       <AppBar position='fixed'>
         <Grid container className={classes.root} justify='space-evenly' spacing={1}>
           <Grid item xs={4}>
-            <TypographyBanner>DRpaedia3.0</TypographyBanner>
+            <TypographyBanner>DRpaedia3</TypographyBanner>
           </Grid>
           <Grid item xs={4} className={classes.fullSizer}>
           </Grid>
