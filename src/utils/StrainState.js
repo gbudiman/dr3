@@ -9,7 +9,7 @@ function StrainInitializer() {
       innate: { hp: 10, mp: 10, rp: 4, inf: 4 },
     },
     nomad: {
-      strains: ['Diesel Jock', 'Yorker', 'Saltwise'],
+      strains: ['Diesel Jock', 'Rover', 'Saltwise'],
       innate: { hp: 9, mp: 11, rp: 5, inf: 3 },
     },
     gorger: {
