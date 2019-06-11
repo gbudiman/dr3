@@ -23,8 +23,8 @@
   
   @if $index == 4 {
     @include longSkillWidth();
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
   } @else {
     width: 6%;
   }
@@ -39,8 +39,8 @@
   width: 0px;
   content: 'x';
   text-align: center;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
 }
 .buffer {
   height: 16px;
@@ -49,7 +49,7 @@
   @include longSkillWidth();
   font-family: 'Bellefair', serif;
   font-size: 14px;
-  padding: 8px 8px 8px 8px;
+  padding: 8px;
   margin: 4px 0px 0px 0px;
   display: inline-block;
   position: relative;
