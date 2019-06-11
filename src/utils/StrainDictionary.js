@@ -7,7 +7,7 @@ function StrainDictionary() {
     'Yorker': 'townie',
     'Vegasian': 'townie',
     'Diesel Jock': 'nomad',
-    'Yorker': 'nomad',
+    'Rover': 'nomad',
     'Saltwise': 'nomad',
     'Full Dead': 'gorger',
     'Semper Mort': 'gorger',

@@ -1,15 +1,56 @@
 @import '../../colors.scss';
 
 .xpbar {
-  display: flex;
-  justify-content: space-around;
+  text-align: left;
   font-family: 'Bellefair', serif;
   font-size: 14px;
   color: $color-light;
   flex-wrap: wrap;
-  margin: 0px;
+  margin: 0 0 0 2px;
   padding-top: 10px;
   width: calc(50% - 4px);
   border-radius: 16px;
   background-color: $color-dark;
+
+  .text {
+    padding-left: 24px;
+    color: $color-light;
+  }
+
+  .xptier {
+    position: absolute;
+    margin-top: -26px;
+    margin-left: 0px;
+    height: 34px;
+    background-color: rgba(192, 192, 192, 0.25);
+    border-radius: 16px;
+    //border-top-right-radius: 0;
+    //border-bottom-right-radius: 0;
+  }
+
+  .xp-cover {
+    position: absolute;
+    margin-top: -26px;
+    margin-left: 0px;
+    height: 34px;
+    width: 32px;
+    //background-color: $color-dark;
+    background-color: red;
+    border-radius: 16px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .tier-placeholder {
+    position: absolute;
+    margin-top: -26px;
+    margin-left: 0px;
+    height: 34px;
+    width: 120px;
+    border-right: 1px solid $color-light;
+    border-radius: 16px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }
+
