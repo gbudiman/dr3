@@ -7,8 +7,10 @@ import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillState';
+import StrainInitializer from './utils/StrainState';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
+import StrainPicker from './components/strains/StrainPicker';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,7 +73,13 @@ function App() {
   const classes = useStyles();
   let [skillState, setSkillState] = useState(SkillInitializer());
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
-  let [skillHidden, setSkillHidden] = useState({})
+  let [skillHidden, setSkillHidden] = useState({});
+  let [selectedStrain, setSelectedStrain] = useState(null);
+
+  let handleStrainChange = (newStrain) => {
+    console.log(newStrain);
+    setSelectedStrain(newStrain);
+  }
 
   let handleSkillGridClick = (sid, tier) => {
     updateSkillState(sid, tier);
@@ -122,6 +130,7 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
+          <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
           <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </Grid>
