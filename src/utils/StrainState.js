@@ -1,5 +1,5 @@
 function StrainInitializer() {
-  let h = {
+  return {
     elitariat: {
       strains: { ['Digitarian', 'Pure Blood', 'Solestros'] },
       innate: { { body: 8, mind: 12, resolve: 4, infection: 4 }},
