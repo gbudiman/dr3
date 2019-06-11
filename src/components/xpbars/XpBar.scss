@@ -1,0 +1,15 @@
+@import '../../colors.scss';
+
+.xpbar {
+  display: flex;
+  justify-content: space-around;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
+  color: $color-light;
+  flex-wrap: wrap;
+  margin: 0px;
+  padding-top: 10px;
+  width: calc(50% - 4px);
+  border-radius: 16px;
+  background-color: $color-dark;
+}

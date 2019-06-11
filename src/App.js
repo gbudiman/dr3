@@ -13,6 +13,7 @@ import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
 import StatBar from './components/statbars/StatBar';
+import XpBar from './components/xpbars/XpBar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,6 +81,7 @@ function App() {
   let [stat, setStat] = useState({});
   let [statXp, setStatXp] = useState({});
   let [innate, setInnate] = useState({});
+  let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
   let statLimit = { rp: 6, inf: 8 };
 
   let handleStrainChange = (newStrain) => {
@@ -151,11 +153,22 @@ function App() {
     }
 
     setStatXp(Object.assign({}, statXp));
+    calcTotalXp();
+  }
+
+  let calcTotalXp = () => {
+    totalXp = {
+      stat: Object.values(statXp).reduce((a, b) => { return a + b }, 0),
+      skill: skillXp.total,
+    }
+    setTotalXp(Object.assign({}, totalXp));
   }
 
   let handleSkillGridClick = (sid, tier) => {
     updateSkillState(sid, tier);
-    setSkillXp(SkillCalc(skillState));
+    skillXp = SkillCalc(skillState)
+    setSkillXp(skillXp);
+    calcTotalXp();
   }
 
   let handleSkillXpClick = (category) => {
@@ -170,7 +183,7 @@ function App() {
   }
 
   let updateSkillState = (sid, tier) => {
-    let deacquire = skillState[sid].acquired === tier && skillState[sid].innate === false
+    let deacquire = skillState[sid].acquired === tier && (tier > 1 || skillState[sid].innate === false)
     skillState[sid].acquired = tier - (deacquire ? 1 : 0);
     setSkillState(Object.assign({}, skillState));
   }
@@ -202,7 +215,10 @@ function App() {
       </AppBar>
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
-          <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
+          <Grid container>
+            <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
+            <XpBar totalXp={totalXp} />
+          </Grid>
           <StatBar 
             passClick={handleStatClick} 
             stat={stat}
