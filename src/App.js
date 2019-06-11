@@ -11,6 +11,7 @@ import StrainInitializer from './utils/StrainState';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
+import StatBar from './components/statbars/StatBar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,10 +76,23 @@ function App() {
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
   let [skillHidden, setSkillHidden] = useState({});
   let [selectedStrain, setSelectedStrain] = useState(null);
+  let [statHp, setStatHp] = useState(0);
+  let [statMp, setStatMp] = useState(0);
+  let [statRp, setStatRp] = useState(0);
+  let [statInf, setStatInf] = useState(0);
+  let [statIr, setStatIr] = useState(0);
+  let [innateHp, setInnateHp] = useState(0);
+  let [innateMp, setInnateMp] = useState(0);
+  let [innateRp, setInnateRp] = useState(0);
+  let [innateInf, setInnateInf] = useState(0);
 
   let handleStrainChange = (newStrain) => {
     console.log(newStrain);
     setSelectedStrain(newStrain);
+  }
+
+  let handleStatClick = (stat, adjustment) => {
+
   }
 
   let handleSkillGridClick = (sid, tier) => {
@@ -131,6 +145,13 @@ function App() {
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
           <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
+          <StatBar 
+            passClick={handleStatClick} 
+            statHp={statHp} innateHp={innateHp}
+            statMp={statMp} innateMp={innateMp}
+            statRp={statRp} innateRp={innateRp}
+            statInf={statInf} innateInf={innateInf}
+            statIr={statIr} />
           <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </Grid>

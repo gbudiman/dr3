@@ -1,0 +1,66 @@
+@import '../../colors.scss';
+
+.statbar {
+  display: flex;
+  justify-content: space-around;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
+  color: $color-light;
+  flex-wrap: wrap;
+  margin: 2px 0 -2px 0;
+}
+
+.stat-element {
+  border-radius: 16px;
+  background-color: $color-dark;
+  margin: 2px 0 2px 0;
+  height: 34px;
+  width: calc(50% - 4px);
+  display: flex;
+  justify-content: space-evenly;
+
+  .stat-lead {
+    text-transform: uppercase;
+    padding-top: 9px;
+    padding-left: 12px;
+  }
+
+  .stat-innate {
+    padding-top: 9px;
+  }
+
+  .stat-acquired {
+    padding-top: 8px;
+
+    button {
+      background-color: $color-dark;
+      border: 0;
+      margin-top: -8px;
+      padding-top: 0px;
+      padding-bottom: 6px;
+      color: $color-light;
+      font-size: 24px;
+      cursor: pointer;
+      &:hover {
+        filter: brightness(150%);
+      }
+    }
+
+    .value {
+      display: inline;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+  }
+
+  .stat-total {
+    padding-top: 6px;
+    padding-right: 16px;
+
+    .total {
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+}
