@@ -13,32 +13,8 @@
   background-color: $color-dark;
 
   .text {
-    padding-left: 24px;
+    padding-left: 7%;
     color: $color-light;
-  }
-
-  .xptier {
-    position: absolute;
-    margin-top: -26px;
-    margin-left: 0px;
-    height: 34px;
-    background-color: rgba(192, 192, 192, 0.25);
-    border-radius: 16px;
-    //border-top-right-radius: 0;
-    //border-bottom-right-radius: 0;
-  }
-
-  .xp-cover {
-    position: absolute;
-    margin-top: -26px;
-    margin-left: 0px;
-    height: 34px;
-    width: 32px;
-    //background-color: $color-dark;
-    background-color: red;
-    border-radius: 16px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
   }
 
   .tier-placeholder {
@@ -47,7 +23,7 @@
     margin-left: 0px;
     height: 34px;
     width: 120px;
-    border-right: 1px solid $color-light;
+    border-right: 1px solid $color-gray;
     border-radius: 16px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
