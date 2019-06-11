@@ -8,6 +8,7 @@ import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillState';
 import StrainInitializer from './utils/StrainState';
+import StrainDictionary from './utils/StrainDictionary';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
@@ -76,23 +77,80 @@ function App() {
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
   let [skillHidden, setSkillHidden] = useState({});
   let [selectedStrain, setSelectedStrain] = useState(null);
-  let [statHp, setStatHp] = useState(0);
-  let [statMp, setStatMp] = useState(0);
-  let [statRp, setStatRp] = useState(0);
-  let [statInf, setStatInf] = useState(0);
-  let [statIr, setStatIr] = useState(0);
-  let [innateHp, setInnateHp] = useState(0);
-  let [innateMp, setInnateMp] = useState(0);
-  let [innateRp, setInnateRp] = useState(0);
-  let [innateInf, setInnateInf] = useState(0);
+  let [stat, setStat] = useState({});
+  let [statXp, setStatXp] = useState({});
+  let [innate, setInnate] = useState({});
+  let statLimit = { rp: 6, inf: 8 };
 
   let handleStrainChange = (newStrain) => {
-    console.log(newStrain);
+    let lineage = StrainDictionary()[newStrain];
+    let innateStat = StrainInitializer()[lineage].innate;
+    
     setSelectedStrain(newStrain);
+    setInnate({
+      hp: innateStat.hp,
+      mp: innateStat.mp,
+      rp: innateStat.rp,
+      inf: innateStat.inf,
+    })
+
+    for (const lstat in statLimit) {
+      let statSum = (innateStat[lstat] || 0) + (stat[lstat] || 0);
+      let limit = statLimit[lstat];
+
+      if (statSum > limit) {
+        let diff = statSum - limit;
+        stat[lstat] -= diff;
+        setStat(Object.assign({}, stat));
+        calcXp(lstat, stat[lstat]);
+      }
+    }
   }
 
-  let handleStatClick = (stat, adjustment) => {
+  let handleStatClick = (changedStat, adjustment) => {
+    let currentStat = changedStat in stat ? stat[changedStat] : 0;
+    let newStat = currentStat + adjustment;
+    
+    
+    if ((innate[changedStat] || 0) + newStat >= 0 && newStat >= 0) {
+      if (changedStat in statLimit) {
+        if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment > statLimit[changedStat]) {
+          return;
+        }
+      }
 
+      stat[changedStat] = newStat;
+      setStat(Object.assign({}, stat));
+      calcXp(changedStat, newStat);
+    }
+  }
+
+  let calcXp = (changedStat, acquired) => {
+    let linearCalc = (x) => { return 10 * x };
+    let deciCalc = (x) => {
+      let influx = (y) => { 
+        if (y > 0) return (y - 10 < 0) ? y : 10;
+        return 0;
+      }
+
+      let totalCost = influx(x) * 1; x -= 10;
+      totalCost += influx(x) * 3; x -= 10;
+      totalCost += influx(x) * 5; x -= 10;
+      totalCost += influx(x) * 7; x -= 10;
+      totalCost += influx(x) * 9; x -= 10;
+      if (x > 0) totalCost += x * 10;
+
+      return totalCost;
+    }
+
+    switch(changedStat) {
+      case 'hp':
+      case 'mp': statXp[changedStat] = deciCalc(acquired); break;
+      case 'rp':
+      case 'inf': statXp[changedStat] = linearCalc(acquired); break;
+    }
+
+    setStatXp(Object.assign({}, statXp));
   }
 
   let handleSkillGridClick = (sid, tier) => {
@@ -147,11 +205,9 @@ function App() {
           <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
           <StatBar 
             passClick={handleStatClick} 
-            statHp={statHp} innateHp={innateHp}
-            statMp={statMp} innateMp={innateMp}
-            statRp={statRp} innateRp={innateRp}
-            statInf={statInf} innateInf={innateInf}
-            statIr={statIr} />
+            stat={stat}
+            statXp={statXp}
+            innate={innate} />
           <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </Grid>

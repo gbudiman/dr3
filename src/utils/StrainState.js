@@ -2,35 +2,35 @@ function StrainInitializer() {
   return {
     elitariat: {
       strains: ['Digitarian', 'Pure Blood', 'Solestros'],
-      innate: { body: 8, mind: 12, resolve: 4, infection: 4 },
+      innate: { hp: 8, mp: 12, rp: 4, inf: 4 },
     },
     townie: {
       strains: ['Baywalker', 'Yorker', 'Vegasian'],
-      innate: { body: 10, mind: 10, resolve: 4, infection: 4 },
+      innate: { hp: 10, mp: 10, rp: 4, inf: 4 },
     },
     nomad: {
       strains: ['Diesel Jock', 'Yorker', 'Saltwise'],
-      innate: { body: 9, mind: 11, resolve: 5, infection: 3 },
+      innate: { hp: 9, mp: 11, rp: 5, inf: 3 },
     },
     gorger: {
       strains: ['Full Dead', 'Semper Mort', 'Lascarian'],
-      innate: { body: 11, mind: 9, resolve: 5, infection: 3 },
+      innate: { hp: 11, mp: 9, rp: 5, inf: 3 },
     },
     mutant: {
       strains: ['Remnant', 'Retrograde', 'Tainted'],
-      innate: { body: 12, mind: 8, resolve: 3, infection: 5 },
+      innate: { hp: 12, mp: 8, rp: 3, inf: 5 },
     },
     landsman: {
       strains: ['Merican', 'Natural One', 'Quiet Folk'],
-      innate: { body: 12, mind: 8, resolve: 5, infection: 3 },
+      innate: { hp: 12, mp: 8, rp: 5, inf: 3 },
     },
     devoted: {
       strains: ['Accensorite', 'Red Star', 'Unborn'],
-      innate: { body: 10, mind: 10, resolve: 2, infection: 6 },
+      innate: { hp: 10, mp: 10, rp: 2, inf: 6 },
     },
     evolved: {
       strains: ['Irons', 'Reclaimers', 'Unstable'],
-      innate: { body: 11, mind: 9, resolve: 3, infection: 5 },
+      innate: { hp: 11, mp: 9, rp: 3, inf: 5 },
     },
   }
 }

@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 function StatElement(props) {
-  let calcXp = () => {
-    return 0;
-  }
+  let handleSubtract = () => { props.passClick(props.stat, -1) }
+  let handleAdd = () => { props.passClick(props.stat, 1) }
 
   return(
-    <div class='stat-element'>
-      <div class='stat-lead'>{props.stat}</div>
-      <div class='stat-innate'>{props.innate}</div>
-      <div class='stat-acquired'>
-        <button class='stat-control'>&laquo;</button>
-        <div class='value'>{props.acquired}</div>
-        <button class='stat-control'>&raquo;</button>
+    <div className='stat-element'>
+      <div className='stat-lead'>{props.stat}</div>
+      <div className='stat-innate'>{props.innate}</div>
+      <div className='stat-acquired'>
+        <button className='stat-control' onClick={handleSubtract}>&laquo;</button>
+        <div className='value'>{props.acquired}</div>
+        <button className='stat-control' onClick={handleAdd}>&raquo;</button>
       </div>
-      <div class='stat-total'>
-        <span class='total'>{props.innate + props.acquired}</span>
+      <div className='stat-total'>
+        <span className='total'>{props.innate + props.acquired}</span>
         /
-        <span class='xp'>{calcXp()}</span>
+        <span className='xp'>{props.xp}</span>
       </div>
     </div>
   )
