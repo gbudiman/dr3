@@ -75,13 +75,6 @@
 .skill-hidden {
   display: none;
 }
-/*.skill-grid.skill-lead-left {
-  //border-right: 1px solid $color-midtone;
-  color: transparent;
-  &:hover {
-    filter: brightness(125%);
-  }
-}*/
 .skill-combat-0 {
   @include trileft($color-combat-4);
 }
