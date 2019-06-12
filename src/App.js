@@ -127,6 +127,21 @@ function App() {
     toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
     if (toonStorage != null) {
       firstEnabledToon = Object.keys(toonStorage).find((x) => { return toonStorage[x].state === 'enabled'} )
+
+      for (const tid in toonStorage) {
+        if (toonStorage[tid].state == 'deleted') {
+
+        }
+      }
+
+      let deferredDeletes = Object.keys(toonStorage).filter(tid => toonStorage[tid].state == 'deleted');
+      deferredDeletes.map(tid => {
+        delete toonStorage[tid];
+        delete toonData[tid];
+      })
+
+      setToonStorage(Object.assign({}, toonStorage));
+      updateToonStorage();
     }
 
     console.log('fet: ' + firstEnabledToon);
@@ -353,6 +368,14 @@ function App() {
       setStatControl(j.stat_control);
       setInnate(j.innate);
       setTotalXp(j.total_xp);
+    } else if (action == 'delete') {
+      toonStorage[arg].state = 'deleted';
+      setToonStorage(Object.assign({}, toonStorage));
+      updateToonStorage();
+    } else if (action == 'undelete') {
+      toonStorage[arg].state = 'enabled';
+      setToonStorage(Object.assign({}, toonStorage));
+      updateToonStorage();
     }
   }
 

@@ -36,6 +36,12 @@ function ToonSter(props) {
   let handleSwitch = (tid) => {
     props.passChange('switch', tid);
   }
+  let handleDelete = (tid) => {
+    props.passChange('delete', tid);
+  }
+  let handleUndelete = (tid) => {
+    props.passChange('undelete', tid);
+  }
   let handleNewToon = () => {
     props.passChange('new');
   }
@@ -50,9 +56,12 @@ function ToonSter(props) {
           name={tprop.name} 
           passChange={handleChange} 
           passSwitch={handleSwitch}
+          passDelete={handleDelete}
+          passUndelete={handleUndelete}
           key={tid} 
           tid={tid} 
-          selected={tid == props.selectedToon} 
+          selected={tid == props.selectedToon}
+          existance={tprop.state}
         />
       )
     })

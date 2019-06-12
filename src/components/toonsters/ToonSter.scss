@@ -12,7 +12,7 @@
 
 .MuiDivider-root.toon-divider {
   background-color: $color-midtone;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .toon-row {
@@ -27,6 +27,18 @@
 
   .hidden {
     color: transparent;
+  }
+}
+
+.toon-delete {
+  &.hidden {
+    display: none;
+  }
+}
+
+.toon-undelete {
+  &.hidden {
+    display: none;
   }
 }
 

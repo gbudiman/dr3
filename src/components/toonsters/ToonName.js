@@ -2,6 +2,7 @@ import React from 'react';
 import InputBase from '@material-ui/core/InputBase';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import PlayArrow from '@material-ui/icons/PlayArrow';
+import Undo from '@material-ui/icons/Undo';
 
 function ToonName(props) {
   let handleChange = (event) => {
@@ -12,15 +13,24 @@ function ToonName(props) {
     props.passSwitch(props.tid);
   }
 
+  let handleDelete = () => {
+    props.passDelete(props.tid);
+  }
+
+  let handleUndelete = () => {
+    props.passUndelete(props.tid);
+  }
+
   return(
     <div className='toon-row'>
-      <DeleteForever className='toon-delete' />
+      <DeleteForever className={'toon-delete ' + ((props.existance == 'deleted') ? 'hidden' : '')} onClick={handleDelete} />
+      <Undo className={'toon-undelete ' + ((props.existance == 'enabled') ? 'hidden' : '')} onClick={handleUndelete} />
       <div className='toon-subrow'>
         <InputBase
           className='toon-entry'
           value={props.name}
           onChange={handleChange}
-          disabled={props.deleted}
+          disabled={props.existance == 'deleted'}
         />
         <PlayArrow 
           className={props.selected ? 'hidden' : ''} 
