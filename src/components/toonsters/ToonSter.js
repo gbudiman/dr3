@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '12px 16px 0px 8px',
       fontFamily: 'Alegreya, serif',
       fontSize: 22,
+      maxWidth: '240px',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      textAlign: 'right',
     },
   }),
 );
@@ -81,7 +86,7 @@ function ToonSter(props) {
         <div className='toon-row' onClick={handleNewToon}>
           <div />
           <div className='toon-subrow'>
-            New
+            Add Character
             <AddToon />
           </div>
         </div>

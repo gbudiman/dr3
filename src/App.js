@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
       borderTop: '1px solid #aaa',
       fontStyle: 'italic',
       fontSize: '12px',
-      color: '#aaa',
-      padding: '2px 2px 4px 0px',
+      color: '#888',
+      padding: '2px 4px 4px 0px',
       fontFamily: 'Alegreya, serif',
     },
     tableViewDwarf: {
