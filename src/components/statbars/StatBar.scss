@@ -23,24 +23,28 @@
   .stat-lead {
     text-transform: uppercase;
     padding-top: 10px;
+    z-index: 5;
   }
 
   .stat-control {
+    z-index: 3;
     background-color: $color-dark;
     border: 0;
     margin-top: 0px;
-    padding-top: 0px;
-    padding-bottom: 6px;
+    padding-top: 1px;
+    padding-bottom: 0px;
     color: $color-light;
     font-size: 24px;
     cursor: pointer;
-    width: 24px;
+    width: 32px;
     color: $color-light;
     &:hover {
-      filter: brightness(150%);
+      //filter: brightness(150%);
     }
     &:focus {
       outline: none;
+      filter: none;
+      background-color: $color-dark;
     }
     &.disabled {
       cursor: default;
@@ -53,7 +57,9 @@
     &.left {
       border-top-left-radius: 16px;
       border-bottom-left-radius: 16px;
-      border-right: 1px solid $color-midtone;
+      //border-right: 1px solid $color-midtone;
+      border-radius: 16px;
+      margin-right: -16px;
 
       span {
         margin-left: 8px;
@@ -66,10 +72,13 @@
     &.right {
       border-top-right-radius: 16px;
       border-bottom-right-radius: 16px;
-      border-left: 1px solid $color-midtone;
+      //border-left: 1px solid $color-midtone;
+      border-radius: 16px;
+      margin-left: -16px;
+      text-align:right;
 
       span {
-        margin-left: 4px;
+        margin-right: 8px;
       }
 
       &.disabled {
@@ -80,6 +89,7 @@
 
   .stat-total {
     padding-top: 6px;
+    z-index: 5;
 
     .amount {
       font-size: 18px;
