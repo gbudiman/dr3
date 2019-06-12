@@ -26,15 +26,16 @@ const useStyles = makeStyles((theme: Theme) =>
 function ToonSter(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [toonList, setToonList] = useState(props.toonList);
-  const [selectedToon, setSelectedToon] = useState('default');
+  //const [toonList, setToonList] = useState(props.toonList);
+  //const [selectedToon, setSelectedToon] = useState('default');
 
   let handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   }
   let handleChange = (tid, newValue) => {
-    toonList[tid].name = newValue;
-    setToonList(Object.assign({}, toonList));
+    //toonList[tid].name = newValue;
+    // dsetToonList(Object.assign({}, toonList));
+    props.passChange('rename', newValue);
   }
   let handleNewToon = () => {
     props.passChange('new');
@@ -43,10 +44,10 @@ function ToonSter(props) {
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
   let toonLister = () => {
-    return Object.keys(toonList).map((tid) => {
-      let tprop = toonList[tid];
+    return Object.keys(props.toonList).map((tid) => {
+      let tprop = props.toonList[tid];
       return(
-        <ToonName name={tprop.name} passChange={handleChange} key={tid} tid={tid} selected={tid == selectedToon} />
+        <ToonName name={tprop.name} passChange={handleChange} key={tid} tid={tid} selected={tid == props.selectedToon} />
       )
     })
   }
@@ -54,7 +55,7 @@ function ToonSter(props) {
   return(
     <React.Fragment>
       <Button className={classes.toonButton} onClick={handleClick}>
-        &laquo; {selectedToon}
+        &laquo; {props.currentToon in props.toonList ? props.toonList[props.currentToon].name : 'default'}
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl} className='toonster-overlay' placement='bottom-end' transition>
         {toonLister()}

@@ -92,8 +92,9 @@ function App() {
   let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(false);
   let [toonStorage, setToonStorage] = useState({});
   let [currentToon, setCurrenToon] = useState({});
+  let [toonData, setToonData] = useState({})
   let statLimit = { rp: 6, inf: 8 };
-  let toonData = {};
+  let okToSaveState = true;
 
   useEffect(() => {
     if (localStorageHasBeenLoaded === false) {
@@ -118,8 +119,6 @@ function App() {
       innate: innate,
       total_xp: totalXp
     }
-    console.log(currentToon);
-    console.log(toonData);
     localStorage.setItem('toonData', JSON.stringify(toonData));
   }
 
@@ -148,15 +147,12 @@ function App() {
       updateToonStorage();
 
     } else {
-      //debugger
       currentToon = firstEnabledToon;
       toonData = JSON.parse(localStorage.getItem('toonData'));
       setCurrenToon(currentToon);
+      setToonStorage(Object.assign({}, toonStorage));
+
       const j = toonData[firstEnabledToon];
-      // console.log('getting here');
-      // console.log(j);
-      // console.log(firstEnabledToon);
-      // debugger;
       setSkillState(j.skill_state);
       setSkillXp(j.skill_xp);
       setSkillHidden(j.skill_hidden);
@@ -166,6 +162,7 @@ function App() {
       setStatControl(j.stat_control);
       setInnate(j.innate);
       setTotalXp(j.total_xp);
+
     }
   }
 
@@ -313,10 +310,16 @@ function App() {
     setSkillState(Object.assign({}, skillState));
   }
 
-  let handleToonChange = (action) => {
+  let handleToonChange = (action, arg) => {
     if (action == 'new') {
       let skillState = SkillInitializer();
-      let name = uuid.v1();
+      let newName = uuid.v1();
+      toonStorage[newName] = { name: 'new', state: 'enabled' };
+      currentToon = newName;
+      setCurrenToon(currentToon);
+      setToonStorage(Object.assign({}, toonStorage));
+      updateToonStorage();
+
       setSkillState(skillState);
       setSkillXp(SkillCalc(skillState));
       setSkillHidden({});
@@ -331,10 +334,9 @@ function App() {
       })
       setInnate({});
       setTotalXp({stat: 0, skill: 0});
-
-      toonStorage[name] = { name: 'new', state: 'enabled' };
-      currentToon = toonStorage[name];
-      setCurrenToon(currentToon);
+    } else if (action == 'rename') {
+      toonStorage[currentToon].name = arg;
+      setToonStorage(Object.assign({}, toonStorage));
       updateToonStorage();
     }
   }
