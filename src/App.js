@@ -14,6 +14,7 @@ import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
 import StatBar from './components/statbars/StatBar';
 import XpBar from './components/xpbars/XpBar';
+import uuid from 'uuid';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -89,19 +90,24 @@ function App() {
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
   let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(false);
+  let [toonStorage, setToonStorage] = useState({});
+  let [currentToon, setCurrenToon] = useState({});
   let statLimit = { rp: 6, inf: 8 };
+  let toonData = {};
 
   useEffect(() => {
     if (localStorageHasBeenLoaded === false) {
       loadState();
       setLocalStorageHasBeenLoaded(true);
     } else {
+
       saveState();  
     }
   })
 
   let saveState = () => {
-    localStorage.setItem('default', JSON.stringify({
+    //debugger
+    toonData[currentToon] = {
       skill_state: skillState,
       skill_xp: skillXp,
       skill_hidden: skillHidden,
@@ -111,23 +117,56 @@ function App() {
       stat_control: statControl,
       innate: innate,
       total_xp: totalXp
-    }))
+    }
+    console.log(currentToon);
+    console.log(toonData);
+    localStorage.setItem('toonData', JSON.stringify(toonData));
   }
 
   let loadState = () => {
-    const j = JSON.parse(localStorage.getItem('default'));
+    let firstEnabledToon;
+    toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
+    if (toonStorage != null) {
+      firstEnabledToon = Object.keys(toonStorage).find((x) => { return toonStorage[x].state === 'enabled'} )
+    }
 
-    if (j === null) return;
+    console.log('fet: ' + firstEnabledToon);
+    //debugger
+    if (toonStorage == null) {
+      toonStorage = {};
+      currentToon = uuid.v1();
+      toonStorage[currentToon] = { name: 'new', state: 'enabled' };
+      setCurrenToon(currentToon);
+      setToonStorage(Object.assign({}, toonStorage));
+      updateToonStorage();
 
-    setSkillState(j.skill_state);
-    setSkillXp(j.skill_xp);
-    setSkillHidden(j.skill_hidden);
-    setSelectedStrain(j.selected_strain);
-    setStat(j.stat);
-    setStatXp(j.stat_xp);
-    setStatControl(j.stat_control);
-    setInnate(j.innate);
-    setTotalXp(j.total_xp);
+    } else if (firstEnabledToon == null) {
+      currentToon = uuid.v1();
+      toonStorage[currentToon] = { name: 'new', state: 'enabled' };
+      setCurrenToon(currentToon);
+      setToonStorage(Object.assign({}, toonStorage));
+      updateToonStorage();
+
+    } else {
+      //debugger
+      currentToon = firstEnabledToon;
+      toonData = JSON.parse(localStorage.getItem('toonData'));
+      setCurrenToon(currentToon);
+      const j = toonData[firstEnabledToon];
+      // console.log('getting here');
+      // console.log(j);
+      // console.log(firstEnabledToon);
+      // debugger;
+      setSkillState(j.skill_state);
+      setSkillXp(j.skill_xp);
+      setSkillHidden(j.skill_hidden);
+      setSelectedStrain(j.selected_strain);
+      setStat(j.stat);
+      setStatXp(j.stat_xp);
+      setStatControl(j.stat_control);
+      setInnate(j.innate);
+      setTotalXp(j.total_xp);
+    }
   }
 
   let handleStrainChange = (newStrain) => {
@@ -170,12 +209,10 @@ function App() {
           return;
         } else {
           if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment == statLimit[changedStat]) {
-            console.log('to false');
             updateStatControl(changedStat, 'inc', false);
             updateStatControl(changedStat, 'dec', true);
             controlHasBeenAdjusted = true;
           } else {
-            console.log('to true');
             updateStatControl(changedStat, 'inc', true);
             updateStatControl(changedStat, 'dec', true);
           }
@@ -276,6 +313,36 @@ function App() {
     setSkillState(Object.assign({}, skillState));
   }
 
+  let handleToonChange = (action) => {
+    if (action == 'new') {
+      let skillState = SkillInitializer();
+      let name = uuid.v1();
+      setSkillState(skillState);
+      setSkillXp(SkillCalc(skillState));
+      setSkillHidden({});
+      setSelectedStrain(null);
+      setStat({});
+      setStatXp({});
+      setStatControl({
+        hp: { inc: true, dec: false },
+        mp: { inc: true, dec: false },
+        rp: { inc: true, dec: false },
+        inf: { inc: true, dec: false },
+      })
+      setInnate({});
+      setTotalXp({stat: 0, skill: 0});
+
+      toonStorage[name] = { name: 'new', state: 'enabled' };
+      currentToon = toonStorage[name];
+      setCurrenToon(currentToon);
+      updateToonStorage();
+    }
+  }
+
+  let updateToonStorage = () => {
+    localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
+  }
+
   return (
     <div>
       <AppBar position='fixed'>
@@ -286,7 +353,7 @@ function App() {
           <Grid item xs={4} className={classes.fullSizer}>
           </Grid>
           <Grid item xs={4} className={classes.toonContainer}>
-            <ToonSter />
+            <ToonSter passChange={handleToonChange} currentToon={currentToon} toonList={toonStorage} />
           </Grid>
         </Grid>
       </AppBar>

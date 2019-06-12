@@ -7,6 +7,7 @@ import ToonName from './ToonName';
 import AddToon from '@material-ui/icons/NoteAdd';
 import Divider from '@material-ui/core/Divider';
 
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     toonButton: {
@@ -25,11 +26,8 @@ const useStyles = makeStyles((theme: Theme) =>
 function ToonSter(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [toonList, setToonList] = useState({ 
-    zk48habfasda: { deleted: false, name: 'default' },
-    key236261464: { deleted: false, name: 'bblablablbalblongnmaeha' },
-  })
-  const [selectedToon, setSelectedToon] = useState('zk48habfasda');
+  const [toonList, setToonList] = useState(props.toonList);
+  const [selectedToon, setSelectedToon] = useState('default');
 
   let handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -38,6 +36,10 @@ function ToonSter(props) {
     toonList[tid].name = newValue;
     setToonList(Object.assign({}, toonList));
   }
+  let handleNewToon = () => {
+    props.passChange('new');
+  }
+
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
   let toonLister = () => {
@@ -52,7 +54,7 @@ function ToonSter(props) {
   return(
     <React.Fragment>
       <Button className={classes.toonButton} onClick={handleClick}>
-        &laquo; {props.toonName || 'default'}
+        &laquo; {selectedToon}
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl} className='toonster-overlay' placement='bottom-end' transition>
         {toonLister()}
@@ -61,7 +63,7 @@ function ToonSter(props) {
           <div />
           <div className='toon-subrow'>
             New
-            <AddToon />
+            <AddToon onClick={handleNewToon} />
           </div>
         </div>
       </Popper>
