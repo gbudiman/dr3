@@ -338,6 +338,21 @@ function App() {
       toonStorage[currentToon].name = arg;
       setToonStorage(Object.assign({}, toonStorage));
       updateToonStorage();
+    } else if (action == 'switch') {
+      currentToon = arg;
+      setCurrenToon(currentToon);
+
+      //console.log(currentToon);
+      const j = toonData[currentToon];
+      setSkillState(j.skill_state);
+      setSkillXp(j.skill_xp);
+      setSkillHidden(j.skill_hidden);
+      setSelectedStrain(j.selected_strain);
+      setStat(j.stat);
+      setStatXp(j.stat_xp);
+      setStatControl(j.stat_control);
+      setInnate(j.innate);
+      setTotalXp(j.total_xp);
     }
   }
 

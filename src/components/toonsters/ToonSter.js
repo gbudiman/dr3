@@ -26,16 +26,15 @@ const useStyles = makeStyles((theme: Theme) =>
 function ToonSter(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  //const [toonList, setToonList] = useState(props.toonList);
-  //const [selectedToon, setSelectedToon] = useState('default');
 
   let handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   }
   let handleChange = (tid, newValue) => {
-    //toonList[tid].name = newValue;
-    // dsetToonList(Object.assign({}, toonList));
     props.passChange('rename', newValue);
+  }
+  let handleSwitch = (tid) => {
+    props.passChange('switch', tid);
   }
   let handleNewToon = () => {
     props.passChange('new');
@@ -47,7 +46,14 @@ function ToonSter(props) {
     return Object.keys(props.toonList).map((tid) => {
       let tprop = props.toonList[tid];
       return(
-        <ToonName name={tprop.name} passChange={handleChange} key={tid} tid={tid} selected={tid == props.selectedToon} />
+        <ToonName 
+          name={tprop.name} 
+          passChange={handleChange} 
+          passSwitch={handleSwitch}
+          key={tid} 
+          tid={tid} 
+          selected={tid == props.selectedToon} 
+        />
       )
     })
   }

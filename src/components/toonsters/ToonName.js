@@ -8,6 +8,10 @@ function ToonName(props) {
     props.passChange(props.tid, event.target.value);
   }
 
+  let handleSwitch = () => {
+    props.passSwitch(props.tid);
+  }
+
   return(
     <div className='toon-row'>
       <DeleteForever className='toon-delete' />
@@ -18,7 +22,10 @@ function ToonName(props) {
           onChange={handleChange}
           disabled={props.deleted}
         />
-        <PlayArrow className={props.selected ? 'hidden' : ''} />
+        <PlayArrow 
+          className={props.selected ? 'hidden' : ''} 
+          onClick={handleSwitch}
+        />
       </div>
     </div>
   )
