@@ -8,6 +8,7 @@
   max-width: 320px;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
+  border: 1px solid $color-midtone;
 }
 
 .MuiDivider-root.toon-divider {
@@ -53,4 +54,8 @@
       text-decoration: line-through;
     }
   }
+}
+
+.expand-hidden {
+  display: none !important;
 }

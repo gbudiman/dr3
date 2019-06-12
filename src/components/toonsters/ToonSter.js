@@ -6,7 +6,8 @@ import Popper from '@material-ui/core/Popper';
 import ToonName from './ToonName';
 import AddToon from '@material-ui/icons/NoteAdd';
 import Divider from '@material-ui/core/Divider';
-
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,7 +71,9 @@ function ToonSter(props) {
   return(
     <React.Fragment>
       <Button className={classes.toonButton} onClick={handleClick}>
-        &laquo; {props.currentToon in props.toonList ? props.toonList[props.currentToon].name : 'default'}
+        {props.currentToon in props.toonList ? props.toonList[props.currentToon].name : 'default'}
+        <ExpandLess className={open ? '' : 'expand-hidden'} />
+        <ExpandMore className={open ? 'expand-hidden' : ''} />
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl} className='toonster-overlay' placement='bottom-end' transition>
         {toonLister()}
