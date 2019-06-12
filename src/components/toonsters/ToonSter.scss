@@ -1,0 +1,44 @@
+@import '../../colors.scss';
+
+.toonster-overlay {
+  background-color: $color-dark;
+  color: $color-light;
+  padding: 8px 16px;
+  width: 50%;
+  max-width: 320px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.MuiDivider-root.toon-divider {
+  background-color: $color-midtone;
+  margin-bottom: 4px;
+}
+
+.toon-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: Alegreya, serif;
+}
+
+.toon-subrow {
+  display: flex;
+  justify-content: flex-end;
+
+  .hidden {
+    color: transparent;
+  }
+}
+
+.MuiInputBase-root.toon-entry {
+  display: block;
+  input {
+    color: $color-light;
+    text-align: right;
+    font-family: Alegreya, serif;
+
+    &:disabled {
+      text-decoration: line-through;
+    }
+  }
+}
