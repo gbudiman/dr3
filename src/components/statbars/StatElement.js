@@ -10,7 +10,7 @@ function StatElement(props) {
         <span>&laquo;</span>
       </div>
       <div className='stat-lead'>
-        {props.stat}: {props.innate} + {props.acquired} 
+        {props.stat} {props.innate} + {props.acquired} 
       </div>
       <div className='stat-total'>
         <span className='amount'>{props.innate + props.acquired}</span>

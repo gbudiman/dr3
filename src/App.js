@@ -153,6 +153,8 @@ function App() {
         calcXp(lstat, stat[lstat]);
         updateStatControl(lstat, 'inc', false);
         updateStatControl(lstat, 'dec', true);
+      } else {
+        updateStatControl(lstat, 'inc', true);
       }
     }
   }
