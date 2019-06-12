@@ -58,6 +58,10 @@
       span {
         margin-left: 8px;
       }
+
+      &.disabled {
+        border-right: 1px solid transparent;
+      }
     }
     &.right {
       border-top-right-radius: 16px;
@@ -66,6 +70,10 @@
 
       span {
         margin-left: 4px;
+      }
+
+      &.disabled {
+        border-left: 1px solid transparent;
       }
     }
   }

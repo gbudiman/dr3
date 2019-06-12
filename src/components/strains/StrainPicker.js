@@ -33,13 +33,24 @@ function StrainPicker(props) {
     props.passChange(event.target.value);
   }
 
+  let statCompressor = (stat) => {
+    return [stat.hp, stat.mp, stat.rp, stat.inf].join('/');
+  }
+
   let strainBuilder = () => {
     let optgroups = Object.keys(props.strainList).map((lineage) => {
       let options = props.strainList[lineage].strains.map((strain) => {
         return <option key={lineage + '-' + strain} value={strain}>{strain}</option>;
       })
 
-      return <optgroup key={lineage} label={lineage[0].toUpperCase() + lineage.slice(1)}>{options}</optgroup>;
+      return(
+        <optgroup 
+          key={lineage} 
+          label={lineage[0].toUpperCase() + lineage.slice(1) + ' - ' + statCompressor(props.strainList[lineage].innate)}
+        >
+          {options}
+        </optgroup>
+      );
     });
 
     return optgroups;
