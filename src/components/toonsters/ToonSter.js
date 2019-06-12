@@ -61,7 +61,7 @@ function ToonSter(props) {
           passUndelete={handleUndelete}
           key={tid} 
           tid={tid} 
-          selected={tid == props.selectedToon}
+          selected={tid == props.currentToon}
           existance={tprop.state}
         />
       )
