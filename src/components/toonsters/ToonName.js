@@ -21,6 +21,10 @@ function ToonName(props) {
     props.passUndelete(props.tid);
   }
 
+  let handleSelectAllText = (event) => {
+    event.target.select();
+  }
+
   return(
     <div className='toon-row'>
       <DeleteForever className={'toon-delete ' + ((props.existance == 'deleted') ? 'hidden' : '')} onClick={handleDelete} />
@@ -30,6 +34,7 @@ function ToonName(props) {
           className='toon-entry'
           value={props.name}
           onChange={handleChange}
+          onClick={handleSelectAllText}
           disabled={props.existance == 'deleted'}
         />
         <PlayArrow 
