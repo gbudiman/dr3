@@ -9,6 +9,8 @@
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   border: 1px solid $color-midtone;
+  z-index: 21;
+  opacity: 0.9;
 }
 
 .MuiDivider-root.toon-divider {
@@ -52,6 +54,7 @@
 
     &:disabled {
       text-decoration: line-through;
+      color: $color-midtone;
     }
   }
 }

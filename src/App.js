@@ -390,9 +390,7 @@ function App() {
           <Grid item xs={4}>
             <TypographyBanner>DRpaedia3</TypographyBanner>
           </Grid>
-          <Grid item xs={4} className={classes.fullSizer}>
-          </Grid>
-          <Grid item xs={4} className={classes.toonContainer}>
+          <Grid item xs={8} className={classes.toonContainer}>
             <ToonSter passChange={handleToonChange} currentToon={currentToon} toonList={toonStorage} />
           </Grid>
         </Grid>

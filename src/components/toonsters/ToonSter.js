@@ -78,11 +78,11 @@ function ToonSter(props) {
       <Popper id={id} open={open} anchorEl={anchorEl} className='toonster-overlay' placement='bottom-end' transition>
         {toonLister()}
         <Divider className='toon-divider' />
-        <div className='toon-row'>
+        <div className='toon-row' onClick={handleNewToon}>
           <div />
           <div className='toon-subrow'>
             New
-            <AddToon onClick={handleNewToon} />
+            <AddToon />
           </div>
         </div>
       </Popper>
