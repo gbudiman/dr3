@@ -92,7 +92,6 @@ function App() {
   let statLimit = { rp: 6, inf: 8 };
 
   useEffect(() => {
-    console.log('effected', localStorageHasBeenLoaded);
     if (localStorageHasBeenLoaded === false) {
       loadState();
       setLocalStorageHasBeenLoaded(true);
@@ -171,12 +170,12 @@ function App() {
           if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment == statLimit[changedStat]) {
             console.log('to false');
             updateStatControl(changedStat, 'inc', false);
+            updateStatControl(changedStat, 'dec', true);
             controlHasBeenAdjusted = true;
           } else {
             console.log('to true');
             updateStatControl(changedStat, 'inc', true);
             updateStatControl(changedStat, 'dec', true);
-            //controlHasBeenAdjusted = true
           }
         }
       }

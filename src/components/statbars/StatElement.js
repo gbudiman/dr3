@@ -6,17 +6,20 @@ function StatElement(props) {
 
   return(
     <div className='stat-element'>
-      <div className='stat-lead'>{props.stat}</div>
-      <div className='stat-innate'>{props.innate}</div>
+      <div className={'stat-control left ' + (props.statControl.dec ? '' : 'disabled')} onClick={handleSubtract}>
+        <span>&laquo;</span>
+      </div>
+      <div className='stat-lead'>{props.stat} {props.innate}</div>
       <div className='stat-acquired'>
-        <button className='stat-control' onClick={handleSubtract} disabled={!props.statControl.dec}>&laquo;</button>
-        <div className='value'>{props.acquired}</div>
-        <button className='stat-control' onClick={handleAdd} disabled={!props.statControl.inc}>&raquo;</button>
+        {props.acquired}
       </div>
       <div className='stat-total'>
         <span className='total'>{props.innate + props.acquired}</span>
         /
         <span className='xp'>{props.xp}</span>
+      </div>
+      <div className={'stat-control right ' + (props.statControl.inc ? '' : 'disabled')} onClick={handleAdd}>
+        <span>&raquo;</span>
       </div>
     </div>
   )

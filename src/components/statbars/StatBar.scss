@@ -18,16 +18,57 @@
   height: 34px;
   width: calc(50% - 4px);
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 
   .stat-lead {
     text-transform: uppercase;
     padding-top: 9px;
-    padding-left: 12px;
+    padding-left: 8px;
   }
 
-  .stat-innate {
-    padding-top: 9px;
+  .stat-control {
+    background-color: $color-dark;
+    border: 0;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 6px;
+    color: $color-light;
+    font-size: 24px;
+    cursor: pointer;
+    width: 24px;
+    color: $color-light;
+    &:hover {
+      filter: brightness(150%);
+    }
+    &:focus {
+      outline: none;
+    }
+    &.disabled {
+      cursor: default;
+      &:hover { 
+        filter: none;
+      }
+      color: $color-dark;
+
+    }
+    &.left {
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+      border-right: 1px solid $color-midtone;
+
+      span {
+        margin-left: 8px;
+      }
+    }
+    &.right {
+      border-top-right-radius: 16px;
+      border-bottom-right-radius: 16px;
+      border-left: 1px solid $color-midtone;
+
+      span {
+        margin-left: 4px;
+      }
+    }
   }
 
   .stat-acquired {
@@ -39,31 +80,7 @@
       padding-right: 2px;
     }
 
-    button {
-      background-color: $color-dark;
-      border: 0;
-      margin-top: -6px;
-      padding-top: 0px;
-      padding-bottom: 6px;
-      color: $color-light;
-      font-size: 24px;
-      cursor: pointer;
-      &:hover {
-        filter: brightness(150%);
-      }
-      &:focus {
-        outline: none;
-      }
-      &:disabled {
-        cursor: default;
-        &:hover { 
-          filter: none;
-        }
-        color: $color-dark;
-      }
-    }
 
-    
   }
 
   .stat-total {
