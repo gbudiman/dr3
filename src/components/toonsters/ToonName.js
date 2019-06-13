@@ -31,7 +31,7 @@ function ToonName(props) {
       <Undo className={'toon-undelete ' + ((props.existance == 'enabled') ? 'hidden' : '')} onClick={handleUndelete} />
       <div className='toon-subrow'>
         <InputBase
-          className='toon-entry'
+          className={'toon-entry ' + (props.selected ? 'highlighted' : '')}
           value={props.name}
           onChange={handleChange}
           onClick={handleSelectAllText}
