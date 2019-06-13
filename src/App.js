@@ -165,6 +165,7 @@ function App() {
       currentToon = firstEnabledToon;
       toonData = JSON.parse(localStorage.getItem('toonData'));
       setCurrenToon(currentToon);
+      setToonData(toonData);
       setToonStorage(Object.assign({}, toonStorage));
 
       const j = toonData[firstEnabledToon];
@@ -356,8 +357,6 @@ function App() {
     } else if (action == 'switch') {
       currentToon = arg;
       setCurrenToon(currentToon);
-
-      //console.log(currentToon);
       const j = toonData[currentToon];
       setSkillState(j.skill_state);
       setSkillXp(j.skill_xp);
