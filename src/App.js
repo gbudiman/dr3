@@ -398,7 +398,7 @@ function App() {
         <Grid item className={classes.builderItem}>
           <Grid container>
             <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
-            <XpBar totalXp={totalXp} />
+            <XpBar totalXp={totalXp} skillState={skillState} />
           </Grid>
           <StatBar 
             passClick={handleStatClick} 

@@ -1,5 +1,6 @@
 import './XpBar.scss';
 import React, { useState, useEffect, useRef } from 'react';
+import WarningIcon from '@material-ui/icons/Warning';
 
 function XpBar(props) {
   const parentRef = useRef(null);
@@ -24,7 +25,6 @@ function XpBar(props) {
     t1Ref.current.setAttribute('style', 'width: ' + t1width + 'px');
     t2Ref.current.setAttribute('style', 'width: ' + t2width + 'px');
     
-    //background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
     parentRef.current.setAttribute('style', 'background: linear-gradient(90deg, ' + linearGradientStyle + ')');
   })
 
@@ -42,11 +42,25 @@ function XpBar(props) {
     return '';
   }
 
+  let getWarningClassName = (tier) => {
+    let maxTier = Object.values(props.skillState).reduce((a, x) => {return Math.max(x.acquired, a)}, 0);
+    let xpSum = props.totalXp.stat + props.totalXp.skill;
+
+    if ((tier == 1 && xpSum < tier1bar && maxTier > 1) ||
+        (tier == 2 && xpSum < tier2bar && maxTier > 2)) {
+      return 'warned';
+    }
+  }
+
   return(
     <div className='xpbar' ref={parentRef}>
       <div className='text'>T{getTier()}: {props.totalXp.stat + props.totalXp.skill}{getNextTier()}</div>
-      <div className='tier-placeholder tier-placeholder-1' ref={t1Ref} />
-      <div className='tier-placeholder tier-placeholder-2' ref={t2Ref} />
+      <div className='tier-placeholder tier-placeholder-1' ref={t1Ref}>
+        <WarningIcon className={getWarningClassName(1)} />
+      </div>
+      <div className='tier-placeholder tier-placeholder-2' ref={t2Ref}>
+        <WarningIcon className={getWarningClassName(2)} />
+      </div>
     </div>
   )
 }

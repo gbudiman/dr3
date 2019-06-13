@@ -28,6 +28,18 @@
     border-radius: 16px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    display: flex;
+    justify-content: flex-end;
+    
+    svg {
+      display: none;
+      padding-top: 4px;
+      margin-right: -13px;
+
+      &.warned {
+        display: block;
+      }
+    }
   }
 }
 
