@@ -326,7 +326,7 @@ function App() {
     setSkillState(Object.assign({}, skillState));
   }
 
-  let handleToonChange = (action, arg) => {
+  let handleToonChange = (action, arg, arb) => {
     if (action == 'new') {
       let skillState = SkillInitializer();
       let newName = uuid.v1();
@@ -351,7 +351,7 @@ function App() {
       setInnate({});
       setTotalXp({stat: 0, skill: 0});
     } else if (action == 'rename') {
-      toonStorage[currentToon].name = arg;
+      toonStorage[arg].name = arb;
       setToonStorage(Object.assign({}, toonStorage));
       updateToonStorage();
     } else if (action == 'switch') {

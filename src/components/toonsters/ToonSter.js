@@ -37,7 +37,7 @@ function ToonSter(props) {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   }
   let handleChange = (tid, newValue) => {
-    props.passChange('rename', newValue);
+    props.passChange('rename', tid, newValue);
   }
   let handleSwitch = (tid) => {
     props.passChange('switch', tid);
