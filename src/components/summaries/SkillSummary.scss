@@ -26,25 +26,25 @@
 .summary-combat {
   background-color: $color-combat-3;
   &.summary-filter-inactive {
-    @include striped($color-combat-1);
+    @include striped($color-combat-3);
   }
 }
 .summary-civilized {
   background-color: $color-civilized-3;
   &.summary-filter-inactive {
-    @include striped($color-civilized-1);
+    @include striped($color-civilized-4);
   }
 }
 .summary-wasteland {
   background-color: $color-wasteland-4;
   &.summary-filter-inactive {
-    @include striped($color-wasteland-1);
+    @include striped($color-wasteland-4);
   }
 }
 .summary-anomaly {
   background-color: $color-anomaly-2;
   &.summary-filter-inactive {
-    @include striped($color-anomaly-1);
+    @include striped($color-anomaly-2);
   }
 }
 .summary.summary-skill {
