@@ -96,6 +96,50 @@ function App() {
   let statLimit = { rp: 6, inf: 8 };
   let okToSaveState = true;
 
+  let loadNewToon = tid => {
+    const j = toonData[tid];
+
+    setSkillState(j.skill_state);
+    setSkillXp(j.skill_xp);
+    setSkillHidden(j.skill_hidden);
+    setSelectedStrain(j.selected_strain);
+    setStat(j.stat);
+    setStatXp(j.stat_xp);
+    setStatControl(j.stat_control);
+    setInnate(j.innate);
+    setTotalXp(j.total_xp);
+  }
+
+  let loadBlankToon = () => {
+    skillState = SkillInitializer();
+    
+    setSkillState(skillState);
+    setSkillXp(SkillCalc(skillState));
+    setSkillHidden({});
+    setSelectedStrain(null);
+    setStat({});
+    setStatXp({});
+    setStatControl({
+      hp: { inc: true, dec: false },
+      mp: { inc: true, dec: false },
+      rp: { inc: true, dec: false },
+      inf: { inc: true, dec: false },
+    })
+    setInnate({});
+    setTotalXp({stat: 0, skill: 0});
+  }
+
+  let persistToonStorage = (writeChange) => {
+    setToonStorage(Object.assign({}, toonStorage));
+    if (writeChange) localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
+  }
+
+  let generateNewToon = () => {
+    currentToon = uuid.v1();
+    toonStorage[currentToon] = { name: 'new', state: 'enabled' };
+    setCurrenToon(currentToon);
+  }
+
   useEffect(() => {
     if (localStorageHasBeenLoaded === false) {
       loadState();
@@ -128,57 +172,29 @@ function App() {
     if (toonStorage != null) {
       firstEnabledToon = Object.keys(toonStorage).find((x) => { return toonStorage[x].state === 'enabled'} )
 
-      for (const tid in toonStorage) {
-        if (toonStorage[tid].state == 'deleted') {
-
-        }
-      }
-
       let deferredDeletes = Object.keys(toonStorage).filter(tid => toonStorage[tid].state == 'deleted');
       deferredDeletes.map(tid => {
         delete toonStorage[tid];
         delete toonData[tid];
       })
 
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
+      persistToonStorage();
     }
 
-    console.log('fet: ' + firstEnabledToon);
-    //debugger
     if (toonStorage == null) {
       toonStorage = {};
-      currentToon = uuid.v1();
-      toonStorage[currentToon] = { name: 'new', state: 'enabled' };
-      setCurrenToon(currentToon);
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
-
+      generateNewToon();
+      persistToonStorage(true)
     } else if (firstEnabledToon == null) {
-      currentToon = uuid.v1();
-      toonStorage[currentToon] = { name: 'new', state: 'enabled' };
-      setCurrenToon(currentToon);
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
-
+      generateNewToon();
+      persistToonStorage(true);
     } else {
       currentToon = firstEnabledToon;
       toonData = JSON.parse(localStorage.getItem('toonData'));
       setCurrenToon(currentToon);
       setToonData(toonData);
-      setToonStorage(Object.assign({}, toonStorage));
-
-      const j = toonData[firstEnabledToon];
-      setSkillState(j.skill_state);
-      setSkillXp(j.skill_xp);
-      setSkillHidden(j.skill_hidden);
-      setSelectedStrain(j.selected_strain);
-      setStat(j.stat);
-      setStatXp(j.stat_xp);
-      setStatControl(j.stat_control);
-      setInnate(j.innate);
-      setTotalXp(j.total_xp);
-
+      persistToonStorage(false);
+      loadNewToon(currentToon);
     }
   }
 
@@ -328,58 +344,23 @@ function App() {
 
   let handleToonChange = (action, arg, arb) => {
     if (action == 'new') {
-      let skillState = SkillInitializer();
-      let newName = uuid.v1();
-      toonStorage[newName] = { name: 'new', state: 'enabled' };
-      currentToon = newName;
-      setCurrenToon(currentToon);
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
-
-      setSkillState(skillState);
-      setSkillXp(SkillCalc(skillState));
-      setSkillHidden({});
-      setSelectedStrain(null);
-      setStat({});
-      setStatXp({});
-      setStatControl({
-        hp: { inc: true, dec: false },
-        mp: { inc: true, dec: false },
-        rp: { inc: true, dec: false },
-        inf: { inc: true, dec: false },
-      })
-      setInnate({});
-      setTotalXp({stat: 0, skill: 0});
+      generateNewToon();
+      persistToonStorage(true);
+      loadBlankToon();
     } else if (action == 'rename') {
       toonStorage[arg].name = arb;
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
+      persistToonStorage(true);
     } else if (action == 'switch') {
       currentToon = arg;
       setCurrenToon(currentToon);
-      const j = toonData[currentToon];
-      setSkillState(j.skill_state);
-      setSkillXp(j.skill_xp);
-      setSkillHidden(j.skill_hidden);
-      setSelectedStrain(j.selected_strain);
-      setStat(j.stat);
-      setStatXp(j.stat_xp);
-      setStatControl(j.stat_control);
-      setInnate(j.innate);
-      setTotalXp(j.total_xp);
+      loadNewToon(currentToon);
     } else if (action == 'delete') {
       toonStorage[arg].state = 'deleted';
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
+      persistToonStorage(true);
     } else if (action == 'undelete') {
       toonStorage[arg].state = 'enabled';
-      setToonStorage(Object.assign({}, toonStorage));
-      updateToonStorage();
+      persistToonStorage(true);
     }
-  }
-
-  let updateToonStorage = () => {
-    localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
   }
 
   return (

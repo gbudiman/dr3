@@ -11,9 +11,7 @@ function SkillInitializer() {
   }
 
   let categorify = (category, h) => {
-    for (const key in h) {
-      h[key].category = category;
-    }
+    for (const key in h) h[key].category = category;
 
     return h;
   } 

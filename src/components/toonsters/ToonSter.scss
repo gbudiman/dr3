@@ -64,10 +64,9 @@
     text-align: right;
     font-family: Alegreya, serif;
 
-    
-
     &:disabled {
-      text-decoration: line-through;
+      text-decoration: line-through !important;
+      font-weight: normal !important;
       color: $color-midtone;
     }
   }
