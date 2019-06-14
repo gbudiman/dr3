@@ -14,22 +14,21 @@ function SkillGrid(props) {
   }
 
   let getClassName = () => {
-    let className = 'skill-grid';
-    let classNameGrid = 'skill-' + props.category + '-' + props.tier;
+    let classes = [
+      'skill-grid',
+      'skill-' + props.category + '-' + props.tier,
+      'skill-tier-' + props.tier,
+    ]
 
     if (props.tier === 0) {
-      className += ' ' + classNameGrid + ' skill-lead-left';
+      classes.push('skill-lead-left')
     } else {
-      if (props.acquired) {
-        className += ' ' + classNameGrid;
-      } else {
-        className += ' skill-unused-' + props.tier;
-      }
+      if (!props.acquired) classes.push('skill-unused-' + props.tier);
     }
 
-    className += props.visible === false ? ' skill-hidden' : '';
+    if (!props.visible) classes.push('skill-hidden');
 
-    return className;
+    return classes.join(' ');
   }
 
   return(

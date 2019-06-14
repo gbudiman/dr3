@@ -1,7 +1,10 @@
 @import '../../colors.scss';
 
 @mixin longSkillWidth() {
-  width: calc(44% - 40px);;
+  width: calc(44% - 40px);
+}
+@mixin pfxSkillWidth() {
+  width: calc(56% - 40px);
 }
 @mixin triafter($color) {
   position:absolute;
@@ -22,7 +25,7 @@
   text-align: right;
   
   @if $index == 4 {
-    @include longSkillWidth();
+    @include pfxSkillWidth();
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
   } @else {
@@ -64,6 +67,19 @@
   .text {
     margin-left: -2px;
     margin-right: 0px;
+  }
+
+  &.skill-tier-3 {
+    height: 12px;
+    padding-top:4px; 
+    &:after {
+      border-width: 12px 0 12px 12px !important;
+      right: -12px;
+    }
+  }
+
+  &.skill-tier-4 {
+    margin-left: -12%;
   }
 }
 .skill-container {

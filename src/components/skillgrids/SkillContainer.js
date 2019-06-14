@@ -16,6 +16,7 @@ function SkillContainer(props) {
           innate={value.innate}
           maxTier={value.maxTier}  
           acquired={value.acquired}
+          t4acquired={value.t4acquired}
           innate={value.innate}
           visible={value.visible}
           passClick={handleClick} />

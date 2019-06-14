@@ -3,6 +3,7 @@ import SkillGrid from './SkillGrid';
 
 function SkillBox(props) {
   let isAcquired = (tier) => { 
+    if (tier === 4 && 't4acquired' in props) return props.t4acquired;
     return (tier === 1 && props.innate === true) || props.acquired >= tier;
   };
   let sid = () => { return props.t1.replace(/\s+/, '_').toLowerCase() }

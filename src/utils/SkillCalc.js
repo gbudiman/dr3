@@ -6,18 +6,23 @@ function SkillCalc(h) {
     for (const key in h) {
       let category = h[key].category;
       let acquiredTier = h[key].acquired;
+      let t4acquired = ('t4acquired' in h[key]) && h[key].t4acquired;
 
       if (!(category in grid)) grid[category] = {};
       for (let tier = 1; tier <= acquiredTier; tier++) {
         if (!(tier in grid[category])) grid[category][tier] = 0;
         if (!(tier === 1 && h[key].innate === true)) grid[category][tier] += 1;
       }
+      if (t4acquired) {
+        if (!('4' in grid[category])) grid[category][4] = 0;
+        grid[category][4] += 1;
+      }
     }
 
     for (const category in grid) {
       xp[category] = {};
       for (const _tier in grid[category]) {
-        let tier = parseInt(_tier)
+        let tier = parseInt(_tier);
         let tierCount = grid[category][tier]
         let tierCost = tier + 1;
         switch(tier) {

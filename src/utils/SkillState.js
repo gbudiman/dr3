@@ -4,6 +4,7 @@ function SkillInitializer() {
       h[key].innate = h[key].innate || false;
       if (!('maxTier' in h[key])) h[key].maxTier = 4;
       h[key].acquired = 0;
+      h[key].t4acquired = false;
       h[key].visible = true;
     }
 
@@ -25,7 +26,7 @@ function SkillInitializer() {
     interfere: { maxTier: 1 },
     piercing_strike: { maxTier: 1 },
     take_down: { maxTier: 1 },
-    combat_tactics: { t4: 'Battlefield Cmdr' },
+    combat_tactics: { t4: 'Battlefield Commander' },
     florentine: { t4: 'Mercenary' },
     exotic_weapon: { t4: 'Violent Technician', innate: true },
     melee_small: { t4: 'Assassin', innate: true },

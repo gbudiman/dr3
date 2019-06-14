@@ -44,9 +44,10 @@ function XpBar(props) {
 
   let getWarningClassName = (tier) => {
     let maxTier = Object.values(props.skillState).reduce((a, x) => {return Math.max(x.acquired, a)}, 0);
+    let hast4 = Object.values(props.skillState).reduce((a, b) => {return a || b}, false);
     let xpSum = props.totalXp.stat + props.totalXp.skill;
 
-    if ((tier == 1 && xpSum < tier1bar && maxTier > 1) ||
+    if ((tier == 1 && xpSum < tier1bar && maxTier > 1 && hast4) ||
         (tier == 2 && xpSum < tier2bar && maxTier > 2)) {
       return 'warned';
     }
