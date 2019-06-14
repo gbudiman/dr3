@@ -82,6 +82,9 @@
     color: $color-light;
     text-align: right;
     font-family: Alegreya, serif;
+    padding-right: 8px;
+    border-radius: 8px;
+    margin-bottom: 4px;
 
     &:disabled {
       text-decoration: line-through !important;
@@ -95,6 +98,8 @@
   .MuiInputBase-input {
     font-weight: bolder;
     text-decoration: underline;
+    background: linear-gradient(90deg, $color-dark 0%, $color-gray 200%);
+    //color: $color-dark;
   }
 }
 
