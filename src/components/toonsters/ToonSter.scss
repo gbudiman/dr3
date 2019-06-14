@@ -4,7 +4,7 @@
   background-color: $color-dark;
   color: $color-light;
   padding: 8px 16px;
-  width: 50%;
+  width: 75%;
   max-width: 320px;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
@@ -27,10 +27,29 @@
   &.new-toon {
     cursor: pointer;
     border-radius: 16px;
+    padding-bottom: 4px;
 
     .toon-subrow {
       width: 100%;
       padding: 4px 0px;
+    }
+  }
+
+  &.debug {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .instructions {
+      text-align: center;
+
+      .small {
+        font-size: 12px;
+      }
+    }
+
+    input {
+      margin: 4px 12px;
     }
   }
 }

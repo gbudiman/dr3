@@ -1,5 +1,5 @@
 import './ToonSter.scss';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Popper from '@material-ui/core/Popper';
@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
 function ToonSter(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  let confirmLeft = useRef(null);
+  let confirmRight = useRef(null);
 
   let handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -50,6 +52,13 @@ function ToonSter(props) {
   }
   let handleNewToon = () => {
     props.passChange('new');
+  }
+  let handleClearClick = () => {
+    //console.log(event.target)
+    if (confirmLeft.current.checked && confirmRight.current.checked) {
+      localStorage.clear();
+      window.location.reload();
+    }
   }
 
   let open = Boolean(anchorEl);
@@ -88,6 +97,15 @@ function ToonSter(props) {
             Add Character
             <AddToon />
           </div>
+        </div>
+        <Divider className='toon-divider' />
+        <div className='toon-row debug'>
+          <div><input type='checkbox' ref={confirmLeft} onClick={handleClearClick} /></div>
+          <div className='instructions'>
+            <div>Debug: Clear Local Data</div>
+            <div className='small'>(Check both boxes to confirm)</div>
+          </div>
+          <div><input type='checkbox' ref={confirmRight} onClick={handleClearClick} /></div>
         </div>
       </Popper>
     </React.Fragment>
