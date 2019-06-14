@@ -10,7 +10,6 @@
   border-bottom-right-radius: 16px;
   border: 1px solid $color-midtone;
   z-index: 21;
-  opacity: 0.9;
   border-top: 0;
 }
 
@@ -99,7 +98,6 @@
     font-weight: bolder;
     text-decoration: underline;
     background: linear-gradient(90deg, $color-dark 0%, $color-gray 200%);
-    //color: $color-dark;
   }
 }
 
