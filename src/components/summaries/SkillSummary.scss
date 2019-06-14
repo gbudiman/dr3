@@ -24,13 +24,13 @@
   width: 100%;
 }
 .summary-combat {
-  background-color: $color-combat-4;
+  background-color: $color-combat-3;
   &.summary-filter-inactive {
     @include striped($color-combat-1);
   }
 }
 .summary-civilized {
-  background-color: $color-civilized-4;
+  background-color: $color-civilized-3;
   &.summary-filter-inactive {
     @include striped($color-civilized-1);
   }
@@ -42,7 +42,7 @@
   }
 }
 .summary-anomaly {
-  background-color: $color-anomaly-4;
+  background-color: $color-anomaly-2;
   &.summary-filter-inactive {
     @include striped($color-anomaly-1);
   }
