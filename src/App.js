@@ -325,10 +325,20 @@ function App() {
 
   let updateSkillState = (sid, tier) => {
     if (tier > 0 && tier <= 3) {
-      let clickedSameTier = skillState[sid].acquired === tier && (tier > 1 || skillState[sid].innate === false);
       let t4acquired = ('t4acquired' in skillState[sid]) && skillState[sid].t4acquired === true;
-      let deacquire = (tier == 2 && clickedSameTier && !t4acquired) || clickedSameTier;
-      skillState[sid].acquired = tier - (deacquire ? 1 : 0);
+      let clickedAcquired = tier <= skillState[sid].acquired || tier == 4 && t4acquired;
+      let clickedAtTier = tier === skillState[sid].acquired || tier == 4 && t4acquired;
+      
+      if (clickedAtTier && clickedAcquired) {
+        if (tier == 2 && t4acquired) {
+          skillState[sid].t4acquired = false
+        } else {
+          skillState[sid].acquired = tier - 1;  
+        }
+      } else {
+        skillState[sid].acquired = tier;
+      }
+      
       if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
       setSkillState(Object.assign({}, skillState));
     } else if (tier == 4) {

@@ -26,6 +26,7 @@ function SkillGrid(props) {
       if (!props.acquired) classes.push('skill-unused-' + props.tier);
     }
 
+    if (props.innate) classes.push('skill-innate');
     if (!props.visible) classes.push('skill-hidden');
 
     return classes.join(' ');

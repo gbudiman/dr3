@@ -91,6 +91,12 @@
 .skill-hidden {
   display: none;
 }
+.skill-tier-1.skill-innate {
+/*  cursor: default;
+  &:hover {
+    filter: none;
+  }*/
+}
 .skill-combat-0 {
   @include trileft($color-combat-4);
 }
