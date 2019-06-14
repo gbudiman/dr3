@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+    if (!window.location.host.match(/localhost/) && window.location.protocol != 'https:') {
+      window.location.protocol = 'https';
+    }
+    </script>
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <link href="https://fonts.googleapis.com/css?family=Alegreya&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Bellefair&display=swap" rel="stylesheet">
