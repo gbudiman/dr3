@@ -9,9 +9,9 @@ function AppBarWrapper(props) {
   let handleToonChange = (action, arg, arb) => { props.passChange(action, arg, arb) };
   return(
     <AppBar position='fixed'>
-      <div class='container'>
-        <div class='title'>DRpaedia3</div>
-        <div class='toonster-container'>
+      <div className='container'>
+        <div className='title'>DRpaedia3</div>
+        <div className='toonster-container'>
           <ToonSter 
             passChange={handleToonChange} 
             currentToon={props.currentToon} 

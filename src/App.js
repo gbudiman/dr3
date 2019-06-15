@@ -61,7 +61,7 @@ function App() {
   let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
   let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(false);
   let [toonStorage, setToonStorage] = useState({});
-  let [currentToon, setCurrenToon] = useState({});
+  let [currentToon, setCurrentToon] = useState({});
   let [toonData, setToonData] = useState({})
   let statLimit = { rp: 6, inf: 8 };
   let okToSaveState = true;
@@ -104,10 +104,15 @@ function App() {
     if (writeChange) localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
   }
 
+  let persistCurrentToon = () => {
+    setCurrentToon(currentToon);
+    localStorage.setItem('currentToon', currentToon);
+  }
+
   let generateNewToon = () => {
     currentToon = uuid.v1();
     toonStorage[currentToon] = { name: 'new', state: 'enabled' };
-    setCurrenToon(currentToon);
+    persistCurrentToon(currentToon);
   }
 
   useEffect(() => {
@@ -115,13 +120,11 @@ function App() {
       loadState();
       setLocalStorageHasBeenLoaded(true);
     } else {
-
       saveState();  
     }
   })
 
   let saveState = () => {
-    //debugger
     toonData[currentToon] = {
       skill_state: skillState,
       skill_xp: skillXp,
@@ -137,10 +140,22 @@ function App() {
   }
 
   let loadState = () => {
-    let firstEnabledToon;
     toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
+
+    let firstEnabledToon;
+    let getPreviousSessionToon = () => {
+      let previousSessionToon = localStorage.getItem('currentToon');
+
+      if (toonStorage != null && previousSessionToon) {
+        if (previousSessionToon in toonStorage) return previousSessionToon;
+      }
+    }
+    let getFirstEnabledToon = () => {
+      return Object.keys(toonStorage).find((x) => { return toonStorage[x].state === 'enabled' });
+    }
+    
     if (toonStorage != null) {
-      firstEnabledToon = Object.keys(toonStorage).find((x) => { return toonStorage[x].state === 'enabled'} )
+      firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
       let deferredDeletes = Object.keys(toonStorage).filter(tid => toonStorage[tid].state == 'deleted');
       deferredDeletes.map(tid => {
@@ -161,7 +176,9 @@ function App() {
     } else {
       currentToon = firstEnabledToon;
       toonData = JSON.parse(localStorage.getItem('toonData'));
-      setCurrenToon(currentToon);
+      console.log(currentToon);
+      console.log(toonData);
+      persistCurrentToon(currentToon);
       setToonData(toonData);
       persistToonStorage(false);
       loadNewToon(currentToon);
@@ -169,7 +186,7 @@ function App() {
   }
 
   let handleStrainChange = (newStrain) => {
-    let lineage = lineageStrain.strains[newStrain];//StrainDictionary()[newStrain];
+    let lineage = lineageStrain.strains[newStrain];
     let innateStat = lineageStrain.lineages[lineage].innate;
     
     setSelectedStrain(newStrain);
@@ -346,7 +363,7 @@ function App() {
       persistToonStorage(true);
     } else if (action == 'switch') {
       currentToon = arg;
-      setCurrenToon(currentToon);
+      persistCurrentToon(currentToon);
       loadNewToon(currentToon);
     } else if (action == 'delete') {
       toonStorage[arg].state = 'deleted';

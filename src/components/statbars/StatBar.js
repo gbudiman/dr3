@@ -8,6 +8,7 @@ function StatBar(props) {
     return stats.map(stat => {
       return(
         <StatElement
+          key={stat}
           stat={stat}
           innate={props.innate[stat] || 0}
           acquired={props.stat[stat] || 0}

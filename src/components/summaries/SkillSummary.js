@@ -8,6 +8,7 @@ function SkillSummary(props) {
     return cats.map(category => {
       return(
         <SkillSubCategory 
+          key={category}
           category={category}
           passClick={handleClick}
           skillXp={props.skillXp}
