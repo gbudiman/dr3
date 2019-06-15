@@ -8,22 +8,20 @@ function SkillGrid(props) {
     let textual = props.tier > 0 ? props.name : '|';
     let innateMarker = props.innate && props.tier === 1 ? '*' : '';
 
-    return(
-      <span className='text'>{textual + innateMarker}</span>
-    );
+    return <span className='text'>{textual + innateMarker}</span>;
   }
 
   let getClassName = () => {
     let classes = [
       'skill-grid',
-      'skill-' + props.category + '-' + props.tier,
-      'skill-tier-' + props.tier,
+      `skill-${props.category}-${props.tier}`,
+      `skill-tier-${props.tier}`,
     ]
 
     if (props.tier === 0) {
       classes.push('skill-lead-left')
     } else {
-      if (!props.acquired) classes.push('skill-unused-' + props.tier);
+      if (!props.acquired) classes.push(`skill-unused-${props.tier}`);
     }
 
     if (props.innate) classes.push('skill-innate');
