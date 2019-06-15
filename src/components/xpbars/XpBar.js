@@ -1,10 +1,9 @@
 import './XpBar.scss';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import WarningIcon from '@material-ui/icons/Warning';
 
 function XpBar(props) {
   const parentRef = useRef(null);
-  const barRef = useRef(null);
   const t1Ref = useRef(null);
   const t2Ref = useRef(null);
   const tier1bar = 90;
@@ -19,7 +18,6 @@ function XpBar(props) {
     let xpSum = props.totalXp.stat + props.totalXp.skill;
     let t1width = tier1bar/tier3bar * shiftedParentWidth + minCurve;
     let t2width = tier2bar/tier3bar * shiftedParentWidth + minCurve;
-    let barWidth = Math.min(xpSum/tier3bar * shiftedParentWidth, shiftedParentWidth) + minCurve;
     let backgroundWidth = xpSum * 100 / tier3bar;
     let linearGradientStyle = ['#777 ' + backgroundWidth + '%', '#333 ' + backgroundWidth + '%'].join(',')
     t1Ref.current.setAttribute('style', 'width: ' + t1width + 'px');
@@ -47,8 +45,8 @@ function XpBar(props) {
     let hast4 = Object.values(props.skillState).reduce((a, b) => {return a || b}, false);
     let xpSum = props.totalXp.stat + props.totalXp.skill;
 
-    if ((tier == 1 && xpSum < tier1bar && maxTier > 1 && hast4) ||
-        (tier == 2 && xpSum < tier2bar && maxTier > 2)) {
+    if ((tier === 1 && xpSum < tier1bar && maxTier > 1 && hast4) ||
+        (tier === 2 && xpSum < tier2bar && maxTier > 2)) {
       return 'warned';
     }
   }

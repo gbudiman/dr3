@@ -1,7 +1,8 @@
 import './ToonSter.scss';
-import React, { useState, useRef } from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
+import Slide from '@material-ui/core/Slide';
 import Popper from '@material-ui/core/Popper';
 import ToonName from './ToonName';
 import Divider from '@material-ui/core/Divider';
@@ -34,7 +35,7 @@ function ToonSter(props) {
           passUndelete={handleUndelete}
           key={tid} 
           tid={tid} 
-          selected={tid == props.currentToon}
+          selected={tid === props.currentToon}
           existance={tprop.state}
         />
       )
@@ -49,11 +50,17 @@ function ToonSter(props) {
         <ExpandMore className={open ? 'expand-hidden' : ''} />
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl} className='toonster-overlay' placement='bottom-end' transition>
-        {toonLister()}
-        <Divider className='toon-divider' />
-        <NewToon handleNewToon={handleNewToon} />
-        <Divider className='toon-divider' />
-        <DebugReset />
+        {({ TransitionProps }) => (
+          <Slide {...TransitionProps} timeout={300}>
+            <div>
+              {toonLister()}
+              <Divider className='toon-divider' />
+              <NewToon handleNewToon={handleNewToon} />
+              <Divider className='toon-divider' />
+              <DebugReset />
+            </div>
+          </Slide>
+        )}
       </Popper>
     </div>
   )

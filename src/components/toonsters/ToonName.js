@@ -27,15 +27,15 @@ function ToonName(props) {
 
   return(
     <div className='toon-row'>
-      <DeleteForever className={'toon-delete ' + ((props.existance == 'deleted') ? 'hidden' : '')} onClick={handleDelete} />
-      <Undo className={'toon-undelete ' + ((props.existance == 'enabled') ? 'hidden' : '')} onClick={handleUndelete} />
+      <DeleteForever className={'toon-delete ' + ((props.existance === 'deleted') ? 'hidden' : '')} onClick={handleDelete} />
+      <Undo className={'toon-undelete ' + ((props.existance === 'enabled') ? 'hidden' : '')} onClick={handleUndelete} />
       <div className='toon-subrow'>
         <InputBase
           className={'toon-entry ' + (props.selected ? 'highlighted' : '')}
           value={props.name}
           onChange={handleChange}
           onClick={handleSelectAllText}
-          disabled={props.existance == 'deleted'}
+          disabled={props.existance === 'deleted'}
         />
         <PlayArrow 
           className={props.selected ? 'hidden' : ''} 

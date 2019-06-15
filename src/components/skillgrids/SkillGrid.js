@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 function SkillGrid(props) {
   let handleClick = () => { props.passClick(props.sid, props.tier) };
-  const [state, setState] = useState('init');
 
   let getTextualRepresentation = () => {
     let textual = props.tier > 0 ? props.name : '|';

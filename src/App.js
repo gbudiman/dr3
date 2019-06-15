@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
-import { createStyles, Theme, makeStyles, withStyles } from '@material-ui/core/styles';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import MuiTypography from '@material-ui/core/Typography';
-import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillInitializer';
 import StrainInitializer from './utils/StrainInitializer';
@@ -64,7 +62,6 @@ function App() {
   let [currentToon, setCurrentToon] = useState({});
   let [toonData, setToonData] = useState({})
   let statLimit = { rp: 6, inf: 8 };
-  let okToSaveState = true;
 
   let loadNewToon = tid => {
     const j = toonData[tid];
@@ -157,8 +154,8 @@ function App() {
     if (toonStorage != null) {
       firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
-      let deferredDeletes = Object.keys(toonStorage).filter(tid => toonStorage[tid].state == 'deleted');
-      deferredDeletes.map(tid => {
+      let deferredDeletes = Object.keys(toonStorage).filter(tid => toonStorage[tid].state === 'deleted');
+      deferredDeletes.forEach(tid => {
         delete toonStorage[tid];
         delete toonData[tid];
       })
@@ -176,8 +173,6 @@ function App() {
     } else {
       currentToon = firstEnabledToon;
       toonData = JSON.parse(localStorage.getItem('toonData'));
-      console.log(currentToon);
-      console.log(toonData);
       persistCurrentToon(currentToon);
       setToonData(toonData);
       persistToonStorage(false);
@@ -224,7 +219,7 @@ function App() {
         if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment > statLimit[changedStat]) {
           return;
         } else {
-          if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment == statLimit[changedStat]) {
+          if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment === statLimit[changedStat]) {
             updateStatControl(changedStat, 'inc', false);
             updateStatControl(changedStat, 'dec', true);
             controlHasBeenAdjusted = true;
@@ -240,7 +235,7 @@ function App() {
       calcXp(changedStat, newStat);
 
       if (!controlHasBeenAdjusted) {
-        if (newStat == 0) {
+        if (newStat === 0) {
           updateStatControl(changedStat, 'dec', false);
         } else {
           updateStatControl(changedStat, 'dec', true);
@@ -313,11 +308,11 @@ function App() {
   let updateSkillState = (sid, tier) => {
     if (tier > 0 && tier <= 3) {
       let t4acquired = ('t4acquired' in skillState[sid]) && skillState[sid].t4acquired === true;
-      let clickedAcquired = tier <= skillState[sid].acquired || tier == 4 && t4acquired;
-      let clickedAtTier = tier === skillState[sid].acquired || tier == 4 && t4acquired;
+      let clickedAcquired = (tier <= skillState[sid].acquired) || (tier === 4 && t4acquired);
+      let clickedAtTier = (tier === skillState[sid].acquired) || (tier === 4 && t4acquired);
       
       if (clickedAtTier && clickedAcquired) {
-        if (tier == 2 && t4acquired) {
+        if (tier === 2 && t4acquired) {
           skillState[sid].t4acquired = false
         } else {
           skillState[sid].acquired = tier - 1;  
@@ -328,7 +323,7 @@ function App() {
       
       if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
       setSkillState(Object.assign({}, skillState));
-    } else if (tier == 4) {
+    } else if (tier === 4) {
       if (!('t4acquired' in skillState[sid])) {
         skillState[sid].t4acquired = true
       } else {
@@ -354,21 +349,21 @@ function App() {
   }
 
   let handleToonChange = (action, arg, arb) => {
-    if (action == 'new') {
+    if (action === 'new') {
       generateNewToon();
       persistToonStorage(true);
       loadBlankToon();
-    } else if (action == 'rename') {
+    } else if (action === 'rename') {
       toonStorage[arg].name = arb;
       persistToonStorage(true);
-    } else if (action == 'switch') {
+    } else if (action === 'switch') {
       currentToon = arg;
       persistCurrentToon(currentToon);
       loadNewToon(currentToon);
-    } else if (action == 'delete') {
+    } else if (action === 'delete') {
       toonStorage[arg].state = 'deleted';
       persistToonStorage(true);
-    } else if (action == 'undelete') {
+    } else if (action === 'undelete') {
       toonStorage[arg].state = 'enabled';
       persistToonStorage(true);
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import SkillGrid from './SkillGrid';
-import { humanify, underscore } from '../../utils/StringUtil';
+import { humanify } from '../../utils/StringUtil';
 
 function SkillBox(props) {
   let isAcquired = (tier) => { 

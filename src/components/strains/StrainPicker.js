@@ -1,8 +1,7 @@
 import './StrainPicker.scss';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import InputLabel from '@material-ui/core/InputLabel';
 import { upcase } from '../../utils/StringUtil';
 
 const useStyles = makeStyles(theme => ({
