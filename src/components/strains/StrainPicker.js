@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from '@material-ui/core/InputLabel';
+import { upcase } from '../../utils/StringUtil';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,24 +30,23 @@ const useStyles = makeStyles(theme => ({
 function StrainPicker(props) {
   const classes = useStyles();
 
-  let handleChange = event => {
-    props.passChange(event.target.value);
-  }
-
-  let statCompressor = (stat) => {
-    return [stat.hp, stat.mp, stat.rp, stat.inf].join('/');
-  }
+  let handleChange = event => { props.passChange(event.target.value) }
+  let statCompressor = (stat) => { return [stat.hp, stat.mp, stat.rp, stat.inf].join('/') }
 
   let strainBuilder = () => {
-    let optgroups = Object.keys(props.strainList).map((lineage) => {
-      let options = props.strainList[lineage].strains.map((strain) => {
-        return <option key={lineage + '-' + strain} value={strain}>{strain}</option>;
+    let optgroups = Object.keys(props.lineages).map((lineage) => {
+      let lineageData = props.lineages[lineage];
+      let innateStat = lineageData.innate;
+      let strainList = lineageData.strains;
+
+      let options = strainList.map((strain) => {
+        return <option key={`${lineage}-${strain}`} value={strain}>{strain}</option>;
       })
 
       return(
         <optgroup 
           key={lineage} 
-          label={lineage[0].toUpperCase() + lineage.slice(1) + ' - ' + statCompressor(props.strainList[lineage].innate)}
+          label={`${upcase(lineage)}-${statCompressor(innateStat)}`}
         >
           {options}
         </optgroup>
@@ -59,9 +59,9 @@ function StrainPicker(props) {
   return(
     <NativeSelect 
       value={props.selectedStrain || ''}
-      className={classes.root} disableUnderline
+      className={classes.root} 
       onChange={handleChange}
-      placeholder='Strain'
+      disableUnderline
     >
       <option value='' disabled> -- Lineage Strain -- </option>
       {strainBuilder()}

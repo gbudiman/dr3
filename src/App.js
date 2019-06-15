@@ -6,9 +6,8 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
-import SkillInitializer from './utils/SkillState';
-import StrainInitializer from './utils/StrainState';
-import StrainDictionary from './utils/StrainDictionary';
+import SkillInitializer from './utils/SkillInitializer';
+import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
@@ -75,6 +74,7 @@ const AppBar = withStyles({
 
 function App() {
   const classes = useStyles();
+  let lineageStrain = StrainInitializer();
   let [skillState, setSkillState] = useState(SkillInitializer());
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
   let [skillHidden, setSkillHidden] = useState({});
@@ -199,8 +199,8 @@ function App() {
   }
 
   let handleStrainChange = (newStrain) => {
-    let lineage = StrainDictionary()[newStrain];
-    let innateStat = StrainInitializer()[lineage].innate;
+    let lineage = lineageStrain.strains[newStrain];//StrainDictionary()[newStrain];
+    let innateStat = lineageStrain.lineages[lineage].innate;
     
     setSelectedStrain(newStrain);
     setInnate({
@@ -402,7 +402,7 @@ function App() {
       <Grid container className={classes.builder}>
         <Grid item className={classes.builderItem}>
           <Grid container>
-            <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} strainList={StrainInitializer()} />
+            <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} lineages={lineageStrain.lineages} />
             <XpBar totalXp={totalXp} skillState={skillState} />
           </Grid>
           <StatBar 
