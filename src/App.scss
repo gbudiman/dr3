@@ -1,5 +1,9 @@
 @import 'colors.scss';
 
+body {
+  background-color: $color-off-dark;
+}
+
 .App {
   text-align: center;
 }
@@ -32,8 +36,28 @@
 #disqus_thread {
   width: 90%;
   margin: auto;
+  background-color: $color-off-dark;
 }
 
+.app-window {
+  background-color: $color-off-dark;
+
+  .builder {
+    display: flex;
+    max-width: 480px;
+    margin: 42px auto 0 auto;
+    background-color: $color-off-dark;
+    padding: 16px 0px;
+    flex-wrap: wrap;
+
+    .container {
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      margin: 0px 8px;
+    }
+  }
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

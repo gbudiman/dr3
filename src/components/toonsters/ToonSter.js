@@ -23,8 +23,8 @@ function ToonSter(props) {
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
   let toonLister = () => {
-    return Object.keys(props.toonList).map((tid) => {
-      let tprop = props.toonList[tid];
+    return Object.keys(props.toonStorage).map((tid) => {
+      let tprop = props.toonStorage[tid];
       return(
         <ToonName 
           name={tprop.name} 
@@ -44,7 +44,7 @@ function ToonSter(props) {
   return(
     <div className='toonster'>
       <Button onClick={handleClick}>
-        {props.currentToon in props.toonList ? props.toonList[props.currentToon].name : 'default'}
+        {props.currentToon in props.toonStorage ? props.toonStorage[props.currentToon].name : 'default'}
         <ExpandLess className={open ? '' : 'expand-hidden'} />
         <ExpandMore className={open ? 'expand-hidden' : ''} />
       </Button>

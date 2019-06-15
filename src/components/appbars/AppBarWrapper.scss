@@ -1,0 +1,27 @@
+@import '../../colors.scss';
+
+.MuiPaper-root.MuiAppBar-root {
+  font-family: Alegreya, serif;
+  font-size: 22px;
+  display: flex;
+  align-content: center;
+
+  .container {
+    display: flex;
+    align-content: center;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    //padding: 2px 16px 4px 16px;
+    padding: 2px 0px 0px 0px;
+
+    .title {
+      padding: 8px 4px 8px 16px;
+    }
+
+    .toonster-container {
+      width: 100%;
+      text-align: right;
+    }
+  }
+}

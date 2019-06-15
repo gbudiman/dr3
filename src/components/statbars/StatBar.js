@@ -19,7 +19,7 @@ function StatBar(props) {
   }
   let stats = ['hp', 'mp', 'rp', 'inf'];
 
-  return <div className='statbar'>{generateStatElements(stats)}</div>;
+  return <React.Fragment>{generateStatElements(stats)}</React.Fragment>;
 }
 
 export default StatBar;

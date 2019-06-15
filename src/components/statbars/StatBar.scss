@@ -1,20 +1,15 @@
 @import '../../colors.scss';
 
-.statbar {
-  display: flex;
-  justify-content: space-around;
+.stat-element {
   font-family: 'Bellefair', serif;
   font-size: 14px;
   color: $color-light;
-  flex-wrap: wrap;
-  margin: 2px 0 -2px 0;
   user-select: none;
-}
 
-.stat-element {
   border-radius: 16px;
   background-color: $color-dark;
-  margin: 2px 0 2px 0;
+  //margin: 2px 0 2px 0;
+  margin: 2px 2px;
   height: 34px;
   width: calc(50% - 4px);
   display: flex;

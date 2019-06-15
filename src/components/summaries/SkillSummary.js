@@ -4,19 +4,20 @@ import SkillSubCategory from './SkillSubCategory';
 
 function SkillSummary(props) {
   let handleClick = (category) => { props.passClick(category) };
+  let generateSubCategories = (cats) => {
+    return cats.map(category => {
+      return(
+        <SkillSubCategory 
+          category={category}
+          passClick={handleClick}
+          skillXp={props.skillXp}
+          toggleState={props.skillHidden[category]} />
+      )
+    })
+  }
+  let categories = ['combat', 'wasteland', 'civilized', 'anomaly'];
 
-  return(
-    <div>
-      <div className='summary xp-summary'>
-        <SkillSubCategory category='combat' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.combat}/>
-        <SkillSubCategory category='wasteland' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.wasteland}/>
-      </div>
-      <div className='summary xp-summary'>
-        <SkillSubCategory category='civilized' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.civilized}/>
-        <SkillSubCategory category='anomaly' passClick={handleClick} skillXp={props.skillXp} toggleState={props.skillHidden.anomaly}/>
-      </div>
-    </div>
-  )
+  return <React.Fragment>{generateSubCategories(categories)}</React.Fragment>;
 }
 
 export default SkillSummary;

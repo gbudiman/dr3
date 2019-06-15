@@ -1,9 +1,15 @@
 @import '../../colors.scss';
 
-.MuiSvgIcon-root.MuiNativeSelect-icon {
-  color: #ccc;
+.builder {
+  .container {
+    .MuiSvgIcon-root.MuiNativeSelect-icon {
+      color: #ccc;
+      margin-top: 0px 2px 2px 2px;
+    }
+
+    .MuiNativeSelect-select.MuiInputBase-input {
+      background-color: $color-dark;
+    }
+  }
 }
 
-.MuiNativeSelect-select.MuiInputBase-input {
-  background-color: $color-dark;
-}

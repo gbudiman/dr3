@@ -5,8 +5,8 @@
     315deg,
     $color,
     $color 7px,
-    $color-dark 7px,
-    $color-dark 14px
+    $color-off-dark 7px,
+    $color-off-dark 14px
   );
   filter: saturate(62%);
 }
@@ -14,7 +14,6 @@
   margin-bottom: 0px;
 }
 .summary {
-  margin: 4px 0px;
   color: $color-light;
   display: flex;
   justify-content: space-around;
@@ -52,7 +51,8 @@
   width: calc(50% - 20px);
   border-radius: 24px;
   padding: 8px;
-  margin: 0px;
+  margin: 2px;
+  cursor: pointer;
   &:hover {
     filter: brightness(125%);
   }

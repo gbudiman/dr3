@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './App.scss';
 import { createStyles, Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import MuiAppBar from '@material-ui/core/AppBar';
 import MuiTypography from '@material-ui/core/Typography';
 import ToonSter from './components/toonsters/ToonSter';
 import SkillContainer from './components/skillgrids/SkillContainer';
@@ -13,6 +12,7 @@ import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
 import StatBar from './components/statbars/StatBar';
 import XpBar from './components/xpbars/XpBar';
+import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,23 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'auto',
       backgroundColor: '#3f3f3f',
     },
-    builderItem: {
-      margin: '52px auto 0px auto',
-      maxWidth: '480px',
-      width: '100%',
-      padding: '0px 8px',
-    },
-    builderHalf: {
-      width: '50%',
-      height: 'calc(100vh - 44px - 8px)',
-      overflow: 'auto',
-    },
-    fullSizer: {
-      textAlign: 'center',
-    },
-    toonContainer: {
-      textAlign: 'right',
-    },
     footer: {
       borderTop: '1px solid #aaa',
       fontStyle: 'italic',
@@ -58,19 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-const TypographyBanner = withStyles({
-  root: {
-    fontFamily: 'Alegreya, serif',
-    fontSize: 22,
-    marginTop: '2px',
-    marginLeft: '8px',
-  },
-})(MuiTypography);
-const AppBar = withStyles({
-  root: {
-    
-  },
-})(MuiAppBar);
 
 function App() {
   const classes = useStyles();
@@ -388,23 +358,12 @@ function App() {
   }
 
   return (
-    <div>
-      <AppBar position='fixed'>
-        <Grid container className={classes.root} justify='space-evenly' spacing={1}>
-          <Grid item xs={4}>
-            <TypographyBanner>DRpaedia3</TypographyBanner>
-          </Grid>
-          <Grid item xs={8} className={classes.toonContainer}>
-            <ToonSter passChange={handleToonChange} currentToon={currentToon} toonList={toonStorage} />
-          </Grid>
-        </Grid>
-      </AppBar>
-      <Grid container className={classes.builder}>
-        <Grid item className={classes.builderItem}>
-          <Grid container>
-            <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} lineages={lineageStrain.lineages} />
-            <XpBar totalXp={totalXp} skillState={skillState} />
-          </Grid>
+    <div className='app-window'>
+      <AppBarWrapper passChange={handleToonChange} currentToon={currentToon} toonStorage={toonStorage} />
+      <div className='builder'>
+        <div className='container'>
+          <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} lineages={lineageStrain.lineages} />
+          <XpBar totalXp={totalXp} skillState={skillState} />
           <StatBar 
             passClick={handleStatClick} 
             stat={stat}
@@ -413,13 +372,13 @@ function App() {
             innate={innate} />
           <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <Grid container className={classes.footer} justify='flex-end'>
         Gloria Budiman - DRpaedia 3.0.0
       </Grid>
     </div>
-  );
+  );    
 }
 
 export default App;
