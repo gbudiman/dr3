@@ -4,62 +4,21 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Popper from '@material-ui/core/Popper';
 import ToonName from './ToonName';
-import AddToon from '@material-ui/icons/NoteAdd';
 import Divider from '@material-ui/core/Divider';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    toonButton: {
-      maxWidth: '320px',
-      margin: '-12px 0 -12px auto',
-      textTransform: 'none',
-      color: '#ccc',
-      borderRadius: 0,
-      padding: '12px 16px 0px 8px',
-      fontFamily: 'Alegreya, serif',
-      fontSize: 22,
-      maxWidth: '240px',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      textAlign: 'right',
-    },
-  }),
-);
+import NewToon from './NewToon';
+import DebugReset from './DebugReset';
 
 function ToonSter(props) {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-  let confirmLeft = useRef(null);
-  let confirmRight = useRef(null);
+  let [anchorEl, setAnchorEl] = useState(null);
 
-  let handleClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  }
-  let handleChange = (tid, newValue) => {
-    props.passChange('rename', tid, newValue);
-  }
-  let handleSwitch = (tid) => {
-    props.passChange('switch', tid);
-  }
-  let handleDelete = (tid) => {
-    props.passChange('delete', tid);
-  }
-  let handleUndelete = (tid) => {
-    props.passChange('undelete', tid);
-  }
-  let handleNewToon = () => {
-    props.passChange('new');
-  }
-  let handleClearClick = () => {
-    //console.log(event.target)
-    if (confirmLeft.current.checked && confirmRight.current.checked) {
-      localStorage.clear();
-      window.location.reload();
-    }
-  }
+  let handleClick = (event) => { setAnchorEl(anchorEl ? null : event.currentTarget) };
+  let handleChange = (tid, newValue) => { props.passChange('rename', tid, newValue) };
+  let handleSwitch = (tid) => { props.passChange('switch', tid) };
+  let handleDelete = (tid) => { props.passChange('delete', tid) };
+  let handleUndelete = (tid) => { props.passChange('undelete', tid) };
+  let handleNewToon = () => { props.passChange('new') };
 
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
@@ -83,8 +42,8 @@ function ToonSter(props) {
   }
 
   return(
-    <React.Fragment>
-      <Button className={classes.toonButton} onClick={handleClick}>
+    <div className='toonster'>
+      <Button onClick={handleClick}>
         {props.currentToon in props.toonList ? props.toonList[props.currentToon].name : 'default'}
         <ExpandLess className={open ? '' : 'expand-hidden'} />
         <ExpandMore className={open ? 'expand-hidden' : ''} />
@@ -92,23 +51,11 @@ function ToonSter(props) {
       <Popper id={id} open={open} anchorEl={anchorEl} className='toonster-overlay' placement='bottom-end' transition>
         {toonLister()}
         <Divider className='toon-divider' />
-        <div className='toon-row new-toon' onClick={handleNewToon}>
-          <div className='toon-subrow'>
-            Add Character
-            <AddToon />
-          </div>
-        </div>
+        <NewToon handleNewToon={handleNewToon} />
         <Divider className='toon-divider' />
-        <div className='toon-row debug'>
-          <div><input type='checkbox' ref={confirmLeft} onClick={handleClearClick} /></div>
-          <div className='instructions'>
-            <div>Debug: Clear Local Data</div>
-            <div className='small'>(Check both boxes to confirm)</div>
-          </div>
-          <div><input type='checkbox' ref={confirmRight} onClick={handleClearClick} /></div>
-        </div>
+        <DebugReset />
       </Popper>
-    </React.Fragment>
+    </div>
   )
 }
 
