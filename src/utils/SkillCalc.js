@@ -79,9 +79,7 @@ function SkillCalc(h) {
 
     return nextCosts;
   }
-  let totalize = (sum) => {
-    return Object.values(sum).reduce((a,b) => { return a + b }, 0);
-  }
+  let totalize = (sum) => { return Object.values(sum).reduce((a,b) => { return a + b }, 0) }
 
   let grid = gridify();
   let sum = compute(grid.grid);

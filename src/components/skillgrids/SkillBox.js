@@ -37,9 +37,7 @@ function SkillBox(props) {
   }
 
   return(
-    <div>
-      {buildGrids()}
-    </div>
+    <div>{buildGrids()}</div>
   )
 }
 

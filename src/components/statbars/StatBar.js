@@ -4,14 +4,22 @@ import StatElement from './StatElement';
 
 function StatBar(props) {
   let handleClick = (stat, adjustment) => { props.passClick(stat, adjustment) }
-  return(
-    <div className='statbar'>
-      <StatElement stat='hp' innate={props.innate.hp || 0} acquired={props.stat.hp || 0} xp={props.statXp.hp || 0} passClick={handleClick} statControl={props.statControl.hp} />
-      <StatElement stat='mp' innate={props.innate.mp || 0} acquired={props.stat.mp || 0} xp={props.statXp.mp || 0} passClick={handleClick} statControl={props.statControl.mp} />
-      <StatElement stat='rp' innate={props.innate.rp || 0} acquired={props.stat.rp || 0} xp={props.statXp.rp || 0} passClick={handleClick} statControl={props.statControl.rp} />
-      <StatElement stat='inf' innate={props.innate.inf || 0} acquired={props.stat.inf || 0} xp={props.statXp.inf || 0} passClick={handleClick} statControl={props.statControl.inf} />
-    </div>
-  )
+  let generateStatElements = (stats) => {
+    return stats.map(stat => {
+      return(
+        <StatElement
+          stat={stat}
+          innate={props.innate[stat] || 0}
+          acquired={props.stat[stat] || 0}
+          xp={props.statXp[stat] || 0}
+          statControl={props.statControl[stat]}
+          passClick={handleClick} />
+      );
+    })
+  }
+  let stats = ['hp', 'mp', 'rp', 'inf'];
+
+  return <div className='statbar'>{generateStatElements(stats)}</div>;
 }
 
 export default StatBar;
