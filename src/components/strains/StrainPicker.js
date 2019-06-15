@@ -45,7 +45,7 @@ function StrainPicker(props) {
       return(
         <optgroup 
           key={lineage} 
-          label={`${upcase(lineage)}-${statCompressor(innateStat)}`}
+          label={`${upcase(lineage)} - ${statCompressor(innateStat)}`}
         >
           {options}
         </optgroup>
