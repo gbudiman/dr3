@@ -47,7 +47,7 @@ body {
     max-width: 480px;
     margin: 42px auto 0 auto;
     background-color: $color-off-dark;
-    padding: 16px 0px;
+    padding: 16px 0px 0px 0px;
     flex-wrap: wrap;
 
     .container {
@@ -55,6 +55,24 @@ body {
       width: 100%;
       flex-wrap: wrap;
       margin: 0px 8px;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+    border-top: 1px solid $color-midtone;
+    font-style: italic;
+    font-size: 12px;
+    color: $color-midtone;
+    padding: 4px 0px;
+    font-family: Alegreya, serif;
+
+    .text {
+      width: 100%;
+      max-width: 480px;
+      padding: 0 16px;
     }
   }
 }

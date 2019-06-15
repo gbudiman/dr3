@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillInitializer';
@@ -13,35 +12,7 @@ import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: '480px',
-      margin: '0px auto',
-    },
-    builder: {
-      width: '100vw',
-      margin: '0px auto',
-      height: 'calc(100vh - 0px)',
-      overflow: 'auto',
-      backgroundColor: '#3f3f3f',
-    },
-    footer: {
-      borderTop: '1px solid #aaa',
-      fontStyle: 'italic',
-      fontSize: '12px',
-      color: '#888',
-      padding: '2px 4px 4px 0px',
-      fontFamily: 'Alegreya, serif',
-    },
-    tableViewDwarf: {
-      width: '100%',
-    },
-  })
-);
-
 function App() {
-  const classes = useStyles();
   let lineageStrain = StrainInitializer();
   let [skillState, setSkillState] = useState(SkillInitializer());
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
@@ -386,9 +357,9 @@ function App() {
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </div>
       </div>
-      <Grid container className={classes.footer} justify='flex-end'>
-        Gloria Budiman - DRpaedia 3.0.0
-      </Grid>
+      <div className='footer'>
+        <div className='text'>Gloria Budiman - DRpaedia 3.0.0</div>
+      </div>
     </div>
   );    
 }
