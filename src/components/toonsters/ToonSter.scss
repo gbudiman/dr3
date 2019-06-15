@@ -7,7 +7,7 @@
     text-transform: none;
     color: $color-light;
     border-radius: 0;
-    padding: 16px 8px 4px 0px;
+    padding: 16px 12px 4px 12px;
     font-family: 'Alegreya, serif';
     font-size: 22px;
     max-width: 240px;
@@ -21,6 +21,7 @@
 .toonster-overlay {
   background-color: $color-dark;
   color: $color-light;
+  margin: 0 6px 0 0;
   padding: 8px 16px;
   width: 75%;
   max-width: 320px;
