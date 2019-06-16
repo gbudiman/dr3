@@ -183,14 +183,25 @@ function App() {
   let handleStatClick = (changedStat, adjustment) => {
     let currentStat = changedStat in stat ? stat[changedStat] : 0;
     let newStat = currentStat + adjustment;
+    statValidate(changedStat, currentStat + adjustment);
+  }
+
+  let handleStatChange = (changedStat, newValue) => {
+    statValidate(changedStat, parseInt(newValue) || 0);
+  }
+
+  let statValidate = (changedStat, newStat) => {
     let controlHasBeenAdjusted = false;
-    
-    if ((innate[changedStat] || 0) + newStat >= 0 && newStat >= 0) {
+    let innateStat = innate[changedStat] || 0;
+
+    if (innateStat + newStat >= 0 && newStat >= 0) {
       if (changedStat in statLimit) {
-        if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment > statLimit[changedStat]) {
-          return;
+        if (innateStat + newStat > statLimit[changedStat]) {
+          updateStatControl(changedStat, 'inc', false);
+          updateStatControl(changedStat, 'dec', true);
+          newStat = Math.min(newStat, statLimit[changedStat] - innateStat);
         } else {
-          if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment === statLimit[changedStat]) {
+          if (innateStat + newStat === statLimit[changedStat]) {
             updateStatControl(changedStat, 'inc', false);
             updateStatControl(changedStat, 'dec', true);
             controlHasBeenAdjusted = true;
@@ -215,6 +226,8 @@ function App() {
       }
     }
   }
+
+  
 
   let updateStatControl = (stat, direction, state) => {
     statControl[stat][direction] = state;
@@ -349,6 +362,7 @@ function App() {
           <XpBar totalXp={totalXp} skillState={skillState} />
           <StatQuad 
             passClick={handleStatClick} 
+            passChange={handleStatChange}
             stat={stat}
             statXp={statXp}
             statControl={statControl}
