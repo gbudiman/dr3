@@ -1,0 +1,37 @@
+@import '../../colors.scss';
+
+.statquad {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: $color-dark;
+  border-radius: 16px;
+  margin: 2px 2px;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
+  color: $color-light;
+
+  .statgrid {
+    width: 25%;
+    text-align: center;
+    border-right: 1px solid $color-off-dark;
+    padding: 8px 0px;
+    background-color: $color-dark;
+    cursor: pointer;
+    &:hover {
+      background-color: $color-midtone;
+    }
+  }
+
+  .statgrid:first-of-type {
+    border-right: 1px solid $color-off-dark;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+
+  .statgrid:last-of-type {
+    border-right: 0;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+}

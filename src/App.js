@@ -7,7 +7,8 @@ import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
-import StatBar from './components/statbars/StatBar';
+// import StatBar from './components/statbars/StatBar';
+import StatQuad from './components/statquads/StatQuad';
 import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
@@ -347,7 +348,7 @@ function App() {
         <div className='container'>
           <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} lineages={lineageStrain.lineages} />
           <XpBar totalXp={totalXp} skillState={skillState} />
-          <StatBar 
+          <StatQuad 
             passClick={handleStatClick} 
             stat={stat}
             statXp={statXp}
