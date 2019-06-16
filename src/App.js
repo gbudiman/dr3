@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
-import Grid from '@material-ui/core/Grid';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillInitializer';
 import StrainInitializer from './utils/StrainInitializer';
