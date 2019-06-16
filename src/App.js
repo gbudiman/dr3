@@ -37,15 +37,28 @@ function App() {
   let loadNewToon = tid => {
     const j = toonData[tid];
 
-    setSkillState(j.skill_state);
-    setSkillXp(j.skill_xp);
-    setSkillHidden(j.skill_hidden);
-    setSelectedStrain(j.selected_strain);
-    setStat(j.stat);
-    setStatXp(j.stat_xp);
-    setStatControl(j.stat_control);
-    setInnate(j.innate);
-    setTotalXp(j.total_xp);
+    if (j == null) {
+      // critical localStorageError
+      console.log('Critical localStorageError');
+      console.log('Toon ID: ' + tid);
+      console.log('LS::currentToon: ' + localStorage.getItem('currentToon'));
+      console.log('======= toonStorage =====');
+      console.log(localStorage.getItem('toonStorage'));
+      console.log('======= toonData =======');
+      console.log(localStorage.getItem('toonData'));
+      loadBlankToon();
+    } else {
+      setSkillState(j.skill_state);
+      setSkillXp(j.skill_xp);
+      setSkillHidden(j.skill_hidden);
+      setSelectedStrain(j.selected_strain);
+      setStat(j.stat);
+      setStatXp(j.stat_xp);
+      setStatControl(j.stat_control);
+      setInnate(j.innate);
+      setTotalXp(j.total_xp);
+    }
+
   }
 
   let loadBlankToon = () => {
