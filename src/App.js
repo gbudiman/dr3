@@ -227,7 +227,16 @@ function App() {
     }
   }
 
-  
+  let handleDeathChange = (adjustment) => {
+    let ir = ('ir' in stat) ? stat.ir : 0;
+    let newValue = ir + adjustment;
+
+
+    if (newValue >= 0) { 
+      stat.ir = newValue;
+      setStat(Object.assign({}, stat));
+    }
+  }
 
   let updateStatControl = (stat, direction, state) => {
     statControl[stat][direction] = state;
@@ -363,6 +372,7 @@ function App() {
           <StatQuad 
             passClick={handleStatClick} 
             passChange={handleStatChange}
+            passDeathChange={handleDeathChange}
             stat={stat}
             statXp={statXp}
             statControl={statControl}

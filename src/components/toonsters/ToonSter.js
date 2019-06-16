@@ -48,7 +48,7 @@ function ToonSter(props) {
         <ExpandLess className={open ? '' : 'expand-hidden'} />
         <ExpandMore className={open ? 'expand-hidden' : ''} />
       </Button>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement='bottom-end' className='toonster' transition>
+      <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} className='toonster' transition>
         {({ TransitionProps }) => (
           <Slide {...TransitionProps} timeout={300}>
             <div className='overlay'>

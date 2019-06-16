@@ -20,18 +20,43 @@ function StatGrid(props) {
   let handleSelectAllText = (event) => {
     event.target.select();
   }
+  let handleDeathSubtract = () => { props.passDeath(-1) }
+  let handleDeathAdd = () => { props.passDeath(1) }
   let getXpCost = () => {
-    let divisor = parseInt(props.acquired / 10);
     switch(props.stat) {
       case 'hp':
       case 'mp':
-        switch(divisor) {
-          case 5: return 10;
-          default: return 2 * divisor + 1;
-        }
+        let divisor = parseInt(props.acquired / 10);
+        if (divisor < 5) return 2 * divisor + 1;
+        return 10;
       case 'rp':
       case 'inf': return 10;
     }
+  }
+  let getDeathControl = () => {
+    if (props.stat !== 'inf') return '';
+
+    return (
+      <div className='death-container'>
+        <div className='title'>DEATH</div>
+        <div className='death-control'>
+          <div className={'stat-control left ' + (props.statControl.dec ? '' : 'disabled')} onClick={handleDeathSubtract}>
+            <span>&laquo;</span>
+          </div>
+          <div className={'numeric'}>{props.statReduction}</div>
+          <div className={'stat-control right ' + (props.statControl.dec ? '' : 'disabled')} onClick={handleDeathAdd}>
+            <span>&raquo;</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  let getDeathSubtraction = () => {
+    if (props.stat !== 'inf') return '';
+    return <span> - {props.statReduction}&nbsp;</span>;
+  }
+  let getTotalStat = () => {
+    return <span> = {props.innate + props.acquired - props.statReduction} </span>;
   }
 
   useEffect(() => {
@@ -65,22 +90,27 @@ function StatGrid(props) {
                       onClick={handleSelectAllText}
                       disabled={props.existance === 'deleted'}
                     />
-                    <span> = {props.innate + props.acquired} </span>
-                    <span> &nbsp;(/{getXpCost()})</span>
+                    {getDeathSubtraction()}
+                    {getTotalStat()}
                   </div>
                   <div className={'stat-control right ' + (props.statControl.inc ? '' : 'disabled')} onClick={handleAdd}>
                     <span>&raquo;</span>
                   </div>
                 </div>
-                <div>
-                  {props.innate} + {props.acquired} = {props.innate + props.acquired}
-                  /
-                  {props.xp}
-                </div>
-                <div>
+                <div className='stat-info'>
                   <div>
-                    {props.xp}
+                    <span className='focus-point'>
+                      {getXpCost()}
+                    </span>
+                    /pt
                   </div>
+                  <div>
+                    <span className='focus-point'>
+                      {props.xp}
+                    </span>
+                    XP
+                  </div>
+                  {getDeathControl()}
                 </div>
               </div>
             </div>

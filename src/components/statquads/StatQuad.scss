@@ -41,7 +41,8 @@
 
 .statgrid-overlay {
   background-color: $color-dark;
-  width: 33%;
+  width: 75%;
+  max-width: 250px;
   padding: 16px;
   border: 1px solid $color-midtone;
   margin: 4px 0 0 0;
@@ -106,6 +107,58 @@
               font-size: 20px;
               width: 32px;
               text-align: center;
+            }
+          }
+        }
+      }
+
+      .stat-info {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 12px;
+
+        .focus-point {
+          font-size: 24px;
+          font-weight: bolder;
+        }
+
+        .death-container {
+          text-align: center;
+          margin-top: -8px;
+          margin-bottom: -12px;
+
+          .death-control {
+            display: flex;
+            justify-content: space-around;
+            cursor: pointer;
+            
+            padding: 2px 2px;
+            font-size: 18px;
+ 
+            .numeric {
+              padding: 2px 8px;
+              background-color: $color-off-dark;
+            }
+
+            .stat-control {
+              width: 24px;
+              background-color: $color-off-dark;
+
+              &:hover {
+                filter: brightness(125%);
+              }
+
+              &.left {
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+                border-right: 1px solid $color-dark;
+              }
+
+              &.right {
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+                border-left: 1px solid $color-dark;
+              }
             }
           }
         }
