@@ -25,6 +25,7 @@ function App() {
     mp: { inc: true, dec: false },
     rp: { inc: true, dec: false },
     inf: { inc: true, dec: false },
+    ir: { inc: true, dec: false },
   });
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
@@ -62,6 +63,7 @@ function App() {
       mp: { inc: true, dec: false },
       rp: { inc: true, dec: false },
       inf: { inc: true, dec: false },
+      ir: { inc: true, dec: false },
     })
     setInnate({});
     setTotalXp({stat: 0, skill: 0});
@@ -166,77 +168,114 @@ function App() {
     for (const lstat in statLimit) {
       let statSum = (innateStat[lstat] || 0) + (stat[lstat] || 0);
       let limit = statLimit[lstat];
-
-      if (statSum > limit) {
-        let diff = statSum - limit;
-        stat[lstat] -= diff;
-        setStat(Object.assign({}, stat));
-        calcXp(lstat, stat[lstat]);
-        updateStatControl(lstat, 'inc', false);
-        updateStatControl(lstat, 'dec', true);
-      } else {
-        updateStatControl(lstat, 'inc', true);
-      }
+      validateStatAndControls(lstat);
     }
   }
 
   let handleStatClick = (changedStat, adjustment) => {
     let currentStat = changedStat in stat ? stat[changedStat] : 0;
     let newStat = currentStat + adjustment;
-    statValidate(changedStat, currentStat + adjustment);
+
+    stat[changedStat] = currentStat + adjustment;
+    validateStatAndControls(changedStat);
   }
 
   let handleStatChange = (changedStat, newValue) => {
-    statValidate(changedStat, parseInt(newValue) || 0);
+    stat[changedStat] = newValue;
+    validateStatAndControls(changedStat);
   }
 
-  let statValidate = (changedStat, newStat) => {
-    let controlHasBeenAdjusted = false;
-    let innateStat = innate[changedStat] || 0;
+  let handleReductionChange = (changedStat, adjustment) => {
+    let reductionStatKey = changedStat[0] + 'r';
+    let reductionStat = reductionStatKey in stat ? stat[reductionStatKey] : 0;
+    stat[reductionStatKey] = reductionStat + adjustment;
+    validateStatAndControls(changedStat);
+  }
 
-    if (innateStat + newStat >= 0 && newStat >= 0) {
-      if (changedStat in statLimit) {
-        if (innateStat + newStat > statLimit[changedStat]) {
-          updateStatControl(changedStat, 'inc', false);
-          updateStatControl(changedStat, 'dec', true);
-          newStat = Math.min(newStat, statLimit[changedStat] - innateStat);
-        } else {
-          if (innateStat + newStat === statLimit[changedStat]) {
-            updateStatControl(changedStat, 'inc', false);
-            updateStatControl(changedStat, 'dec', true);
-            controlHasBeenAdjusted = true;
-          } else {
-            updateStatControl(changedStat, 'inc', true);
-            updateStatControl(changedStat, 'dec', true);
-          }
-        }
-      }
+  let validateStatAndControls = (changedStat) => {
+    let reductionStatKey = changedStat[0] + 'r';
+    let innateValue = (changedStat in innate) ? innate[changedStat] : 0;
+    let acqValue = (changedStat in stat) ? stat[changedStat] : 0;
+    let reductionValue = (reductionStatKey in stat) ? stat : 0;
+    let totalValue = innateValue + acqValue - reductionValue;
+    let limit = statLimit[changedStat];
 
-      stat[changedStat] = newStat;
+    if (acqValue >= 0 && (limit === undefined || totalValue <= limit)) {
       setStat(Object.assign({}, stat));
-      calcXp(changedStat, newStat);
+    } else {
+      if (acqValue < 0) stat[changedStat] = 0;
+      if (limit && totalValue > limit) stat[changedStat] = limit;
 
-      if (!controlHasBeenAdjusted) {
-        if (newStat === 0) {
-          updateStatControl(changedStat, 'dec', false);
-        } else {
-          updateStatControl(changedStat, 'dec', true);
-          updateStatControl(changedStat, 'inc', true);
-        }
-      }
-    }
-  }
-
-  let handleDeathChange = (adjustment) => {
-    let ir = ('ir' in stat) ? stat.ir : 0;
-    let newValue = ir + adjustment;
-
-
-    if (newValue >= 0) { 
-      stat.ir = newValue;
       setStat(Object.assign({}, stat));
     }
   }
+
+  // let statValidate = (changedStat, newStat) => {
+  //   let controlHasBeenAdjusted = false;
+  //   let innateStat = innate[changedStat] || 0;
+  //   let reductionKey = `${changedStat[0]}r`;
+  //   let statReduction = reductionKey in stat ? stat[reductionKey] : 0;
+  //   let totalStat = innateStat + newStat - statReduction;
+
+  //   if (totalStat >= 0 && newStat >= 0) {
+  //     if (changedStat in statLimit) {
+  //       if (totalStat > statLimit[changedStat]) {
+  //         updateStatControl(changedStat, 'inc', false);
+  //         updateStatControl(changedStat, 'dec', true);
+  //         newStat = Math.min(newStat, statLimit[changedStat] + statReduction - innateStat);
+  //         controlHasBeenAdjusted = true;
+  //       } else {
+
+  //         if (totalStat === statLimit[changedStat]) {
+  //           updateStatControl(changedStat, 'inc', false);
+  //           updateStatControl(changedStat, 'dec', true);
+  //           controlHasBeenAdjusted = true;
+  //         } else {
+  //           updateStatControl(changedStat, 'inc', true);
+  //           updateStatControl(changedStat, 'dec', true);
+  //         }
+  //       }
+  //     }
+
+  //     stat[changedStat] = newStat;
+  //     setStat(Object.assign({}, stat));
+  //     calcXp(changedStat, newStat);
+
+  //     if (!controlHasBeenAdjusted) {
+  //       if (newStat === 0) {
+  //         updateStatControl(changedStat, 'dec', false);
+  //       } else {
+  //         updateStatControl(changedStat, 'dec', true);
+  //         updateStatControl(changedStat, 'inc', true);
+  //       }
+  //     }
+  //   }
+  // }
+
+  // let infectionReduction = () => { return stat.ir || 0 };
+  // let statInfection = () => { return (stat.inf || 0) + (innate.inf || 0) };
+  // let totalInfection = () => { return statInfection() - (stat.ir || 0) };
+
+  // let irValidate = () => {
+  //   statControl.ir.dec = infectionReduction() > 0;
+  //   statControl.ir.inc = totalInfection() > 0;
+  //   setStatControl(Object.assign({}, statControl));
+  // }
+
+  // let handleReductionChange = (stat, adjustment) => {
+  //   let ir = ('ir' in stat) ? stat.ir : 0;
+  //   let newValue = ir + adjustment;
+  //   let totalInfection = statInfection() - newValue;
+
+  //   if (!('ir' in statControl)) statControl.ir = { inc: true, dec: false }
+  //   if (newValue >= 0 && totalInfection >= 0) { 
+  //     stat.ir = newValue;
+  //     setStat(Object.assign({}, stat));
+  //   } 
+
+  //   irValidate();
+  //   statValidate('inf', stat.inf);
+  // }
 
   let updateStatControl = (stat, direction, state) => {
     statControl[stat][direction] = state;
@@ -372,7 +411,7 @@ function App() {
           <StatQuad 
             passClick={handleStatClick} 
             passChange={handleStatChange}
-            passDeathChange={handleDeathChange}
+            passReductionChange={handleReductionChange}
             stat={stat}
             statXp={statXp}
             statControl={statControl}

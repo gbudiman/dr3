@@ -20,8 +20,8 @@ function StatGrid(props) {
   let handleSelectAllText = (event) => {
     event.target.select();
   }
-  let handleDeathSubtract = () => { props.passDeath(-1) }
-  let handleDeathAdd = () => { props.passDeath(1) }
+  let handleReductionSubtract = () => { props.passReduction(props.stat, -1) }
+  let handleReductionAdd = () => { props.passReduction(props.stat, 1) }
   let getXpCost = () => {
     switch(props.stat) {
       case 'hp':
@@ -40,11 +40,11 @@ function StatGrid(props) {
       <div className='death-container'>
         <div className='title'>DEATH</div>
         <div className='death-control'>
-          <div className={'stat-control left ' + (props.statControl.dec ? '' : 'disabled')} onClick={handleDeathSubtract}>
+          <div className={'stat-control left ' + (props.reductionControl.dec ? '' : 'disabled')} onClick={handleReductionSubtract}>
             <span>&laquo;</span>
           </div>
           <div className={'numeric'}>{props.statReduction}</div>
-          <div className={'stat-control right ' + (props.statControl.dec ? '' : 'disabled')} onClick={handleDeathAdd}>
+          <div className={'stat-control right ' + (props.reductionControl.inc ? '' : 'disabled')} onClick={handleReductionAdd}>
             <span>&raquo;</span>
           </div>
         </div>

@@ -27,7 +27,7 @@ function StatQuad(props) {
 
     setRefState(Object.assign({}, refState))
   }
-  let handleDeathChange = (adjustment) => { props.passDeathChange(adjustment) };
+  let handleReductionChange = (stat, adjustment) => { props.passReductionChange(stat, adjustment) };
 
   let makeGrids = () => {
     return stats.map(statKey => {
@@ -40,10 +40,11 @@ function StatQuad(props) {
           acquired={props.stat[statKey] || 0}
           xp={props.statXp[statKey] || 0}
           statControl={props.statControl[statKey]}
+          reductionControl={props.statControl[statKey[0] + 'r'] || { inc: true, dec: false }}
           passClick={handleClick}
           passChange={handleChange}
           passPopOpen={handlePopOpen}
-          passDeath={handleDeathChange}
+          passReduction={handleReductionChange}
           placement={placement[statKey]}
           forcedState={refState[statKey]} />
       );

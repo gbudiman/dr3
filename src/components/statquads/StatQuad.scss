@@ -55,9 +55,6 @@
   .grid {
 
     .stat-element {
-
-      
-
       .control-container {
         display: flex;
         justify-content: space-between;
@@ -71,6 +68,7 @@
           font-size: 28px;
           background-color: $color-off-dark;
           cursor: pointer;
+          user-select: none;
 
           &:hover {
             filter: brightness(125%);
@@ -86,6 +84,11 @@
             border-top-right-radius: 16px;
             border-bottom-right-radius: 16px;
             border-left: 1px solid $color-dark;
+          }
+
+          &.disabled {
+            color: transparent;
+            cursor: normal;
           }
         }
 
@@ -143,9 +146,15 @@
             .stat-control {
               width: 24px;
               background-color: $color-off-dark;
+              user-select: none;
 
               &:hover {
                 filter: brightness(125%);
+              }
+
+              &.disabled {
+                color: transparent;
+                cursor: normal;
               }
 
               &.left {
