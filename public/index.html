@@ -3,13 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <script>
-    if (!window.location.host.match(/localhost/) && window.location.protocol != 'https:') {
-      window.location.protocol = 'https';
-    }
+      if (
+        !window.location.host.match(/localhost/) &&
+        window.location.protocol != 'https:'
+      ) {
+        window.location.protocol = 'https';
+      }
     </script>
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link href="https://fonts.googleapis.com/css?family=Alegreya&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Bellefair&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/dr.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Alegreya&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Bellefair&display=swap"
+      rel="stylesheet"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <!--
@@ -43,17 +52,24 @@
     -->
     <div id="disqus_thread"></div>
     <script>
-      var disqus_config = function () {
-        this.page.url = 'http://drpaedia3.herokuapp.com';  // Replace PAGE_URL with your page's canonical URL variable
+      var disqus_config = function() {
+        this.page.url = 'http://drpaedia3.herokuapp.com'; // Replace PAGE_URL with your page's canonical URL variable
         this.page.identifier = 'index'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
       };
-      (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
+      (function() {
+        // DON'T EDIT BELOW THIS LINE
+        var d = document,
+          s = d.createElement('script');
         s.src = 'https://drpaedia3.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
       })();
-      </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </script>
+    <noscript
+      >Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript"
+        >comments powered by Disqus.</a
+      ></noscript
+    >
   </body>
 </html>
