@@ -37,9 +37,9 @@ function StatGrid(props) {
     if (props.stat !== 'inf') return '';
 
     return (
-      <div className='death-container'>
+      <div className='reduction-container'>
         <div className='title'>DEATH</div>
-        <div className='death-control'>
+        <div className='reduction-control'>
           <div className={'stat-control left ' + (props.reductionControl.dec ? '' : 'disabled')} onClick={handleReductionSubtract}>
             <span>&laquo;</span>
           </div>
@@ -58,6 +58,12 @@ function StatGrid(props) {
   let getTotalStat = () => {
     return <span> = {props.innate + props.acquired - props.statReduction} </span>;
   }
+  let getClassName = () => {
+    return [
+      'statgrid',
+      anchorEl === null ? '' : 'overlay-active',
+    ].join(' ')
+  }
 
   useEffect(() => {
     if (props.forcedState === 'closed') {
@@ -68,13 +74,13 @@ function StatGrid(props) {
 
   return(
     <React.Fragment>
-      <div className='statgrid' onClick={handleToggle}>
+      <div className={getClassName()} onClick={handleToggle}>
         <span>{props.stat.toUpperCase()}</span>
-        <span>{props.innate + props.acquired}</span>
+        <span>{props.innate + props.acquired - props.reduction}</span>
       </div>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement='bottom-start' transition className='statgrid-overlay'>
+      <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} transition className={`statgrid-overlay ${props.stat}`}>
         {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={300}>
+          <Fade {...TransitionProps} timeout={0}>
             <div className={`grid grid-${props.stat}`}>
               <div className='stat-element'>
                 <div className='control-container'>

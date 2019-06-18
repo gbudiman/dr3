@@ -20,6 +20,15 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    &.overlay-active {
+      background-color: $color-light;
+      color: $color-dark;
+
+      &:hover {
+        background-color: $color-light;
+        color: $color-dark;
+      }
+    }
     &:hover {
       background-color: $color-midtone;
     }
@@ -30,28 +39,42 @@
     border-right: 1px solid $color-off-dark;
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
+
+    &.overlay-active {
+      border-bottom-left-radius: 0px;
+    }
   }
 
   .statgrid:last-of-type {
     border-right: 0;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
+
+    &.overlay-active {
+      border-bottom-right-radius: 0px;
+    }
   }
 }
 
 .statgrid-overlay {
-  background-color: $color-dark;
+  background-color: $color-light;
   width: 75%;
   max-width: 250px;
   padding: 16px;
-  border: 1px solid $color-midtone;
-  margin: 4px 0 0 0;
+  border: 0;
+  margin: 0px 0 0 0;
   border-radius: 16px;
-  color: $color-light;
+  color: $color-dark;
   font-family: 'Bellefair', serif;
   font-size: 14px;
   z-index: 24;
 
+  &.hp {
+    border-top-left-radius: 0px;
+  }
+  &.inf {
+    border-top-right-radius: 0px;
+  }
   .grid {
 
     .stat-element {
@@ -67,6 +90,7 @@
           padding: 2px 2px;
           font-size: 28px;
           background-color: $color-off-dark;
+          color: $color-light;
           cursor: pointer;
           user-select: none;
 
@@ -77,23 +101,27 @@
           &.left {
             border-top-left-radius: 16px;
             border-bottom-left-radius: 16px;
-            border-right: 1px solid $color-dark;
+            border-right: 1px solid $color-midtone;
           }
 
           &.right {
             border-top-right-radius: 16px;
             border-bottom-right-radius: 16px;
-            border-left: 1px solid $color-dark;
+            border-left: 1px solid $color-midtone;
           }
 
           &.disabled {
             color: transparent;
-            cursor: normal;
+            cursor: default;
+            &:hover {
+              filter: none;
+            }
           }
         }
 
         .stat-lead {
           background-color: $color-off-dark;
+          color: $color-light;
           padding: 12px 4px 0px 4px;
           width: 100%;
           text-align: center;
@@ -125,15 +153,16 @@
           font-weight: bolder;
         }
 
-        .death-container {
+        .reduction-container {
           text-align: center;
           margin-top: -8px;
           margin-bottom: -12px;
 
-          .death-control {
+          .reduction-control {
             display: flex;
             justify-content: space-around;
             cursor: pointer;
+            color: $color-light;
             
             padding: 2px 2px;
             font-size: 18px;
@@ -154,19 +183,22 @@
 
               &.disabled {
                 color: transparent;
-                cursor: normal;
+                cursor: default;
+                &:hover {
+                  filter: none;
+                }
               }
 
               &.left {
                 border-top-left-radius: 8px;
                 border-bottom-left-radius: 8px;
-                border-right: 1px solid $color-dark;
+                border-right: 1px solid $color-midtone;
               }
 
               &.right {
                 border-top-right-radius: 8px;
                 border-bottom-right-radius: 8px;
-                border-left: 1px solid $color-dark;
+                border-left: 1px solid $color-midtone;
               }
             }
           }

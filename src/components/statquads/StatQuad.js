@@ -38,6 +38,7 @@ function StatQuad(props) {
           statReduction={props.stat[statKey[0] + 'r'] || 0}
           innate={props.innate[statKey] || 0}
           acquired={props.stat[statKey] || 0}
+          reduction={props.stat[statKey[0] + 'r'] || 0}
           xp={props.statXp[statKey] || 0}
           statControl={props.statControl[statKey]}
           reductionControl={props.statControl[statKey[0] + 'r'] || { inc: true, dec: false }}
