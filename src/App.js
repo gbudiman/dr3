@@ -25,7 +25,7 @@ function App() {
     mp: { inc: true, dec: false },
     rp: { inc: true, dec: false },
     inf: { inc: true, dec: false },
-    ir: { inc: true, dec: false },
+    ir: { inc: false, dec: false },
   });
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
@@ -63,7 +63,7 @@ function App() {
       mp: { inc: true, dec: false },
       rp: { inc: true, dec: false },
       inf: { inc: true, dec: false },
-      ir: { inc: true, dec: false },
+      ir: { inc: false, dec: false },
     })
     setInnate({});
     setTotalXp({stat: 0, skill: 0});
@@ -211,6 +211,7 @@ function App() {
     statControl[reductionStatKey].dec = reductionValue() > 0 && belowLimit();
     statControl[reductionStatKey].inc = totalValue() > 0;
     setStatControl(Object.assign({}, statControl));
+    crossValidateControl(changedStat, 'main');
   }
 
   let validateStatAndControls = (changedStat) => {
@@ -233,10 +234,35 @@ function App() {
     }
 
     statControl[changedStat].inc = belowLimit();
-    statControl[changedStat].dec = acqValue() > 0;
-    console.log('here??')
+    statControl[changedStat].dec = totalValue() > 0;
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
+    crossValidateControl(changedStat, 'reduction');
+  }
+
+  let crossValidateControl = (changedStat, target) => {
+    let controlKey = target == 'reduction' ? changedStat[0] + 'r' : changedStat;
+    let control = controlKey in statControl ? statControl[controlKey] : { inc: true, dec: true };
+
+    let reductionStatKey = changedStat[0] + 'r';
+    let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
+    let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
+    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
+    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
+    let limit = statLimit[changedStat];
+    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
+    let belowLimit = () => { return limit === undefined || totalValue() < limit }
+
+    if (target == 'reduction') {
+      console.log('handling reduction control', totalValue());
+      control.inc = totalValue() > 0;
+      control.dec = belowLimit() && reductionValue() > 0;
+    } else if (target == 'main') {
+      console.log('handling main control', totalValue());
+      control.inc = belowLimit();
+      control.dec = totalValue() > 0;
+    }
+    setStatControl(Object.assign({}, statControl));
   }
 
   // let statValidate = (changedStat, newStat) => {
