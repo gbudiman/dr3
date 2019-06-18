@@ -184,69 +184,53 @@ function App() {
 
   let handleReductionChange = (changedStat, adjustment) => {
     let reductionStatKey = changedStat[0] + 'r';
-    let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
-    let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
-    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
-    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
-    let limit = statLimit[changedStat];
-    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
-    let belowLimit = () => { return limit === undefined || totalValue() < limit }
+    let h = statHelper(changedStat);
 
-    if (reductionValue() < 0) {
+    if (h.reductionValue() < 0) {
       stat[reductionStatKey] = 0;
-    } else if (reductionValue() + adjustment < 0) {
+    } else if (h.reductionValue() + adjustment < 0) {
       stat[reductionStatKey] = 0;
-    } else if (totalValue() < 0) {
-      stat[reductionStatKey] = -totalValue();
-    } else if (totalValue() == 0 && (totalValue() - adjustment >= 0)) {
-      stat[reductionStatKey] = reductionValue() + adjustment;
-    } else if (totalValue() == 0 && (totalValue() - adjustment < 0)) {
-      stat[reductionStatKey] = reductionValue();
-    } else if (totalValue() == limit && (totalValue() - adjustment < limit)) {
-      stat[reductionStatKey] = reductionValue() + adjustment;
-    } else if (totalValue() == limit && (totalValue() - adjustment >= limit)) {
-      stat[reductionStatKey] = reductionValue();
+    } else if (h.totalValue() < 0) {
+      stat[reductionStatKey] = -h.totalValue();
+    } else if (h.totalValue() == 0 && (h.totalValue() - adjustment >= 0)) {
+      stat[reductionStatKey] = h.reductionValue() + adjustment;
+    } else if (h.totalValue() == 0 && (h.totalValue() - adjustment < 0)) {
+      stat[reductionStatKey] = h.reductionValue();
+    } else if (h.totalValue() == h.limit && (h.totalValue() - adjustment < h.limit)) {
+      stat[reductionStatKey] = h.reductionValue() + adjustment;
+    } else if (h.totalValue() == h.limit && (h.totalValue() - adjustment >= h.limit)) {
+      stat[reductionStatKey] = h.reductionValue();
     } else {
-      stat[reductionStatKey] = reductionValue() + adjustment;
+      stat[reductionStatKey] = h.reductionValue() + adjustment;
     }
     setStat(Object.assign({}, stat));
-    statControl[reductionStatKey].dec = reductionValue() > 0 && belowLimit();
-    statControl[reductionStatKey].inc = totalValue() > 0;
+    statControl[reductionStatKey].dec = h.reductionValue() > 0 && h.belowLimit();
+    statControl[reductionStatKey].inc = h.totalValue() > 0;
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'main');
   }
 
   let validateStatAndControls = (changedStat) => {
-    let reductionStatKey = changedStat[0] + 'r';
-    let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
-    let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
-    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
-    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
-    let limit = statLimit[changedStat];
-    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
-    let belowLimit = () => { return limit === undefined || totalValue() < limit }
-    let aboveLimit = () => { return limit === undefined || totalValue() > limit }
+    let h = statHelper(changedStat);
 
-    if (acqValue >= 0 && belowOrAtLimit()) {
-      setStat(Object.assign({}, stat));
+    if (h.totalValue() >= 0 && h.belowOrAtLimit()) {
+      // pass
     } else {
-      //console.log(acqValue(), reductionValue());
-      if (reductionValue() == 0) {
-        if (acqValue() - reductionValue() < 0) stat[changedStat] = reductionValue();  
+      if (h.reductionValue() == 0) {
+        if (h.acqValue() - h.reductionValue() < 0) stat[changedStat] = h.reductionValue();  
       } else {
-        console.log(reductionValue(), acqValue())
-        if (totalValue() < 0 || acqValue() < 0) stat[changedStat] = acqValue() + (-totalValue());
-        //Math.min(reductionValue(), acqValue());//0; //reductionValue();
+        if (h.totalValue() < 0 || h.acqValue() < 0) stat[changedStat] = h.acqValue() + (-h.totalValue());
       }
       
-      if (limit !== undefined && aboveLimit()) stat[changedStat] = limit - innateValue() + reductionValue();
-      //console.log(stat[changedStat]);
-      setStat(Object.assign({}, stat));
+      if (h.limit !== undefined && h.aboveLimit()) {
+        stat[changedStat] = h.limit - h.innateValue() + h.reductionValue();
+      }
     }
 
-    statControl[changedStat].inc = belowLimit();
-    statControl[changedStat].dec = (reductionValue() == 0) ? (acqValue() > 0) : (totalValue() > 0 && acqValue() > 0);
+    setStat(Object.assign({}, stat));
+    statControl[changedStat].inc = h.belowLimit();
+    statControl[changedStat].dec = (h.reductionValue() == 0) ? (h.acqValue() > 0) : (h.totalValue() > 0 && h.acqValue() > 0);
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'reduction');
@@ -255,26 +239,39 @@ function App() {
   let crossValidateControl = (changedStat, target) => {
     let controlKey = target == 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control = controlKey in statControl ? statControl[controlKey] : { inc: true, dec: true };
-
-    let reductionStatKey = changedStat[0] + 'r';
-    let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
-    let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
-    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
-    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
-    let limit = statLimit[changedStat];
-    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
-    let belowLimit = () => { return limit === undefined || totalValue() < limit }
+    let h = statHelper(changedStat);
 
     if (target == 'reduction') {
-      control.inc = totalValue() > 0;
-      control.dec = belowLimit() && reductionValue() > 0;
+      control.inc = h.totalValue() > 0;
+      control.dec = h.belowLimit() && h.reductionValue() > 0;
     } else if (target == 'main') {
-      console.log(totalValue());
-      control.inc = belowLimit();
-      //control.dec = totalValue() > 0;
-      control.dec = acqValue() + reductionValue() > 0 && totalValue() > 0;
+      control.inc = h.belowLimit();
+      control.dec = h.acqValue() + h.reductionValue() > 0 && h.totalValue() > 0;
     }
     setStatControl(Object.assign({}, statControl));
+  }
+
+  let statHelper = (key) => {
+    let reductionStatKey = key[0] + 'r';
+    let innateValue = () => { return key in innate ? innate[key] : 0 }
+    let acqValue = () => { return key in stat ? stat[key] : 0 }
+    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
+    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
+    let limit = statLimit[key];
+    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
+    let belowLimit = () => { return limit === undefined || totalValue() < limit }
+    let aboveLimit = () => { return limit === undefined || totalValue() > limit }
+
+    return {
+      innateValue: innateValue,
+      acqValue: acqValue,
+      reductionValue: reductionValue,
+      totalValue: totalValue,
+      limit: limit,
+      belowOrAtLimit: belowOrAtLimit,
+      belowLimit: belowLimit,
+      aboveLimit: aboveLimit,
+    }
   }
 
   let calcXp = (changedStat, acquired) => {
