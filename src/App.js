@@ -184,9 +184,33 @@ function App() {
 
   let handleReductionChange = (changedStat, adjustment) => {
     let reductionStatKey = changedStat[0] + 'r';
-    let reductionStat = reductionStatKey in stat ? stat[reductionStatKey] : 0;
-    stat[reductionStatKey] = reductionStat + adjustment;
-    validateStatAndControls(changedStat);
+    let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
+    let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
+    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
+    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
+    let limit = statLimit[changedStat];
+    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
+    let belowLimit = () => { return limit === undefined || totalValue() < limit }
+
+    if (reductionValue() < 0) {
+      stat[reductionStatKey] = 0;
+    } else if (reductionValue() + adjustment < 0) {
+      console.log(reductionValue() + ' + ' + adjustment);
+      stat[reductionStatKey] = 0;
+    } else if (totalValue() < 0) {
+      console.log('here', totalValue());
+      stat[reductionStatKey] = -totalValue();
+    } else if (totalValue() == 0) {
+      if (totalValue() - adjustment >= 0) stat[reductionStatKey] = reductionValue() + adjustment;
+    } else if (totalValue() == limit) {
+      if (totalValue() - adjustment < limit) stat[reductionStatKey] = reductionValue() + adjustment;
+    } else {
+      stat[reductionStatKey] = reductionValue() + adjustment;
+    }
+    setStat(Object.assign({}, stat));
+    statControl[reductionStatKey].dec = reductionValue() > 0 && belowLimit();
+    statControl[reductionStatKey].inc = totalValue() > 0;
+    setStatControl(Object.assign({}, statControl));
   }
 
   let validateStatAndControls = (changedStat) => {
@@ -210,6 +234,7 @@ function App() {
 
     statControl[changedStat].inc = belowLimit();
     statControl[changedStat].dec = acqValue() > 0;
+    console.log('here??')
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
   }
