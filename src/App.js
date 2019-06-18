@@ -195,15 +195,17 @@ function App() {
     if (reductionValue() < 0) {
       stat[reductionStatKey] = 0;
     } else if (reductionValue() + adjustment < 0) {
-      console.log(reductionValue() + ' + ' + adjustment);
       stat[reductionStatKey] = 0;
     } else if (totalValue() < 0) {
-      console.log('here', totalValue());
       stat[reductionStatKey] = -totalValue();
-    } else if (totalValue() == 0) {
-      if (totalValue() - adjustment >= 0) stat[reductionStatKey] = reductionValue() + adjustment;
-    } else if (totalValue() == limit) {
-      if (totalValue() - adjustment < limit) stat[reductionStatKey] = reductionValue() + adjustment;
+    } else if (totalValue() == 0 && (totalValue() - adjustment >= 0)) {
+      stat[reductionStatKey] = reductionValue() + adjustment;
+    } else if (totalValue() == 0 && (totalValue() - adjustment < 0)) {
+      stat[reductionStatKey] = reductionValue();
+    } else if (totalValue() == limit && (totalValue() - adjustment < limit)) {
+      stat[reductionStatKey] = reductionValue() + adjustment;
+    } else if (totalValue() == limit && (totalValue() - adjustment >= limit)) {
+      stat[reductionStatKey] = reductionValue();
     } else {
       stat[reductionStatKey] = reductionValue() + adjustment;
     }
@@ -211,6 +213,7 @@ function App() {
     statControl[reductionStatKey].dec = reductionValue() > 0 && belowLimit();
     statControl[reductionStatKey].inc = totalValue() > 0;
     setStatControl(Object.assign({}, statControl));
+    calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'main');
   }
 
@@ -228,13 +231,22 @@ function App() {
     if (acqValue >= 0 && belowOrAtLimit()) {
       setStat(Object.assign({}, stat));
     } else {
-      if (acqValue() - reductionValue() < 0) stat[changedStat] = reductionValue();
+      //console.log(acqValue(), reductionValue());
+      if (reductionValue() == 0) {
+        if (acqValue() - reductionValue() < 0) stat[changedStat] = reductionValue();  
+      } else {
+        console.log(reductionValue(), acqValue())
+        if (totalValue() < 0 || acqValue() < 0) stat[changedStat] = acqValue() + (-totalValue());
+        //Math.min(reductionValue(), acqValue());//0; //reductionValue();
+      }
+      
       if (limit !== undefined && aboveLimit()) stat[changedStat] = limit - innateValue() + reductionValue();
+      //console.log(stat[changedStat]);
       setStat(Object.assign({}, stat));
     }
 
     statControl[changedStat].inc = belowLimit();
-    statControl[changedStat].dec = totalValue() > 0;
+    statControl[changedStat].dec = (reductionValue() == 0) ? (acqValue() > 0) : (totalValue() > 0 && acqValue() > 0);
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'reduction');
@@ -254,86 +266,14 @@ function App() {
     let belowLimit = () => { return limit === undefined || totalValue() < limit }
 
     if (target == 'reduction') {
-      console.log('handling reduction control', totalValue());
       control.inc = totalValue() > 0;
       control.dec = belowLimit() && reductionValue() > 0;
     } else if (target == 'main') {
-      console.log('handling main control', totalValue());
+      console.log(totalValue());
       control.inc = belowLimit();
-      control.dec = totalValue() > 0;
+      //control.dec = totalValue() > 0;
+      control.dec = acqValue() + reductionValue() > 0 && totalValue() > 0;
     }
-    setStatControl(Object.assign({}, statControl));
-  }
-
-  // let statValidate = (changedStat, newStat) => {
-  //   let controlHasBeenAdjusted = false;
-  //   let innateStat = innate[changedStat] || 0;
-  //   let reductionKey = `${changedStat[0]}r`;
-  //   let statReduction = reductionKey in stat ? stat[reductionKey] : 0;
-  //   let totalStat = innateStat + newStat - statReduction;
-
-  //   if (totalStat >= 0 && newStat >= 0) {
-  //     if (changedStat in statLimit) {
-  //       if (totalStat > statLimit[changedStat]) {
-  //         updateStatControl(changedStat, 'inc', false);
-  //         updateStatControl(changedStat, 'dec', true);
-  //         newStat = Math.min(newStat, statLimit[changedStat] + statReduction - innateStat);
-  //         controlHasBeenAdjusted = true;
-  //       } else {
-
-  //         if (totalStat === statLimit[changedStat]) {
-  //           updateStatControl(changedStat, 'inc', false);
-  //           updateStatControl(changedStat, 'dec', true);
-  //           controlHasBeenAdjusted = true;
-  //         } else {
-  //           updateStatControl(changedStat, 'inc', true);
-  //           updateStatControl(changedStat, 'dec', true);
-  //         }
-  //       }
-  //     }
-
-  //     stat[changedStat] = newStat;
-  //     setStat(Object.assign({}, stat));
-  //     calcXp(changedStat, newStat);
-
-  //     if (!controlHasBeenAdjusted) {
-  //       if (newStat === 0) {
-  //         updateStatControl(changedStat, 'dec', false);
-  //       } else {
-  //         updateStatControl(changedStat, 'dec', true);
-  //         updateStatControl(changedStat, 'inc', true);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // let infectionReduction = () => { return stat.ir || 0 };
-  // let statInfection = () => { return (stat.inf || 0) + (innate.inf || 0) };
-  // let totalInfection = () => { return statInfection() - (stat.ir || 0) };
-
-  // let irValidate = () => {
-  //   statControl.ir.dec = infectionReduction() > 0;
-  //   statControl.ir.inc = totalInfection() > 0;
-  //   setStatControl(Object.assign({}, statControl));
-  // }
-
-  // let handleReductionChange = (stat, adjustment) => {
-  //   let ir = ('ir' in stat) ? stat.ir : 0;
-  //   let newValue = ir + adjustment;
-  //   let totalInfection = statInfection() - newValue;
-
-  //   if (!('ir' in statControl)) statControl.ir = { inc: true, dec: false }
-  //   if (newValue >= 0 && totalInfection >= 0) { 
-  //     stat.ir = newValue;
-  //     setStat(Object.assign({}, stat));
-  //   } 
-
-  //   irValidate();
-  //   statValidate('inf', stat.inf);
-  // }
-
-  let updateStatControl = (stat, direction, state) => {
-    statControl[stat][direction] = state;
     setStatControl(Object.assign({}, statControl));
   }
 
@@ -357,9 +297,9 @@ function App() {
 
     switch(changedStat) {
       case 'hp':
-      case 'mp': statXp[changedStat] = deciCalc(acquired); break;
+      case 'mp': statXp[changedStat] = deciCalc(acquired || 0); break;
       case 'rp':
-      case 'inf': statXp[changedStat] = linearCalc(acquired); break;
+      case 'inf': statXp[changedStat] = linearCalc(acquired || 0); break;
     }
 
     setStatXp(Object.assign({}, statXp));
