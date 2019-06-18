@@ -178,7 +178,7 @@ function App() {
   }
 
   let handleStatChange = (changedStat, newValue) => {
-    stat[changedStat] = parseInt(newValue);
+    stat[changedStat] = parseInt(newValue) || 0;
     validateStatAndControls(changedStat);
   }
 
@@ -193,7 +193,7 @@ function App() {
     let reductionStatKey = changedStat[0] + 'r';
     let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
     let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
-    let reductionValue = () => { return reductionStatKey in stat ? stat : 0 }
+    let reductionValue = () => { return reductionStatKey in stat ? stat[reductionStatKey] : 0 }
     let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
     let limit = statLimit[changedStat];
     let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
@@ -203,9 +203,8 @@ function App() {
     if (acqValue >= 0 && belowOrAtLimit()) {
       setStat(Object.assign({}, stat));
     } else {
-      console.log(aboveLimit());
-      if (acqValue() < 0) stat[changedStat] = 0;
-      if (limit !== undefined && aboveLimit()) stat[changedStat] = limit - innateValue();
+      if (acqValue() - reductionValue() < 0) stat[changedStat] = reductionValue();
+      if (limit !== undefined && aboveLimit()) stat[changedStat] = limit - innateValue() + reductionValue();
       setStat(Object.assign({}, stat));
     }
 
