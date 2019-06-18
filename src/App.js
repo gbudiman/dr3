@@ -158,18 +158,15 @@ function App() {
     let innateStat = lineageStrain.lineages[lineage].innate;
     
     setSelectedStrain(newStrain);
-    setInnate({
+    innate = {
       hp: innateStat.hp,
       mp: innateStat.mp,
       rp: innateStat.rp,
       inf: innateStat.inf,
-    })
+    };
+    setInnate(innate);
 
-    for (const lstat in statLimit) {
-      let statSum = (innateStat[lstat] || 0) + (stat[lstat] || 0);
-      let limit = statLimit[lstat];
-      validateStatAndControls(lstat);
-    }
+    for (const lstat in statLimit) { validateStatAndControls(lstat, true) };
   }
 
   let handleStatClick = (changedStat, adjustment) => {
@@ -181,7 +178,7 @@ function App() {
   }
 
   let handleStatChange = (changedStat, newValue) => {
-    stat[changedStat] = newValue;
+    stat[changedStat] = parseInt(newValue);
     validateStatAndControls(changedStat);
   }
 
@@ -194,20 +191,28 @@ function App() {
 
   let validateStatAndControls = (changedStat) => {
     let reductionStatKey = changedStat[0] + 'r';
-    let innateValue = (changedStat in innate) ? innate[changedStat] : 0;
-    let acqValue = (changedStat in stat) ? stat[changedStat] : 0;
-    let reductionValue = (reductionStatKey in stat) ? stat : 0;
-    let totalValue = innateValue + acqValue - reductionValue;
+    let innateValue = () => { return changedStat in innate ? innate[changedStat] : 0 }
+    let acqValue = () => { return changedStat in stat ? stat[changedStat] : 0 }
+    let reductionValue = () => { return reductionStatKey in stat ? stat : 0 }
+    let totalValue = () => { return innateValue() + acqValue() - reductionValue() }
     let limit = statLimit[changedStat];
+    let belowOrAtLimit = () => { return limit === undefined || totalValue() <= limit }
+    let belowLimit = () => { return limit === undefined || totalValue() < limit }
+    let aboveLimit = () => { return limit === undefined || totalValue() > limit }
 
-    if (acqValue >= 0 && (limit === undefined || totalValue <= limit)) {
+    if (acqValue >= 0 && belowOrAtLimit()) {
       setStat(Object.assign({}, stat));
     } else {
-      if (acqValue < 0) stat[changedStat] = 0;
-      if (limit && totalValue > limit) stat[changedStat] = limit;
-
+      console.log(aboveLimit());
+      if (acqValue() < 0) stat[changedStat] = 0;
+      if (limit !== undefined && aboveLimit()) stat[changedStat] = limit - innateValue();
       setStat(Object.assign({}, stat));
     }
+
+    statControl[changedStat].inc = belowLimit();
+    statControl[changedStat].dec = acqValue() > 0;
+    setStatControl(Object.assign({}, statControl));
+    calcXp(changedStat, stat[changedStat]);
   }
 
   // let statValidate = (changedStat, newStat) => {
