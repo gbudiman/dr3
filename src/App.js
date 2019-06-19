@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
-import Grid from '@material-ui/core/Grid';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillInitializer';
 import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
-import StatBar from './components/statbars/StatBar';
+import StatQuad from './components/statquads/StatQuad';
 import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
@@ -24,7 +23,8 @@ function App() {
     hp: { inc: true, dec: false },
     mp: { inc: true, dec: false },
     rp: { inc: true, dec: false },
-    inf: { inc: true, dec: false }
+    inf: { inc: true, dec: false },
+    ir: { inc: false, dec: false }
   });
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({ stat: 0, skill: 0 });
@@ -75,7 +75,8 @@ function App() {
       hp: { inc: true, dec: false },
       mp: { inc: true, dec: false },
       rp: { inc: true, dec: false },
-      inf: { inc: true, dec: false }
+      inf: { inc: true, dec: false },
+      ir: { inc: false, dec: false }
     });
     setInnate({});
     setTotalXp({ stat: 0, skill: 0 });
@@ -175,77 +176,156 @@ function App() {
     let innateStat = lineageStrain.lineages[lineage].innate;
 
     setSelectedStrain(newStrain);
-    setInnate({
+    innate = {
       hp: innateStat.hp,
       mp: innateStat.mp,
       rp: innateStat.rp,
       inf: innateStat.inf
-    });
+    };
+    setInnate(innate);
 
     for (const lstat in statLimit) {
-      let statSum = (innateStat[lstat] || 0) + (stat[lstat] || 0);
-      let limit = statLimit[lstat];
-
-      if (statSum > limit) {
-        let diff = statSum - limit;
-        stat[lstat] -= diff;
-        setStat(Object.assign({}, stat));
-        calcXp(lstat, stat[lstat]);
-        updateStatControl(lstat, 'inc', false);
-        updateStatControl(lstat, 'dec', true);
-      } else {
-        updateStatControl(lstat, 'inc', true);
-      }
+      validateStatAndControls(lstat, true);
     }
   };
 
   let handleStatClick = (changedStat, adjustment) => {
     let currentStat = changedStat in stat ? stat[changedStat] : 0;
     let newStat = currentStat + adjustment;
-    let controlHasBeenAdjusted = false;
 
-    if ((innate[changedStat] || 0) + newStat >= 0 && newStat >= 0) {
-      if (changedStat in statLimit) {
-        if (
-          (innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment >
-          statLimit[changedStat]
-        ) {
-          return;
-        } else {
-          if (
-            (innate[changedStat] || 0) +
-              (stat[changedStat] || 0) +
-              adjustment ===
-            statLimit[changedStat]
-          ) {
-            updateStatControl(changedStat, 'inc', false);
-            updateStatControl(changedStat, 'dec', true);
-            controlHasBeenAdjusted = true;
-          } else {
-            updateStatControl(changedStat, 'inc', true);
-            updateStatControl(changedStat, 'dec', true);
-          }
-        }
-      }
-
-      stat[changedStat] = newStat;
-      setStat(Object.assign({}, stat));
-      calcXp(changedStat, newStat);
-
-      if (!controlHasBeenAdjusted) {
-        if (newStat === 0) {
-          updateStatControl(changedStat, 'dec', false);
-        } else {
-          updateStatControl(changedStat, 'dec', true);
-          updateStatControl(changedStat, 'inc', true);
-        }
-      }
-    }
+    stat[changedStat] = currentStat + adjustment;
+    validateStatAndControls(changedStat);
   };
 
-  let updateStatControl = (stat, direction, state) => {
-    statControl[stat][direction] = state;
+  let handleStatChange = (changedStat, newValue) => {
+    stat[changedStat] = parseInt(newValue) || 0;
+    validateStatAndControls(changedStat);
+  };
+
+  let handleReductionChange = (changedStat, adjustment) => {
+    statControl[reductionStatKey] = {};
+    let reductionStatKey = changedStat[0] + 'r';
+    let h = statHelper(changedStat);
+
+    if (h.reductionValue() < 0) {
+      stat[reductionStatKey] = 0;
+    } else if (h.reductionValue() + adjustment < 0) {
+      stat[reductionStatKey] = 0;
+    } else if (h.totalValue() < 0) {
+      stat[reductionStatKey] = -h.totalValue();
+    } else if (h.totalValue() == 0 && h.totalValue() - adjustment >= 0) {
+      stat[reductionStatKey] = h.reductionValue() + adjustment;
+    } else if (h.totalValue() == 0 && h.totalValue() - adjustment < 0) {
+      stat[reductionStatKey] = h.reductionValue();
+    } else if (
+      h.totalValue() == h.limit &&
+      h.totalValue() - adjustment < h.limit
+    ) {
+      stat[reductionStatKey] = h.reductionValue() + adjustment;
+    } else if (
+      h.totalValue() == h.limit &&
+      h.totalValue() - adjustment >= h.limit
+    ) {
+      stat[reductionStatKey] = h.reductionValue();
+    } else {
+      stat[reductionStatKey] = h.reductionValue() + adjustment;
+    }
+    setStat(Object.assign({}, stat));
+    statControl[reductionStatKey].dec =
+      h.reductionValue() > 0 && h.belowLimit();
+    statControl[reductionStatKey].inc = h.totalValue() > 0;
     setStatControl(Object.assign({}, statControl));
+    calcXp(changedStat, stat[changedStat]);
+    crossValidateControl(changedStat, 'main');
+  };
+
+  let validateStatAndControls = changedStat => {
+    let h = statHelper(changedStat);
+
+    if (h.totalValue() >= 0 && h.belowOrAtLimit() && h.acqValue() >= 0) {
+      // pass
+    } else {
+      if (h.reductionValue() == 0) {
+        if (h.acqValue() - h.reductionValue() < 0) {
+          stat[changedStat] = h.reductionValue();
+        }
+      } else {
+        if (h.acqValue() < 0) {
+          stat[changedStat] = 0;
+        } else if (h.totalValue() < 0) {
+          stat[changedStat] = h.acqValue() - h.totalValue();
+        }
+      }
+
+      if (h.limit !== undefined && h.aboveLimit()) {
+        stat[changedStat] = h.limit - h.innateValue() + h.reductionValue();
+      }
+    }
+
+    setStat(Object.assign({}, stat));
+    statControl[changedStat].inc = h.belowLimit();
+    statControl[changedStat].dec =
+      h.reductionValue() == 0
+        ? h.acqValue() > 0
+        : h.totalValue() > 0 && h.acqValue() > 0;
+    setStatControl(Object.assign({}, statControl));
+    calcXp(changedStat, stat[changedStat]);
+    crossValidateControl(changedStat, 'reduction');
+  };
+
+  let crossValidateControl = (changedStat, target) => {
+    let controlKey = target == 'reduction' ? changedStat[0] + 'r' : changedStat;
+    let control =
+      controlKey in statControl
+        ? statControl[controlKey]
+        : { inc: true, dec: true };
+    let h = statHelper(changedStat);
+
+    if (target == 'reduction') {
+      control.inc = h.totalValue() > 0;
+      control.dec = h.belowLimit() && h.reductionValue() > 0;
+    } else if (target == 'main') {
+      control.inc = h.belowLimit();
+      control.dec = h.acqValue() + h.reductionValue() > 0 && h.totalValue() > 0;
+    }
+    setStatControl(Object.assign({}, statControl));
+  };
+
+  let statHelper = key => {
+    let reductionStatKey = key[0] + 'r';
+    let innateValue = () => {
+      return key in innate ? innate[key] : 0;
+    };
+    let acqValue = () => {
+      return key in stat ? stat[key] : 0;
+    };
+    let reductionValue = () => {
+      return reductionStatKey in stat ? stat[reductionStatKey] : 0;
+    };
+    let totalValue = () => {
+      return innateValue() + acqValue() - reductionValue();
+    };
+    let limit = statLimit[key];
+    let belowOrAtLimit = () => {
+      return limit === undefined || totalValue() <= limit;
+    };
+    let belowLimit = () => {
+      return limit === undefined || totalValue() < limit;
+    };
+    let aboveLimit = () => {
+      return limit === undefined || totalValue() > limit;
+    };
+
+    return {
+      innateValue: innateValue,
+      acqValue: acqValue,
+      reductionValue: reductionValue,
+      totalValue: totalValue,
+      limit: limit,
+      belowOrAtLimit: belowOrAtLimit,
+      belowLimit: belowLimit,
+      aboveLimit: aboveLimit
+    };
   };
 
   let calcXp = (changedStat, acquired) => {
@@ -276,11 +356,11 @@ function App() {
     switch (changedStat) {
       case 'hp':
       case 'mp':
-        statXp[changedStat] = deciCalc(acquired);
+        statXp[changedStat] = deciCalc(acquired || 0);
         break;
       case 'rp':
       case 'inf':
-        statXp[changedStat] = linearCalc(acquired);
+        statXp[changedStat] = linearCalc(acquired || 0);
         break;
     }
 
@@ -398,8 +478,10 @@ function App() {
             lineages={lineageStrain.lineages}
           />
           <XpBar totalXp={totalXp} skillState={skillState} />
-          <StatBar
+          <StatQuad
             passClick={handleStatClick}
+            passChange={handleStatChange}
+            passReductionChange={handleReductionChange}
             stat={stat}
             statXp={statXp}
             statControl={statControl}
