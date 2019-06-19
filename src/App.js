@@ -20,18 +20,20 @@ function App() {
   let [selectedStrain, setSelectedStrain] = useState(null);
   let [stat, setStat] = useState({});
   let [statXp, setStatXp] = useState({});
-  let [statControl, setStatControl] = useState({ 
+  let [statControl, setStatControl] = useState({
     hp: { inc: true, dec: false },
     mp: { inc: true, dec: false },
     rp: { inc: true, dec: false },
-    inf: { inc: true, dec: false },
+    inf: { inc: true, dec: false }
   });
   let [innate, setInnate] = useState({});
-  let [totalXp, setTotalXp] = useState({stat: 0, skill: 0});
-  let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(false);
+  let [totalXp, setTotalXp] = useState({ stat: 0, skill: 0 });
+  let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(
+    false
+  );
   let [toonStorage, setToonStorage] = useState({});
   let [currentToon, setCurrentToon] = useState({});
-  let [toonData, setToonData] = useState({})
+  let [toonData, setToonData] = useState({});
   let statLimit = { rp: 6, inf: 8 };
 
   let loadNewToon = tid => {
@@ -58,12 +60,11 @@ function App() {
       setInnate(j.innate);
       setTotalXp(j.total_xp);
     }
-
-  }
+  };
 
   let loadBlankToon = () => {
     skillState = SkillInitializer();
-    
+
     setSkillState(skillState);
     setSkillXp(SkillCalc(skillState));
     setSkillHidden({});
@@ -74,36 +75,37 @@ function App() {
       hp: { inc: true, dec: false },
       mp: { inc: true, dec: false },
       rp: { inc: true, dec: false },
-      inf: { inc: true, dec: false },
-    })
+      inf: { inc: true, dec: false }
+    });
     setInnate({});
-    setTotalXp({stat: 0, skill: 0});
-  }
+    setTotalXp({ stat: 0, skill: 0 });
+  };
 
-  let persistToonStorage = (writeChange) => {
+  let persistToonStorage = writeChange => {
     setToonStorage(Object.assign({}, toonStorage));
-    if (writeChange) localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
-  }
+    if (writeChange)
+      localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
+  };
 
   let persistCurrentToon = () => {
     setCurrentToon(currentToon);
     localStorage.setItem('currentToon', currentToon);
-  }
+  };
 
   let generateNewToon = () => {
     currentToon = uuid.v1();
     toonStorage[currentToon] = { name: 'new', state: 'enabled' };
     persistCurrentToon(currentToon);
-  }
+  };
 
   useEffect(() => {
     if (localStorageHasBeenLoaded === false) {
       loadState();
       setLocalStorageHasBeenLoaded(true);
     } else {
-      saveState();  
+      saveState();
     }
-  })
+  });
 
   let saveState = () => {
     toonData[currentToon] = {
@@ -116,9 +118,9 @@ function App() {
       stat_control: statControl,
       innate: innate,
       total_xp: totalXp
-    }
+    };
     localStorage.setItem('toonData', JSON.stringify(toonData));
-  }
+  };
 
   let loadState = () => {
     toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
@@ -130,19 +132,23 @@ function App() {
       if (toonStorage != null && previousSessionToon) {
         if (previousSessionToon in toonStorage) return previousSessionToon;
       }
-    }
+    };
     let getFirstEnabledToon = () => {
-      return Object.keys(toonStorage).find((x) => { return toonStorage[x].state === 'enabled' });
-    }
-    
+      return Object.keys(toonStorage).find(x => {
+        return toonStorage[x].state === 'enabled';
+      });
+    };
+
     if (toonStorage != null) {
       firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
-      let deferredDeletes = Object.keys(toonStorage).filter(tid => toonStorage[tid].state === 'deleted');
+      let deferredDeletes = Object.keys(toonStorage).filter(
+        tid => toonStorage[tid].state === 'deleted'
+      );
       deferredDeletes.forEach(tid => {
         delete toonStorage[tid];
         delete toonData[tid];
-      })
+      });
 
       persistToonStorage();
     }
@@ -150,7 +156,7 @@ function App() {
     if (toonStorage == null) {
       toonStorage = {};
       generateNewToon();
-      persistToonStorage(true)
+      persistToonStorage(true);
     } else if (firstEnabledToon == null) {
       generateNewToon();
       persistToonStorage(true);
@@ -162,19 +168,19 @@ function App() {
       persistToonStorage(false);
       loadNewToon(currentToon);
     }
-  }
+  };
 
-  let handleStrainChange = (newStrain) => {
+  let handleStrainChange = newStrain => {
     let lineage = lineageStrain.strains[newStrain];
     let innateStat = lineageStrain.lineages[lineage].innate;
-    
+
     setSelectedStrain(newStrain);
     setInnate({
       hp: innateStat.hp,
       mp: innateStat.mp,
       rp: innateStat.rp,
-      inf: innateStat.inf,
-    })
+      inf: innateStat.inf
+    });
 
     for (const lstat in statLimit) {
       let statSum = (innateStat[lstat] || 0) + (stat[lstat] || 0);
@@ -191,19 +197,27 @@ function App() {
         updateStatControl(lstat, 'inc', true);
       }
     }
-  }
+  };
 
   let handleStatClick = (changedStat, adjustment) => {
     let currentStat = changedStat in stat ? stat[changedStat] : 0;
     let newStat = currentStat + adjustment;
     let controlHasBeenAdjusted = false;
-    
+
     if ((innate[changedStat] || 0) + newStat >= 0 && newStat >= 0) {
       if (changedStat in statLimit) {
-        if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment > statLimit[changedStat]) {
+        if (
+          (innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment >
+          statLimit[changedStat]
+        ) {
           return;
         } else {
-          if ((innate[changedStat] || 0) + (stat[changedStat] || 0) + adjustment === statLimit[changedStat]) {
+          if (
+            (innate[changedStat] || 0) +
+              (stat[changedStat] || 0) +
+              adjustment ===
+            statLimit[changedStat]
+          ) {
             updateStatControl(changedStat, 'inc', false);
             updateStatControl(changedStat, 'dec', true);
             controlHasBeenAdjusted = true;
@@ -227,58 +241,71 @@ function App() {
         }
       }
     }
-  }
+  };
 
   let updateStatControl = (stat, direction, state) => {
     statControl[stat][direction] = state;
     setStatControl(Object.assign({}, statControl));
-  }
+  };
 
   let calcXp = (changedStat, acquired) => {
-    let linearCalc = (x) => { return 10 * x };
-    let deciCalc = (x) => {
-      let influx = (y) => { 
-        if (y > 0) return (y - 10 < 0) ? y : 10;
+    let linearCalc = x => {
+      return 10 * x;
+    };
+    let deciCalc = x => {
+      let influx = y => {
+        if (y > 0) return y - 10 < 0 ? y : 10;
         return 0;
-      }
+      };
 
-      let totalCost = influx(x) * 1; x -= 10;
-      totalCost += influx(x) * 3; x -= 10;
-      totalCost += influx(x) * 5; x -= 10;
-      totalCost += influx(x) * 7; x -= 10;
-      totalCost += influx(x) * 9; x -= 10;
+      let totalCost = influx(x) * 1;
+      x -= 10;
+      totalCost += influx(x) * 3;
+      x -= 10;
+      totalCost += influx(x) * 5;
+      x -= 10;
+      totalCost += influx(x) * 7;
+      x -= 10;
+      totalCost += influx(x) * 9;
+      x -= 10;
       if (x > 0) totalCost += x * 10;
 
       return totalCost;
-    }
+    };
 
-    switch(changedStat) {
+    switch (changedStat) {
       case 'hp':
-      case 'mp': statXp[changedStat] = deciCalc(acquired); break;
+      case 'mp':
+        statXp[changedStat] = deciCalc(acquired);
+        break;
       case 'rp':
-      case 'inf': statXp[changedStat] = linearCalc(acquired); break;
+      case 'inf':
+        statXp[changedStat] = linearCalc(acquired);
+        break;
     }
 
     setStatXp(Object.assign({}, statXp));
     calcTotalXp();
-  }
+  };
 
   let calcTotalXp = () => {
     totalXp = {
-      stat: Object.values(statXp).reduce((a, b) => { return a + b }, 0),
-      skill: skillXp.total,
-    }
+      stat: Object.values(statXp).reduce((a, b) => {
+        return a + b;
+      }, 0),
+      skill: skillXp.total
+    };
     setTotalXp(Object.assign({}, totalXp));
-  }
+  };
 
   let handleSkillGridClick = (sid, tier) => {
     updateSkillState(sid, tier);
-    skillXp = SkillCalc(skillState)
+    skillXp = SkillCalc(skillState);
     setSkillXp(skillXp);
     calcTotalXp();
-  }
+  };
 
-  let handleSkillXpClick = (category) => {
+  let handleSkillXpClick = category => {
     if (!(category in skillHidden)) {
       skillHidden[category] = true;
     } else {
@@ -287,29 +314,32 @@ function App() {
 
     setSkillVisibility(category, !skillHidden[category]);
     setSkillHidden(Object.assign({}, skillHidden));
-  }
+  };
 
   let updateSkillState = (sid, tier) => {
     if (tier > 0 && tier <= 3) {
-      let t4acquired = ('t4acquired' in skillState[sid]) && skillState[sid].t4acquired === true;
-      let clickedAcquired = (tier <= skillState[sid].acquired) || (tier === 4 && t4acquired);
-      let clickedAtTier = (tier === skillState[sid].acquired) || (tier === 4 && t4acquired);
-      
+      let t4acquired =
+        't4acquired' in skillState[sid] && skillState[sid].t4acquired === true;
+      let clickedAcquired =
+        tier <= skillState[sid].acquired || (tier === 4 && t4acquired);
+      let clickedAtTier =
+        tier === skillState[sid].acquired || (tier === 4 && t4acquired);
+
       if (clickedAtTier && clickedAcquired) {
         if (tier === 2 && t4acquired) {
-          skillState[sid].t4acquired = false
+          skillState[sid].t4acquired = false;
         } else {
-          skillState[sid].acquired = tier - 1;  
+          skillState[sid].acquired = tier - 1;
         }
       } else {
         skillState[sid].acquired = tier;
       }
-      
+
       if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
       setSkillState(Object.assign({}, skillState));
     } else if (tier === 4) {
       if (!('t4acquired' in skillState[sid])) {
-        skillState[sid].t4acquired = true
+        skillState[sid].t4acquired = true;
       } else {
         skillState[sid].t4acquired = !skillState[sid].t4acquired;
       }
@@ -319,7 +349,7 @@ function App() {
       }
       setSkillState(Object.assign({}, skillState));
     }
-  }
+  };
 
   let setSkillVisibility = (category, state) => {
     for (const key in skillState) {
@@ -330,7 +360,7 @@ function App() {
     }
 
     setSkillState(Object.assign({}, skillState));
-  }
+  };
 
   let handleToonChange = (action, arg, arb) => {
     if (action === 'new') {
@@ -351,30 +381,46 @@ function App() {
       toonStorage[arg].state = 'enabled';
       persistToonStorage(true);
     }
-  }
+  };
 
   return (
     <div className='app-window'>
-      <AppBarWrapper passChange={handleToonChange} currentToon={currentToon} toonStorage={toonStorage} />
+      <AppBarWrapper
+        passChange={handleToonChange}
+        currentToon={currentToon}
+        toonStorage={toonStorage}
+      />
       <div className='builder'>
         <div className='container'>
-          <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} lineages={lineageStrain.lineages} />
+          <StrainPicker
+            passChange={handleStrainChange}
+            selectedStrain={selectedStrain}
+            lineages={lineageStrain.lineages}
+          />
           <XpBar totalXp={totalXp} skillState={skillState} />
-          <StatBar 
-            passClick={handleStatClick} 
+          <StatBar
+            passClick={handleStatClick}
             stat={stat}
             statXp={statXp}
             statControl={statControl}
-            innate={innate} />
-          <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
-          <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
+            innate={innate}
+          />
+          <SkillSummary
+            passClick={handleSkillXpClick}
+            skillXp={skillXp}
+            skillHidden={skillHidden}
+          />
+          <SkillContainer
+            passClick={handleSkillGridClick}
+            skillState={skillState}
+          />
         </div>
       </div>
       <div className='footer'>
         <div className='text'>Gloria Budiman - DRpaedia 3.0.0</div>
       </div>
     </div>
-  );    
+  );
 }
 
 export default App;
