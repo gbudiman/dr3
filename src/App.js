@@ -195,9 +195,10 @@ function App() {
   }
 
   let handleReductionChange = (changedStat, adjustment) => {
-    statControl[reductionStatKey] = {}
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(changedStat);
+
+    statControl[reductionStatKey] = {}
 
     if (h.reductionValue() < 0) {
       stat[reductionStatKey] = 0;
