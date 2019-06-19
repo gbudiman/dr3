@@ -219,6 +219,7 @@ function App() {
     console.log(h.reductionValue())
     console.log(h.belowLimit());
     console.log(h.totalValue());
+    statControl[reductionStatKey] = {}
     statControl[reductionStatKey].dec = h.reductionValue() > 0 && h.belowLimit();
     statControl[reductionStatKey].inc = h.totalValue() > 0;
     console.log(statControl[reductionStatKey])
