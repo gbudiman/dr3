@@ -53,7 +53,7 @@ function XpBar(props) {
 
   return(
     <div className='xpbar' ref={parentRef}>
-      <div className='text'>T{getTier()}: {props.totalXp.stat + props.totalXp.skill}{getNextTier()}</div>
+      <div className='text'>T{getTier()}: {props.totalXp.stat + props.totalXp.skill}{getNextTier()} XP</div>
       <div className='tier-placeholder tier-placeholder-1' ref={t1Ref}>
         <WarningIcon className={getWarningClassName(1)} />
       </div>

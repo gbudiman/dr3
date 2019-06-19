@@ -1,7 +1,6 @@
 import './ToonSter.scss';
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import Fade from '@material-ui/core/Fade';
 import Slide from '@material-ui/core/Slide';
 import Popper from '@material-ui/core/Popper';
 import ToonName from './ToonName';
@@ -49,7 +48,7 @@ function ToonSter(props) {
         <ExpandLess className={open ? '' : 'expand-hidden'} />
         <ExpandMore className={open ? 'expand-hidden' : ''} />
       </Button>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement='bottom-end' className='toonster' transition>
+      <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} className='toonster' transition>
         {({ TransitionProps }) => (
           <Slide {...TransitionProps} timeout={300}>
             <div className='overlay'>
