@@ -24,7 +24,7 @@
     "startingPage": 128
   },
   "basicCombatTactics": {
-    "description": "1 Mind, Strike or Ranged Attack, and calling \"Double tap, coup de gras\” ensures Target stays dead. Counters Targets faking death.",
+    "description": "1 Mind, Strike or Ranged Attack, and calling \"Double tap, coup de gras” ensures Target stays dead. Counters Targets faking death.",
     "startingPage": 109
   },
   "basicCriminalInfluence": {
@@ -44,7 +44,7 @@
     "startingPage": 121
   },
   "basicFaithVessel": {
-    "description": "5 Mind, Active verbal RP, and Psionic Attack on Target of same faith to call \”Psionics (Faith): Immune first Break Armor until next 12s.\” Does not stack.",
+    "description": "5 Mind, Active verbal RP, and Psionic Attack on Target of same faith to call \"Psionics (Faith): Immune first Break Armor until next 12s.\" Does not stack.",
     "startingPage": 129
   },
   "basicFaithfulMiracles": {
@@ -56,11 +56,11 @@
     "startingPage": 129
   },
   "basicFaithfulSpirit": {
-    "description": "5 Mind and Psionic Attack on same faith Target to call \”Psionics (Faith): Immune first Blind or Mangle until next 12s.\” Does not stack. Requires Active verbal RP.",
+    "description": "5 Mind and Psionic Attack on same faith Target to call \"Psionics (Faith): Immune first Blind or Mangle until next 12s.\" Does not stack. Requires Active verbal RP.",
     "startingPage": 129
   },
   "basicFaithfulWill": {
-    "description": "5 Mind, Psionic Attack on same faith Target, Active verbal RP, and call \“Psionics (Faith): Soothe Fractures.\” to soothe all Fractures for 1 hour.",
+    "description": "5 Mind, Psionic Attack on same faith Target, Active verbal RP, and call \"Psionics (Faith): Soothe Fractures.\" to soothe all Fractures for 1 hour.",
     "startingPage": 129
   },
   "basicFinancialInfluence": {
@@ -92,7 +92,7 @@
     "startingPage": 114
   },
   "basicMentalEndurance": {
-    "description": "5 Mind and call \”Mental Endurance\” to counter an Anomaly skill Targeted at User or User’s carried equipment or to remain silent under effects of Basic Malicious torture.",
+    "description": "5 Mind and call \"Mental Endurance\" to counter an Anomaly skill Targeted at User or User’s carried equipment or to remain silent under effects of Basic Malicious torture.",
     "startingPage": 122
   },
   "basicNecrokinetics": {
@@ -100,7 +100,7 @@
     "startingPage": 128
   },
   "basicPyrokinetics": {
-    "description": "5 Mind, Psionic Attack to call \”Psionic: 5 Body\” or \”Psionic: Break (Blueprint, Brew, Meal, or Gizmo.\” Countered by Mental Endurance for damage and held items. Can be used as coup de gras.",
+    "description": "5 Mind and Psionic Attack to call \"Psionic: 5 Body\" or \"Psionic: Break (Blueprint, Brew, Meal, or Gizmo.\" Countered by Mental Endurance for damage and held items. Can be used as coup de gras.",
     "startingPage": 128
   },
   "basicSailing": {
@@ -120,11 +120,11 @@
     "startingPage": 122
   },
   "basicTelekinetics": {
-    "description": "5 Mind, Psionic Attack, and call \”Psionic: Drop (left hand or right hand) toward me.\” to cause Target to drop held item at least 1 step toward User. If 2 hands are required, then both hands are dropped.",
+    "description": "5 Mind, Psionic Attack, and call \"Psionic: Drop (left hand or right hand) toward me.\" to cause Target to drop held item at least 1 step toward User. If 2 hands are required, then both hands are dropped.",
     "startingPage": 128
   },
   "basicTelepathy": {
-    "description": "5 Mind, Psionic Attack on Target Creature, make eye contact, and call \”Psionic: Suggestion (no more than 3 words)\”. Causes Target Creature to follow until they are harmed, 10 Minutes have passed, their instructions would cause self-destruction, or they reach a point where the request is outside their capacities.",
+    "description": "5 Mind, Psionic Attack on Target Creature, make eye contact, and call \"Psionic: Suggestion (no more than 3 words)\". Causes Target Creature to follow until they are harmed, 10 Minutes have passed, their instructions would cause self-destruction, or they reach a point where the request is outside their capacities.",
     "startingPage": 128
   },
   "basicTradeConnections": {
@@ -148,7 +148,7 @@
     "startingPage": 110
   },
   "interfere": {
-    "description": "0 Mind to call \”Interfere\” and take on the negative effects and damage delivered via single target Strike or Ranged Attack. User must be a valid target. The interfered effect is uncounterable.",
+    "description": "0 Mind to call \"Interfere\" and take on the negative effects and damage delivered via single target Strike or Ranged Attack. User must be a valid target. The interfered effect is uncounterable.",
     "startingPage": 111
   },
   "masterAgricultural": {
@@ -156,19 +156,19 @@
     "startingPage": 118
   },
   "masterArtisan": {
-    "description": 15 Mind and 20 Minutes to craft an item from Proficient to Master, or 30 Mind from scratch to Master. Requires Active RP and Full Engagement. Interruption resets timer and loses all materials.",
+    "description": "15 Mind and 20 Minutes to craft an item from Proficient to Master, or 30 Mind from scratch to Master. Requires Active RP and Full Engagement. Interruption resets timer and loses all materials.",
     "startingPage": 118
   },
   "masterAwareness": {
-    "description": "1 Resolve and 10 Minutes of Active RP for Target to call \”No effect: Master Awareness.\” to Blinding and Blinding zone effects for 1 hour, and call \”Master Awareness: Alert” while gesturing at a Target to negate a single Stealth skill for 5 Minutes at no cost once during the 1 hour.",
+    "description": "1 Resolve and 10 Minutes of Active RP for Target to call \"No effect: Master Awareness.\" to Blinding and Blinding zone effects for 1 hour, and call \"Master Awareness: Alert\" while gesturing at a Target to negate a single Stealth skill for 5 Minutes at no cost once during the 1 hour.",
     "startingPage": 125
   },
   "masterBiogenetics": {
-    "description": "1 Resolve, taking a knee or sitting, holding a hand in the air, and calling \”Master Biogenetics: You will not die.\” at least once per minute causes Bleed Out timer within 3 step radius to halt and reset. Coup de gras cannot be used. All helpful effects on User immediately end. Ends if the arm drops, User is moved or drops into bleedout, or uses another skill.",
+    "description": "1 Resolve, taking a knee or sitting, holding a hand in the air, and calling \"Master Biogenetics: You will not die.\" at least once per minute causes Bleed Out timer within 3 step radius to halt and reset. Coup de gras cannot be used. All helpful effects on User immediately end. Ends if the arm drops, User is moved or drops into bleedout, or uses another skill.",
     "startingPage": 132
   },
   "masterCombatTactics": {
-    "description": "1 Resolve and a loud rally cry to call \”10-foot radius: All allies heal 20 Body and are immune to Fear 10 Minutes.\”",
+    "description": "1 Resolve and a loud rally cry to call \"10-foot radius: All allies heal 20 Body and are immune to Fear 10 Minutes.\"",
     "startingPage": 113
   },
   "masterCriminalInfluence": {
@@ -192,11 +192,11 @@
     "startingPage": 113
   },
   "masterFaithVessel": {
-    "description": "1 Resolve to gain 5 uses of ranged Psionic Attack "Heal 10 body recover 5 Mind". After 10 Minutes or all 5 uses, User becomes Unconscious and dropped into Bleed Out (0 hp) wherever they are.  Gains 2 Fractures.  Cannot be used while Fractured.",
+    "description": "1 Resolve to gain 5 uses of ranged Psionic Attack \"Heal 10 body recover 5 Mind\". After 10 Minutes or all 5 uses, User becomes Unconscious and dropped into Bleed Out (0 hp) wherever they are.  Gains 2 Fractures.  Cannot be used while Fractured.",
     "startingPage": 134
   },
   "masterFaithfulMiracles": {
-    "description": "10 seconds Active channeling RP, 1 Resolve, and Psionic Attack to call \”Psionic (Faith): Heal all Body, fix limbs.\” User takes a standard Stun after use. Cannot be used while Fractured.",
+    "description": "10 seconds Active channeling RP, 1 Resolve, and Psionic Attack to call \"Psionic (Faith): Heal all Body, fix limbs.\" User takes a standard Stun after use. Cannot be used while Fractured.",
     "startingPage": 134
   },
   "masterFaithfulPatterns": {
@@ -204,7 +204,7 @@
     "startingPage": 133
   },
   "masterFaithfulSpirit": {
-    "description": "1 Resolve and Psionic Attack to call \”Psionic (Faith): 50 Body to zombies\” (single target). Cannot be used while Fractured.",
+    "description": "1 Resolve and Psionic Attack to call \"Psionic (Faith): 50 Body to zombies\" (single target). Cannot be used while Fractured.",
     "startingPage": 134
   },
   "masterFaithfulWill": {
@@ -232,11 +232,11 @@
     "startingPage": 119
   },
   "masterMalicious": {
-    "description": "1 Resolve and point at Target to ignore 20 seconds of strikes and effects while stalking towards the Target no more than 15 paces away. Must strike Target upon reaching, and will then begin taking damage and skill effects per normal.
+    "description": "1 Resolve and point at Target to ignore 20 seconds of strikes and effects while stalking towards the Target no more than 15 paces away. Must strike Target upon reaching, and will then begin taking damage and skill effects per normal.",
     "startingPage": 126
   },
   "masterMedical": {
-    "description": "5 Mind and 5 Minutes of Active RP and Full Engagement to restore 15 Mind to the Target. May be a requirement to cure deadlier diseases.
+    "description": "5 Mind and 5 Minutes of Active RP and Full Engagement to restore 15 Mind to the Target. May be a requirement to cure deadlier diseases.",
     "startingPage": 118
   },
   "masterMeleeSmall": {
@@ -252,7 +252,7 @@
     "startingPage": 113
   },
   "masterMentalEndurance": {
-    "description": "20 Mind and 5 Minutes of Active RP to declare \”Area of effect: No Anomaly skills.\” User cannot move from this area while this is active or the effect ends. User must declare \”No effect: Mental Endurance.\” to any use of Anomaly skills within the zone. Anomaly effects end when entering the zone.",
+    "description": "20 Mind and 5 Minutes of Active RP to declare \"Area of effect: No Anomaly skills.\" User cannot move from this area while this is active or the effect ends. User must declare \"No effect: Mental Endurance.\" to any use of Anomaly skills within the zone. Anomaly effects end when entering the zone.",
     "startingPage": 126
   },
   "masterNecrokinetics": {
@@ -264,11 +264,11 @@
     "startingPage": 113
   },
   "masterPyrokinetics": {
-    "description": "1 Resolve, Psionic Attack, and call \”Psionic: Area of Effect - 30 Body, Break all brews.\” to affect all Targets in the area. Cannot be used while Fractured. Countered by Master Mental Endurance only. Counts as a CVC action when used against LCs or SCs.",
+    "description": "1 Resolve, Psionic Attack, and call \"Psionic: Area of Effect - 30 Body, Break all brews.\" to affect all Targets in the area. Cannot be used while Fractured. Countered by Master Mental Endurance only. Counts as a CVC action when used against LCs or SCs.",
     "startingPage": 133
   },
   "masterSailing": {
-    "description": "10 Mind during a sailing module and call \”Hard to starboard!\” to cause enemies on the ship to be knocked off for 1 minute. Allows use of this skill’s equipment. May submit an Action request to request a sailing module for up to 10 Users with some level of this skill. If successful, all participants receive Gizmo: Free X Sailing Voucher ((X = level of skill of recipient) to view and get 1 free item from X level of this skill’s buyer’s list.",
+    "description": "10 Mind during a sailing module and call \"Hard to starboard!\" to cause enemies on the ship to be knocked off for 1 minute. Allows use of this skill’s equipment. May submit an Action request to request a sailing module for up to 10 Users with some level of this skill. If successful, all participants receive Gizmo: Free X Sailing Voucher ((X = level of skill of recipient) to view and get 1 free item from X level of this skill’s buyer’s list.",
     "startingPage": 126
   },
   "masterSalvaging": {
@@ -284,15 +284,15 @@
     "startingPage": 120
   },
   "masterStealth": {
-    "description": “Once per event, may spend 1 Resolve and declare \”Never here.\” to put up the out-of-game symbol and go to logistics to appear in a different location.",
+    "description": "Once per event, may spend 1 Resolve and declare \"Never here.\" to put up the out-of-game symbol and go to logistics to appear in a different location.",
     "startingPage": 127
   },
   "masterTelekinetics": {
-    "description": "1 Resolve, Psionic Attack, and call \”Break all armor and brews.\” Countered by Mental Endurance. Cannot be used if User has a Fracture. Counts as CvC action against LCs or SCs.",
+    "description": "1 Resolve, Psionic Attack, and call \"Break all armor and brews.\" Countered by Mental Endurance. Cannot be used if User has a Fracture. Counts as CvC action against LCs or SCs.",
     "startingPage": 133
   },
   "masterTelepathy": {
-    "description": "1 Resolve and Psionic Attack to call \”Psionic: Blinding, Stun, 10 Body.\” Countered by Mental Endurance. Cannot be used if User has a Fracture. Counts as CvC against LCs or SCs.",
+    "description": "1 Resolve and Psionic Attack to call \"Psionic: Blinding, Stun, 10 Body.\" Countered by Mental Endurance. Cannot be used if User has a Fracture. Counts as CvC against LCs or SCs.",
     "startingPage": 133
   },
   "masterThrownWeapon": {
@@ -308,7 +308,7 @@
     "startingPage": 127
   },
   "masterUnarmedCombat": {
-    "description": "10 Mind for a single use of mechanics awarded by Master level items of this type. 10 Mind, landing a successful Strike with a brawler to the torso, and calling \”Knockout\” causes Target to fall Unconscious for 5 Minutes, until they take damage or mechanical effects, or someone RPs 30 seconds to rouse them.",
+    "description": "10 Mind for a single use of mechanics awarded by Master level items of this type. 10 Mind, successful brawler-to-torso Strike, and calling \"Knockout\" causes Target to fall Unconscious for 5 Minutes until they take damage or mechanical effects, or someone RPs 30 seconds to rouse them.",
     "startingPage": 114
   },
   "piercingStrike": {
@@ -324,15 +324,15 @@
     "startingPage": 116
   },
   "proficientAwareness": {
-    "description": "10 Mind to call \”By the Sound of My Voice, Alert.\” to negate Stealth skills for 5 Minutes.",
+    "description": "10 Mind to call \"By the Sound of My Voice, Alert.\" to negate Stealth skills for 5 Minutes.",
     "startingPage": 122
   },
   "proficientBiogenetics": {
-    "description": "10 Mind, Psionic Attack, and call \”Psionic: Unconscious.\” to cause a Target to be knocked Unconscious. Does not work on Zombies. Counts as CVC when used against LCs or SCs.",
+    "description": "10 Mind, Psionic Attack, and call \"Psionic: Unconscious.\" to cause a Target to be knocked Unconscious. Does not work on Zombies. Counts as CVC when used against LCs or SCs.",
     "startingPage": 130
   },
   "proficientCombatTactics": {
-    "description": "10 Mind, gesture to up to 5 Targets in a 180-degree forward-facing arc, and call \”Scattershot\” to cause those Targets to be automatically hit by a single Strike or Ranged Attack. May be combined with equipment effects or skills, except single use items.",
+    "description": "10 Mind, gesture to up to 5 Targets in a 180-degree forward-facing arc, and call \"Scattershot\" to cause those Targets to be automatically hit by a single Strike or Ranged Attack. May be combined with equipment effects or skills, except single use items.",
     "startingPage": 112
   },
   "proficientCriminalInfluence": {
@@ -356,11 +356,11 @@
     "startingPage": 112
   },
   "proficientFaithVessel": {
-    "description": "10 Mind and Psionic Attack to call \“Psionic (Faith): 1 minute no Anomalies.\”",
+    "description": "10 Mind and Psionic Attack to call \"Psionic (Faith): 1 minute no Anomalies.\"",
     "startingPage": 132
   },
   "proficientFaithfulMiracles": {
-    "description": "10 Mind and Active verbal RP to call \”Psionics: By the Sound of My Voice all (Faith) heal 5.\"”,
+    "description": "10 Mind and Active verbal RP to call \"Psionics: By the Sound of My Voice all (Faith) heal 5.\"",
     "startingPage": 132
   },
   "proficientFaithfulPatterns": {
@@ -368,7 +368,7 @@
     "startingPage": 131
   },
   "proficientFaithfulSpirit": {
-    "description": "10 Mind, 10 Minutes Active prayer RP, Psionic Attack, and calling \“Psionics (Faith): Undying Spirit\” allows Target of same faith to spend 1 Resolve and call \”Faithful Spirit: No effect 1 minute\” to coup de gras on Target until next 12s or until it’s used. Does not prevent standard Bleed Out and does not stack.",
+    "description": "10 Mind, 10 Minutes Active prayer RP, Psionic Attack, and calling \"Psionics (Faith): Undying Spirit\" allows Target of same faith to spend 1 Resolve and call \"Faithful Spirit: No effect 1 minute\" to coup de gras on Target until next 12s or until it’s used. Does not prevent standard Bleed Out and does not stack.",
     "startingPage": 131
   },
   "proficientFaithfulWill": {
@@ -396,7 +396,7 @@
     "startingPage": 117
   },
   "proficientMalicious": {
-    "description": "5 Mind and successful Strike on Target’s limb to call \”Mangle.\” Can only be countered by Avoid if delivered to the front.",
+    "description": "5 Mind and successful Strike on Target’s limb to call \"Mangle.\" Can only be countered by Avoid if delivered to the front.",
     "startingPage": 123
   },
   "proficientMedical": {
@@ -428,11 +428,11 @@
     "startingPage": 112
   },
   "proficientPyrokinetics": {
-    "description": "10 Mind, Psionic Attack, and call \”Psionic: 20 Body.\” Use of this skill causes the User’s hands to ash and char over time.",
+    "description": "10 Mind, Psionic Attack, and call \"Psionic: 20 Body.\" Use of this skill causes the User’s hands to ash and char over time.",
     "startingPage": 130
   },
   "proficientSailing": {
-    "description": "5 Mind to state \”I’m the captain.\” during a sailing mod to ignore damage and skill effects for 1 minute, during which they can do nothing but sail. Allows use of this skill’s equipment. Once per event, User may see and buy 1 item from this skill’s buyer’s list.",
+    "description": "5 Mind to state \"I’m the captain.\" during a sailing mod to ignore damage and skill effects for 1 minute, during which they can do nothing but sail. Allows use of this skill’s equipment. Once per event, User may see and buy 1 item from this skill’s buyer’s list.",
     "startingPage": 124
   },
   "proficientSalvaging": {
@@ -452,11 +452,11 @@
     "startingPage": 124
   },
   "proficientTelekinetics": {
-    "description": "10 Mind, Psionic Attack, and call \”Psionic: Knock back 5 steps and Stun.\” to cause Target to be knocked back 5 steps or until hitting a larger solid object. Can be used on self.",
+    "description": "10 Mind, Psionic Attack, and call \"Psionic: Knock back 5 steps and Stun.\" to cause Target to be knocked back 5 steps or until hitting a larger solid object. Can be used on self.",
     "startingPage": 130
   },
   "proficientTelepathy": {
-    "description": "10 Mind, Psionic Attack, and call \”Psionic: Suggestion: Speak without filters.\” to cause Target to vocalize all internalized thoughts for 5 Minutes. Questions must be answered without limitation. Mute or characters under Choking Blow will do their best to communicate. Countered by Mental Endurance.",
+    "description": "10 Mind, Psionic Attack, and call \"Psionic: Suggestion: Speak without filters.\" to cause Target to vocalize all internalized thoughts for 5 Minutes. Questions must be answered without limitation. Mute or characters under Choking Blow will do their best to communicate. Countered by Mental Endurance.",
     "startingPage": 130
   },
   "proficientThrownWeapon": {
@@ -476,7 +476,7 @@
     "startingPage": 111
   },
   "takeDown": {
-    "description": "5 Mind, successful Strike or Ranged Attack to the torso, and call \”Takedown\” to Stun Target for 5 seconds. Target must sit or flail to the ground.",
+    "description": "5 Mind, successful Strike or Ranged Attack to the torso, and call \"Takedown\" to Stun Target for 5 seconds. Target must sit or flail to the ground.",
     "startingPage": 111
   }
 }
