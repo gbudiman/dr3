@@ -133,6 +133,15 @@
             font-family: 'Bellefair', serif;
             color: $color-light;
 
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+              }
+
+            input[tyoe='number'] {
+              -moz-appearance: textfield;
+            }
+
             .MuiInputBase-input {
               font-weight: bolder;
               font-size: 20px;
@@ -140,15 +149,7 @@
               width: 32px;
               text-align: center;
 
-              input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-                display: none;
-                -webkit-appearance: none;
-                margin: 0;
-              }
-
-              input {
-                -moz-appearance: textfield;
-              }
+              
             }
           }
         }
