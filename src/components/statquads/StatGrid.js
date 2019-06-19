@@ -91,6 +91,7 @@ function StatGrid(props) {
                     <span>{props.innate} + </span>
                     <InputBase
                       className='acq'
+                      type='number'
                       value={props.acquired}
                       onChange={handleChange}
                       onClick={handleSelectAllText}
