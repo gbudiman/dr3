@@ -226,13 +226,19 @@ function App() {
   let validateStatAndControls = (changedStat) => {
     let h = statHelper(changedStat);
 
-    if (h.totalValue() >= 0 && h.belowOrAtLimit()) {
+    if (h.totalValue() >= 0 && h.belowOrAtLimit() && h.acqValue() >= 0) {
       // pass
     } else {
       if (h.reductionValue() == 0) {
-        if (h.acqValue() - h.reductionValue() < 0) stat[changedStat] = h.reductionValue();  
+        if (h.acqValue() - h.reductionValue() < 0) {
+          stat[changedStat] = h.reductionValue();  
+        }
       } else {
-        if (h.totalValue() < 0 || h.acqValue() < 0) stat[changedStat] = h.acqValue() + (-h.totalValue());
+        if (h.acqValue() < 0) {         
+          stat[changedStat] = 0;
+        } else if (h.totalValue() < 0) {
+          stat[changedStat] = h.acqValue() - h.totalValue();
+        }
       }
       
       if (h.limit !== undefined && h.aboveLimit()) {
