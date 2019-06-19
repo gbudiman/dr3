@@ -195,6 +195,7 @@ function App() {
   }
 
   let handleReductionChange = (changedStat, adjustment) => {
+    statControl[reductionStatKey] = {}
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(changedStat);
 
@@ -216,13 +217,8 @@ function App() {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
     }
     setStat(Object.assign({}, stat));
-    console.log(h.reductionValue())
-    console.log(h.belowLimit());
-    console.log(h.totalValue());
-    statControl[reductionStatKey] = {}
     statControl[reductionStatKey].dec = h.reductionValue() > 0 && h.belowLimit();
     statControl[reductionStatKey].inc = h.totalValue() > 0;
-    console.log(statControl[reductionStatKey])
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'main');
