@@ -6,7 +6,6 @@ import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
-// import StatBar from './components/statbars/StatBar';
 import StatQuad from './components/statquads/StatQuad';
 import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
