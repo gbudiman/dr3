@@ -6,21 +6,26 @@ import './SkillQuad.scss';
 function SkillQuad(props) {
   let categories = ['combat', 'wasteland', 'civilized', 'anomaly'];
   let placement = {
-    combat: 'bottom-start',
-    wasteland: 'bottom',
-    civilized: 'bottom',
-    anomaly: 'bottom-end',
+    combat: 'top-start',
+    wasteland: 'top',
+    civilized: 'top',
+    anomaly: 'top-end',
   }
   let handlePopOpen = (category, openState) => { props.passPopOpen(category, openState) }
+  let handleSkillToggle = (category) => { props.passSkillToggle(category) }
   let generateSkillGrids = () => {
     return categories.map(category => {
       return <SkillGrid 
         key={category}
         category={category}
-        skillXp={props.skillXp.sum[category]}
+        skillTotalXp={props.skillXp.sum[category]}
+        skillQuantity={props.skillXp.grid.grid[category]}
+        skillXp={props.skillXp.grid.xp[category]}
         passPopOpen={handlePopOpen}
+        passSkillToggle={handleSkillToggle}
         placement={placement[category]}
-        openState={props.openState[category]} />
+        openState={props.openState[category]}
+        toggleState={props.skillHidden[category]} />
     })
   }
   

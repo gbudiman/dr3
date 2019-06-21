@@ -40,7 +40,7 @@
     border-bottom-left-radius: 16px;
 
     &.overlay-active {
-      border-bottom-left-radius: 0px;
+      border-top-left-radius: 0px;
     }
   }
 
@@ -50,20 +50,51 @@
     border-bottom-right-radius: 16px;
 
     &.overlay-active {
-      border-bottom-right-radius: 0px;
+      border-top-right-radius: 0px;
     }
   }
 }
 
-.skillquad-overlay {
+.skillgrid-overlay {
   background-color: $color-light;
-  color: $color-dark;
-  width: 100%;
-  max-width: 460px;
-  //margin: 0px 2px;
+  width: 75%;
+  max-width: 250px;
+  padding: 16px;
+  border: 0;
+  margin: 0px 0 0 0;
   border-radius: 16px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+  color: $color-dark;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
   z-index: 24;
 
+  &.combat {
+    border-bottom-left-radius: 0px;
+  }
+  &.anomaly {
+    border-bottom-right-radius: 0px;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: space-around;
+
+    table.summary-table {
+      width: 75%;
+
+      tr {
+        td.numeric {
+          text-align: right;
+        }
+
+        td.t4 {
+          border-left: 1px dashed $color-midtone;
+        }
+      }
+    }
+
+    .MuiSvgIcon-root.hidden {
+      display: none;
+    }
+  }
 }

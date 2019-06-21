@@ -424,7 +424,7 @@ function App() {
             passStatClick={handleStatClick} 
             passStatChange={handleStatChange}
             passStatReductionChange={handleReductionChange}
-            passSkillClick={handleSkillXpClick} 
+            passSkillToggle={handleSkillXpClick} 
             stat={stat}
             statXp={statXp}
             statControl={statControl}
