@@ -66,7 +66,7 @@ function StatGrid(props) {
   }
 
   useEffect(() => {
-    if (props.forcedState === 'closed') {
+    if (props.openState === 'closed') {
       anchorEl = null;
       setAnchorEl(anchorEl);
     }

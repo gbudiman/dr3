@@ -1,4 +1,4 @@
-@import '../../colors.scss';
+@import '../../../colors.scss';
 
 .statquad {
   display: flex;
@@ -59,7 +59,7 @@
 .statgrid-overlay {
   background-color: $color-light;
   width: 75%;
-  max-width: 250px;
+  max-width: 224px;
   padding: 16px;
   border: 0;
   margin: 0px 0 0 0;
@@ -134,11 +134,11 @@
             color: $color-light;
 
             input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-              }
+              -webkit-appearance: none;
+              margin: 0;
+            }
 
-            input[tyoe='number'] {
+            input[type='number'] {
               -moz-appearance: textfield;
             }
 
@@ -148,8 +148,6 @@
               text-decoration: underline;
               width: 32px;
               text-align: center;
-
-              
             }
           }
         }
