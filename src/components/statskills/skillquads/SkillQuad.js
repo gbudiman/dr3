@@ -4,7 +4,7 @@ import SkillGrid from './SkillGrid';
 import './SkillQuad.scss';
 
 function SkillQuad(props) {
-  let categories = ['combat', 'wasteland', 'civilized', 'anomaly'];
+  let categories = ['combat', 'civilized', 'wasteland', 'anomaly'];
   let placement = {
     combat: 'top-start',
     wasteland: 'top',

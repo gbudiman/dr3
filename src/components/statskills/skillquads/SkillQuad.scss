@@ -24,6 +24,13 @@
       background-color: $color-light;
       color: $color-dark;
 
+      .bold {
+        font-weight: bolder;
+        font-size: 18px;
+        margin-top: -5px;
+        text-decoration: underline;
+      }
+
       &:hover {
         background-color: $color-light;
         color: $color-dark;
@@ -59,9 +66,9 @@
   background-color: $color-light;
   width: 75%;
   max-width: 250px;
-  padding: 16px;
+  padding: 8px 16px 6px 12px;
   border: 0;
-  margin: 0px 0 0 0;
+  margin: 18px 0 0 0;
   border-radius: 16px;
   color: $color-dark;
   font-family: 'Bellefair', serif;
@@ -77,18 +84,27 @@
 
   .table-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
 
     table.summary-table {
       width: 75%;
 
-      tr {
-        td.numeric {
-          text-align: right;
-        }
+      tbody {
+        tr {
+          td.numeric {
+            text-align: right;
+            width: 24px;
+          }
 
-        td.t4 {
-          border-left: 1px dashed $color-midtone;
+          td.t4 {
+            border-left: 1px dashed $color-midtone;
+          }
+
+          td.bold {
+            font-weight: bolder;
+            text-decoration: underline;
+          }
         }
       }
     }
