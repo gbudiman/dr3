@@ -1,5 +1,13 @@
 @import '../../../colors.scss';
 
+@mixin quadTone() {
+  &.combat { background-color: $color-combat-4; }
+  &.civilized { background-color: $color-civilized-4; }
+  &.wasteland { background-color: $color-wasteland-4; }
+  &.anomaly { background-color: $color-anomaly-4; }
+  color: $color-light;
+}
+
 .skillquad {
   display: flex;
   justify-content: space-between;
@@ -12,6 +20,7 @@
   color: $color-light;
 
   .skillgrid {
+    @include quadTone();
     width: 25%;
     text-align: center;
     border-right: 1px solid $color-off-dark;
@@ -20,24 +29,37 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    
+    .symbol {
+      margin-top:-3px;
+      margin-bottom:-8px;
+    }
     &.overlay-active {
-      background-color: $color-light;
-      color: $color-dark;
+      @include quadTone();
 
       .bold {
         font-weight: bolder;
         font-size: 18px;
-        margin-top: -5px;
+        margin-top: -3px;
+        margin-bottom: -8px;
         text-decoration: underline;
       }
 
       &:hover {
+        filter: none;
+      }
+
+      &.muted {
         background-color: $color-light;
         color: $color-dark;
       }
     }
+    &.muted {
+      background-color: $color-dark;
+    }
+
     &:hover {
-      background-color: $color-midtone;
+      filter: brightness(150%);
     }
   }
 
@@ -63,18 +85,34 @@
 }
 
 .skillgrid-overlay {
+  @include quadTone();
   background-color: $color-light;
   width: 75%;
-  max-width: 250px;
+  max-width: 224px;
   padding: 8px 16px 6px 12px;
   border: 0;
   margin: 18px 0 0 0;
   border-radius: 16px;
-  color: $color-dark;
   font-family: 'Bellefair', serif;
   font-size: 14px;
   z-index: 24;
 
+  &.muted {
+    background-color: $color-light;
+    color: $color-dark;
+
+    .table-container {
+      table.summary-table {
+        tbody {
+          tr {
+            td.t4 {
+              border-left-color: $color-dark;
+            }
+          }
+        }
+      }
+    }
+  }
   &.combat {
     border-bottom-left-radius: 0px;
   }
@@ -98,7 +136,7 @@
           }
 
           td.t4 {
-            border-left: 1px dashed $color-midtone;
+            border-left: 1px dashed $color-light;
           }
 
           td.bold {
@@ -109,6 +147,9 @@
       }
     }
 
+    .MuiSvgIcon-root {
+      cursor: pointer;
+    }
     .MuiSvgIcon-root.hidden {
       display: none;
     }

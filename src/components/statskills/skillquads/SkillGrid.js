@@ -3,20 +3,36 @@ import Popper from '@material-ui/core/Popper';
 import './SkillQuad.scss';
 import Visible from '@material-ui/icons/Visibility';
 import Hidden from '@material-ui/icons/VisibilityOff';
+import Wasteland from '@material-ui/icons/Pets';
+import Anomaly from '@material-ui/icons/AcUnit';
+import Civilized from '@material-ui/icons/AccountBalance';
+import Combat from '@material-ui/icons/Gavel';
+import { upcase } from '../../../utils/StringUtil';
 
 function SkillGrid(props) {
   let [anchorEl, setAnchorEl] = useState(null);
   let open = Boolean(anchorEl);
   let id = open ? `popper-${props.category}` : undefined;
+  let isVisible = 'toggleState' in props && (props.toggleState === false || props.toggleState === undefined);
+  let isFiltered = !isVisible;
 
   let handleToggle = (event) => { 
     setAnchorEl(anchorEl ? null : event.currentTarget);
     props.passPopOpen(props.category, anchorEl === null);
   }
-  let getClassName = () => {
+  let getQuadClassName = () => {
     return [
       'skillgrid',
+      props.category,
+      isVisible ? '' : 'muted',
       anchorEl === null ? '' : 'overlay-active',
+    ].join(' ')
+  }
+  let getOverlayClassName = () => {
+    return [
+      'skillgrid-overlay',
+      props.category,
+      isVisible ? '' : 'muted',
     ].join(' ')
   }
   let drawSkillTable = () => {
@@ -43,9 +59,6 @@ function SkillGrid(props) {
       })
     }
 
-
-    let isFiltered = 'toggleState' in props && props.toggleState === true;
-    let isVisible = 'toggleState' in props && (props.toggleState === false || props.toggleState === undefined);
     let getVisibleClassName = () => { return isVisible ? '' : 'hidden' };
     let getHiddenClassName = () => { return isFiltered ? '' : 'hidden' };
     let handleSkillToggle = () => { props.passSkillToggle(props.category) };
@@ -55,7 +68,7 @@ function SkillGrid(props) {
         <table className='summary-table'>
           <tbody>
             <tr>
-              <td>Count</td>
+              <td>{upcase(props.category)}</td>
               {quantRow()}
             </tr>
             <tr>
@@ -69,6 +82,14 @@ function SkillGrid(props) {
       </div>
     )
   }
+  let getCategorySymbol = () => {
+    switch(props.category) {
+      case 'wasteland': return <Wasteland fontSize='small' />;
+      case 'combat': return <Combat fontSize='small' />;
+      case 'civilized': return <Civilized fontSize='small' />;
+      case 'anomaly': return <Anomaly fontSize='small' />;
+    }
+  }
   useEffect(() => {
     if (props.openState === 'closed') {
       anchorEl = null;
@@ -78,11 +99,11 @@ function SkillGrid(props) {
 
   return(
     <React.Fragment>
-      <div className={getClassName()} onClick={handleToggle}>
-        <div>{props.category[0].toUpperCase()}</div>
+      <div className={getQuadClassName()} onClick={handleToggle}>
+        <div className='symbol'>{getCategorySymbol()}</div>
         <div className='bold'>{props.skillTotalXp}</div>
       </div>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} transition className={`skillgrid-overlay ${props.category}`}>
+      <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} transition className={getOverlayClassName()}>
         {drawSkillTable()}
       </Popper>
     </React.Fragment>
