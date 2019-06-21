@@ -6,7 +6,7 @@ import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
-import StatQuad from './components/statquads/StatQuad';
+import StatSkill from './components/statskills/StatSkill'
 import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
@@ -420,15 +420,17 @@ function App() {
         <div className='container'>
           <StrainPicker passChange={handleStrainChange} selectedStrain={selectedStrain} lineages={lineageStrain.lineages} />
           <XpBar totalXp={totalXp} skillState={skillState} />
-          <StatQuad 
-            passClick={handleStatClick} 
-            passChange={handleStatChange}
-            passReductionChange={handleReductionChange}
+          <StatSkill
+            passStatClick={handleStatClick} 
+            passStatChange={handleStatChange}
+            passStatReductionChange={handleReductionChange}
+            passSkillClick={handleSkillXpClick} 
             stat={stat}
             statXp={statXp}
             statControl={statControl}
-            innate={innate} />
-          <SkillSummary passClick={handleSkillXpClick} skillXp={skillXp} skillHidden={skillHidden} />
+            innate={innate}
+            skillXp={skillXp} 
+            skillHidden={skillHidden} />
           <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
         </div>
       </div>
