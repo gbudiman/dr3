@@ -133,6 +133,15 @@
             font-family: 'Bellefair', serif;
             color: $color-light;
 
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            input[type='number'] {
+              -moz-appearance: textfield;
+            }
+
             .MuiInputBase-input {
               font-weight: bolder;
               font-size: 20px;
