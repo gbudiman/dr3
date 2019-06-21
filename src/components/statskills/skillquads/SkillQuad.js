@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
-import Popper from '@material-ui/core/Popper';
+import React from 'react';
 import SkillGrid from './SkillGrid';
 import './SkillQuad.scss';
 

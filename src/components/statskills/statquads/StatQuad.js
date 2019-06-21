@@ -1,5 +1,5 @@
 import './StatQuad.scss';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import StatGrid from './StatGrid';
 
 function StatQuad(props) {

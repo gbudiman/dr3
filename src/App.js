@@ -4,7 +4,6 @@ import SkillContainer from './components/skillgrids/SkillContainer';
 import SkillInitializer from './utils/SkillInitializer';
 import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
-import SkillSummary from './components/summaries/SkillSummary';
 import StrainPicker from './components/strains/StrainPicker';
 import StatSkill from './components/statskills/StatSkill'
 import XpBar from './components/xpbars/XpBar';
@@ -183,8 +182,6 @@ function App() {
 
   let handleStatClick = (changedStat, adjustment) => {
     let currentStat = changedStat in stat ? stat[changedStat] : 0;
-    let newStat = currentStat + adjustment;
-
     stat[changedStat] = currentStat + adjustment;
     validateStatAndControls(changedStat);
   }
@@ -206,13 +203,13 @@ function App() {
       stat[reductionStatKey] = 0;
     } else if (h.totalValue() < 0) {
       stat[reductionStatKey] = -h.totalValue();
-    } else if (h.totalValue() == 0 && (h.totalValue() - adjustment >= 0)) {
+    } else if (h.totalValue() === 0 && (h.totalValue() - adjustment >= 0)) {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
-    } else if (h.totalValue() == 0 && (h.totalValue() - adjustment < 0)) {
+    } else if (h.totalValue() === 0 && (h.totalValue() - adjustment < 0)) {
       stat[reductionStatKey] = h.reductionValue();
-    } else if (h.totalValue() == h.limit && (h.totalValue() - adjustment < h.limit)) {
+    } else if (h.totalValue() === h.limit && (h.totalValue() - adjustment < h.limit)) {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
-    } else if (h.totalValue() == h.limit && (h.totalValue() - adjustment >= h.limit)) {
+    } else if (h.totalValue() === h.limit && (h.totalValue() - adjustment >= h.limit)) {
       stat[reductionStatKey] = h.reductionValue();
     } else {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
@@ -231,7 +228,7 @@ function App() {
     if (h.totalValue() >= 0 && h.belowOrAtLimit() && h.acqValue() >= 0) {
       // pass
     } else {
-      if (h.reductionValue() == 0) {
+      if (h.reductionValue() === 0) {
         if (h.acqValue() - h.reductionValue() < 0) {
           stat[changedStat] = h.reductionValue();  
         }
@@ -250,21 +247,21 @@ function App() {
 
     setStat(Object.assign({}, stat));
     statControl[changedStat].inc = h.belowLimit();
-    statControl[changedStat].dec = (h.reductionValue() == 0) ? (h.acqValue() > 0) : (h.totalValue() > 0 && h.acqValue() > 0);
+    statControl[changedStat].dec = (h.reductionValue() === 0) ? (h.acqValue() > 0) : (h.totalValue() > 0 && h.acqValue() > 0);
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'reduction');
   }
 
   let crossValidateControl = (changedStat, target) => {
-    let controlKey = target == 'reduction' ? changedStat[0] + 'r' : changedStat;
+    let controlKey = target === 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control = controlKey in statControl ? statControl[controlKey] : { inc: true, dec: true };
     let h = statHelper(changedStat);
 
-    if (target == 'reduction') {
+    if (target === 'reduction') {
       control.inc = h.totalValue() > 0;
       control.dec = h.belowLimit() && h.reductionValue() > 0;
-    } else if (target == 'main') {
+    } else if (target === 'main') {
       control.inc = h.belowLimit();
       control.dec = h.acqValue() + h.reductionValue() > 0 && h.totalValue() > 0;
     }
