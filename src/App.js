@@ -363,6 +363,7 @@ function App() {
       }
       
       if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
+      if (skillState[sid].acquired === 1 && skillState[sid].innate) skillState[sid].acquired = 0;
       setSkillState(Object.assign({}, skillState));
     } else if (tier === 4) {
       if (!('t4acquired' in skillState[sid])) {
