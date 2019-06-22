@@ -1,4 +1,4 @@
-@import 'colors.scss';
+@import '../../colors.scss';
 
 body {
   background-color: $color-off-dark;
@@ -83,8 +83,4 @@ body {
   to {
     transform: rotate(360deg);
   }
-}
-
-.hi {
-  color: $color-light;
 }

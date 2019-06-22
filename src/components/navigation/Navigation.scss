@@ -1,0 +1,13 @@
+@import '../../colors.scss';
+
+.bottom-nav {
+  width: 100%;
+  color: $color-dark;
+
+  .button:active {
+    color: $color-dark;
+    .icon {
+      color: $color-light;
+    }
+  }
+}

@@ -14,42 +14,63 @@ import DebugReset from './DebugReset';
 function ToonSter(props) {
   let [anchorEl, setAnchorEl] = useState(null);
 
-  let handleClick = (event) => { setAnchorEl(anchorEl ? null : event.currentTarget) };
-  let handleChange = (tid, newValue) => { props.passChange('rename', tid, newValue) };
-  let handleSwitch = (tid) => { props.passChange('switch', tid) };
-  let handleDelete = (tid) => { props.passChange('delete', tid) };
-  let handleUndelete = (tid) => { props.passChange('undelete', tid) };
-  let handleNewToon = () => { props.passChange('new') };
+  let handleClick = event => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+  let handleChange = (tid, newValue) => {
+    props.passChange('rename', tid, newValue);
+  };
+  let handleSwitch = tid => {
+    props.passChange('switch', tid);
+  };
+  let handleDelete = tid => {
+    props.passChange('delete', tid);
+  };
+  let handleUndelete = tid => {
+    props.passChange('undelete', tid);
+  };
+  let handleNewToon = () => {
+    props.passChange('new');
+  };
 
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
   let toonLister = () => {
-    return Object.keys(props.toonStorage).map((tid) => {
+    return Object.keys(props.toonStorage).map(tid => {
       let tprop = props.toonStorage[tid];
-      return(
-        <ToonName 
-          name={tprop.name} 
-          passChange={handleChange} 
+      return (
+        <ToonName
+          name={tprop.name}
+          passChange={handleChange}
           passSwitch={handleSwitch}
           passDelete={handleDelete}
           passUndelete={handleUndelete}
-          key={tid} 
-          tid={tid} 
+          key={tid}
+          tid={tid}
           selected={tid === props.currentToon}
           existance={tprop.state}
         />
-      )
-    })
-  }
+      );
+    });
+  };
 
-  return(
+  return (
     <div className='toonster'>
       <Button onClick={handleClick}>
-        {props.currentToon in props.toonStorage ? props.toonStorage[props.currentToon].name : 'default'}
+        {props.currentToon in props.toonStorage
+          ? props.toonStorage[props.currentToon].name
+          : 'default'}
         <ExpandLess className={open ? '' : 'expand-hidden'} />
         <ExpandMore className={open ? 'expand-hidden' : ''} />
       </Button>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement='bottom-end' className='toonster' transition>
+      <Popper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        placement='bottom-end'
+        className='toonster'
+        transition
+      >
         {({ TransitionProps }) => (
           <Slide {...TransitionProps} timeout={300}>
             <div className='overlay'>
@@ -63,7 +84,7 @@ function ToonSter(props) {
         )}
       </Popper>
     </div>
-  )
+  );
 }
 
 export default ToonSter;
