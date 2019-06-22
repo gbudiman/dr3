@@ -1,5 +1,5 @@
 import './StatQuad.scss';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import StatGrid from './StatGrid';
 
 function StatQuad(props) {
@@ -10,23 +10,9 @@ function StatQuad(props) {
     rp: 'bottom',
     inf: 'bottom-end',
   }
-  let [refState, setRefState] = useState({
-    hp: 'closed',
-    mp: 'closed',
-    rp: 'closed',
-    inf: 'closed',
-  })
   let handleClick = (stat, adjustment) => { props.passClick(stat, adjustment) }
   let handleChange = (stat, value) => { props.passChange(stat, value) }
-  let handlePopOpen = (stat, openState) => {
-    if (openState) {
-      for (const cRef in refState) {
-        refState[cRef] = cRef === stat ? 'opened' : 'closed';
-      }
-    } else refState[stat] = 'opened';
-
-    setRefState(Object.assign({}, refState))
-  }
+  let handlePopOpen = (stat, state) => { props.passPopOpen(stat, state) }
   let handleReductionChange = (stat, adjustment) => { props.passReductionChange(stat, adjustment) };
 
   let makeGrids = () => {
@@ -47,7 +33,7 @@ function StatQuad(props) {
           passPopOpen={handlePopOpen}
           passReduction={handleReductionChange}
           placement={placement[statKey]}
-          forcedState={refState[statKey]} />
+          openState={props.openState[statKey]} />
       );
     })
   }

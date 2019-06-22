@@ -1,4 +1,4 @@
-@import '../../colors.scss';
+@import '../../../colors.scss';
 
 .statquad {
   display: flex;
@@ -15,7 +15,7 @@
     width: 25%;
     text-align: center;
     border-right: 1px solid $color-off-dark;
-    padding: 8px 16px;
+    padding: 8px 8px;
     background-color: $color-dark;
     cursor: pointer;
     display: flex;
@@ -39,6 +39,7 @@
     border-right: 1px solid $color-off-dark;
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
+    padding-left: 12px;
 
     &.overlay-active {
       border-bottom-left-radius: 0px;
@@ -49,6 +50,7 @@
     border-right: 0;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
+    padding-right: 12px;
 
     &.overlay-active {
       border-bottom-right-radius: 0px;
@@ -59,7 +61,7 @@
 .statgrid-overlay {
   background-color: $color-light;
   width: 75%;
-  max-width: 250px;
+  max-width: 224px;
   padding: 16px;
   border: 0;
   margin: 0px 0 0 0;
@@ -132,6 +134,15 @@
             margin-top: -9px;
             font-family: 'Bellefair', serif;
             color: $color-light;
+
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            input[type='number'] {
+              -moz-appearance: textfield;
+            }
 
             .MuiInputBase-input {
               font-weight: bolder;
