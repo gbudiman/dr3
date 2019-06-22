@@ -5,7 +5,7 @@ import SkillInitializer from './utils/SkillInitializer';
 import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import StrainPicker from './components/strains/StrainPicker';
-import StatSkill from './components/statskills/StatSkill'
+import StatSkill from './components/statskills/StatSkill';
 import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
@@ -200,14 +200,10 @@ function App() {
   };
 
   let handleReductionChange = (changedStat, adjustment) => {
-<<<<<<< HEAD
-    statControl[reductionStatKey] = {};
-=======
->>>>>>> 4b8e66a72ea23f6f1c25028906393323ceeae659
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(changedStat);
 
-    statControl[reductionStatKey] = {}
+    statControl[reductionStatKey] = {};
 
     if (h.reductionValue() < 0) {
       stat[reductionStatKey] = 0;
@@ -215,29 +211,19 @@ function App() {
       stat[reductionStatKey] = 0;
     } else if (h.totalValue() < 0) {
       stat[reductionStatKey] = -h.totalValue();
-<<<<<<< HEAD
-    } else if (h.totalValue() == 0 && h.totalValue() - adjustment >= 0) {
+    } else if (h.totalValue() === 0 && h.totalValue() - adjustment >= 0) {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
-    } else if (h.totalValue() == 0 && h.totalValue() - adjustment < 0) {
+    } else if (h.totalValue() === 0 && h.totalValue() - adjustment < 0) {
       stat[reductionStatKey] = h.reductionValue();
     } else if (
-      h.totalValue() == h.limit &&
+      h.totalValue() === h.limit &&
       h.totalValue() - adjustment < h.limit
     ) {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
     } else if (
-      h.totalValue() == h.limit &&
+      h.totalValue() === h.limit &&
       h.totalValue() - adjustment >= h.limit
     ) {
-=======
-    } else if (h.totalValue() === 0 && (h.totalValue() - adjustment >= 0)) {
-      stat[reductionStatKey] = h.reductionValue() + adjustment;
-    } else if (h.totalValue() === 0 && (h.totalValue() - adjustment < 0)) {
-      stat[reductionStatKey] = h.reductionValue();
-    } else if (h.totalValue() === h.limit && (h.totalValue() - adjustment < h.limit)) {
-      stat[reductionStatKey] = h.reductionValue() + adjustment;
-    } else if (h.totalValue() === h.limit && (h.totalValue() - adjustment >= h.limit)) {
->>>>>>> 4b8e66a72ea23f6f1c25028906393323ceeae659
       stat[reductionStatKey] = h.reductionValue();
     } else {
       stat[reductionStatKey] = h.reductionValue() + adjustment;
@@ -276,30 +262,22 @@ function App() {
 
     setStat(Object.assign({}, stat));
     statControl[changedStat].inc = h.belowLimit();
-<<<<<<< HEAD
     statControl[changedStat].dec =
-      h.reductionValue() == 0
+      h.reductionValue() === 0
         ? h.acqValue() > 0
         : h.totalValue() > 0 && h.acqValue() > 0;
-=======
-    statControl[changedStat].dec = (h.reductionValue() === 0) ? (h.acqValue() > 0) : (h.totalValue() > 0 && h.acqValue() > 0);
->>>>>>> 4b8e66a72ea23f6f1c25028906393323ceeae659
     setStatControl(Object.assign({}, statControl));
     calcXp(changedStat, stat[changedStat]);
     crossValidateControl(changedStat, 'reduction');
   };
 
   let crossValidateControl = (changedStat, target) => {
-<<<<<<< HEAD
-    let controlKey = target == 'reduction' ? changedStat[0] + 'r' : changedStat;
+    let controlKey =
+      target === 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control =
       controlKey in statControl
         ? statControl[controlKey]
         : { inc: true, dec: true };
-=======
-    let controlKey = target === 'reduction' ? changedStat[0] + 'r' : changedStat;
-    let control = controlKey in statControl ? statControl[controlKey] : { inc: true, dec: true };
->>>>>>> 4b8e66a72ea23f6f1c25028906393323ceeae659
     let h = statHelper(changedStat);
 
     if (target === 'reduction') {
@@ -437,7 +415,8 @@ function App() {
       }
 
       if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
-      if (skillState[sid].acquired === 1 && skillState[sid].innate) skillState[sid].acquired = 0;
+      if (skillState[sid].acquired === 1 && skillState[sid].innate)
+        skillState[sid].acquired = 0;
       setSkillState(Object.assign({}, skillState));
     } else if (tier === 4) {
       if (!('t4acquired' in skillState[sid])) {
@@ -500,26 +479,15 @@ function App() {
             lineages={lineageStrain.lineages}
           />
           <XpBar totalXp={totalXp} skillState={skillState} />
-<<<<<<< HEAD
-          <StatQuad
-            passClick={handleStatClick}
-            passChange={handleStatChange}
-            passReductionChange={handleReductionChange}
-=======
           <StatSkill
-            passStatClick={handleStatClick} 
+            passStatClick={handleStatClick}
             passStatChange={handleStatChange}
             passStatReductionChange={handleReductionChange}
-            passSkillToggle={handleSkillXpClick} 
->>>>>>> 4b8e66a72ea23f6f1c25028906393323ceeae659
+            passSkillToggle={handleSkillXpClick}
             stat={stat}
             statXp={statXp}
             statControl={statControl}
             innate={innate}
-<<<<<<< HEAD
-          />
-          <SkillSummary
-            passClick={handleSkillXpClick}
             skillXp={skillXp}
             skillHidden={skillHidden}
           />
@@ -527,11 +495,6 @@ function App() {
             passClick={handleSkillGridClick}
             skillState={skillState}
           />
-=======
-            skillXp={skillXp} 
-            skillHidden={skillHidden} />
-          <SkillContainer passClick={handleSkillGridClick} skillState={skillState} />
->>>>>>> 4b8e66a72ea23f6f1c25028906393323ceeae659
         </div>
       </div>
       <div className='footer'>
