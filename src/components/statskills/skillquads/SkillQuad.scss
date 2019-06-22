@@ -1,0 +1,159 @@
+@import '../../../colors.scss';
+
+@mixin quadTone() {
+  &.combat { background-color: $color-combat-4; }
+  &.civilized { background-color: $color-civilized-4; }
+  &.wasteland { background-color: $color-wasteland-4; }
+  &.anomaly { background-color: $color-anomaly-4; }
+  color: $color-light;
+}
+
+.skillquad {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: $color-dark;
+  border-radius: 16px;
+  margin: 2px 2px;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
+  color: $color-light;
+
+  .skillgrid {
+    @include quadTone();
+    width: 25%;
+    text-align: center;
+    border-right: 1px solid $color-off-dark;
+    padding: 8px 8px;
+    background-color: $color-dark;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    
+    .symbol {
+      margin-top:-3px;
+      margin-bottom:-8px;
+    }
+    &.overlay-active {
+      @include quadTone();
+
+      .bold {
+        font-weight: bolder;
+        font-size: 18px;
+        margin-top: -3px;
+        margin-bottom: -8px;
+        text-decoration: underline;
+      }
+
+      &:hover {
+        filter: none;
+      }
+
+      &.muted {
+        background-color: $color-light;
+        color: $color-dark;
+      }
+    }
+    &.muted {
+      background-color: $color-dark;
+    }
+
+    &:hover {
+      filter: brightness(150%);
+    }
+  }
+
+  .skillgrid:first-of-type {
+    border-right: 1px solid $color-off-dark;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    padding-left: 12px;
+
+    &.overlay-active {
+      border-top-left-radius: 0px;
+    }
+  }
+
+  .skillgrid:last-of-type {
+    border-right: 0;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    padding-right: 12px;
+
+    &.overlay-active {
+      border-top-right-radius: 0px;
+    }
+  }
+}
+
+.skillgrid-overlay {
+  @include quadTone();
+  background-color: $color-light;
+  width: 75%;
+  max-width: 224px;
+  padding: 8px 16px 6px 12px;
+  border: 0;
+  margin: 18px 0 0 0;
+  border-radius: 16px;
+  font-family: 'Bellefair', serif;
+  font-size: 14px;
+  z-index: 24;
+
+  &.muted {
+    background-color: $color-light;
+    color: $color-dark;
+
+    .table-container {
+      table.summary-table {
+        tbody {
+          tr {
+            td.t4 {
+              border-left-color: $color-dark;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.combat {
+    border-bottom-left-radius: 0px;
+  }
+  &.anomaly {
+    border-bottom-right-radius: 0px;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    table.summary-table {
+      width: 75%;
+
+      tbody {
+        tr {
+          td.numeric {
+            text-align: right;
+            width: 24px;
+          }
+
+          td.t4 {
+            border-left: 1px dashed $color-light;
+          }
+
+          td.bold {
+            font-weight: bolder;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .MuiSvgIcon-root {
+      cursor: pointer;
+    }
+    .MuiSvgIcon-root.hidden {
+      display: none;
+    }
+  }
+}

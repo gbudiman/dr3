@@ -4,6 +4,10 @@ import Navigation from './components/navigation/Navigation';
 import SkillInitializer from './utils/SkillInitializer';
 import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
+import SkillContainer from './components/skillgrids/SkillContainer';
+import StrainPicker from './components/strains/StrainPicker';
+import StatSkill from './components/statskills/StatSkill';
+import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import uuid from 'uuid';
 
@@ -418,6 +422,8 @@ const App = () => {
       }
 
       if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
+      if (skillState[sid].acquired === 1 && skillState[sid].innate)
+        skillState[sid].acquired = 0;
       setSkillState(Object.assign({}, skillState));
     } else if (tier === 4) {
       if (!('t4acquired' in skillState[sid])) {

@@ -1,7 +1,6 @@
 import './ToonSter.scss';
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import Fade from '@material-ui/core/Fade';
 import Slide from '@material-ui/core/Slide';
 import Popper from '@material-ui/core/Popper';
 import ToonName from './ToonName';

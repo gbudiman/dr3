@@ -41,6 +41,9 @@ body {
 
 .app-window {
   background-color: $color-off-dark;
+  // background-image: url('./paper-bg.jpg');
+  background-repeat: repeat;
+  background-position: 263%;
 
   .builder {
     display: flex;
@@ -49,6 +52,7 @@ body {
     background-color: $color-off-dark;
     padding: 16px 0px 0px 0px;
     flex-wrap: wrap;
+    // opacity: 0.9;
 
     .container {
       display: flex;
@@ -62,10 +66,10 @@ body {
     display: flex;
     justify-content: flex-end;
     text-align: right;
-    border-top: 1px solid $color-midtone;
+    border-top: 1px solid $color-light;
     font-style: italic;
     font-size: 12px;
-    color: $color-midtone;
+    color: $color-light;
     padding: 4px 0px;
     font-family: Alegreya, serif;
 
