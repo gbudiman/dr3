@@ -2,15 +2,16 @@ import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import grey from '@material-ui/core/colors/grey';
 import makeStyles from '@material-ui/styles/makeStyles';
 import skillInfo from '../../utils/skillInfo';
 
 const useStyles = makeStyles({
   primary: {
-    color: 'white'
+    color: grey[400]
   },
   secondary: {
-    color: 'white'
+    color: grey[400]
   }
 });
 
@@ -23,9 +24,9 @@ const SkillPage = () => {
           <ListItemText
             className='skills'
             primary={skillInfo[key].name}
-            primaryTypographyProps={classes.primary}
+            primaryTypographyProps={{ className: classes.primary }}
             secondary={skillInfo[key].description}
-            secondaryTypographyProps={classes.secondary}
+            secondaryTypographyProps={{ className: classes.secondary }}
           />
         </ListItem>
       ))}
