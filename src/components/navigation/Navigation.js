@@ -9,18 +9,24 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 
 const useStyles = makeStyles({
-  bottomNavigation: {
+  container: {
     width: '100%',
-    position: 'sticky',
+    position: 'fixed',
     bottom: 0,
     backgroundColor: grey[800],
     zIndex: 1000,
   },
-  label: {
-    color: grey[400],
+  root: {
+    color: grey[500],
+    '&$selected': {
+      color: grey[300]
+    }
   },
-  icon: {
-    color: grey[400]
+  label: {
+    fontFamily: 'Alegreya, serif'
+  },
+  selected: {
+    color: grey[300]
   }
 });
 
@@ -33,20 +39,33 @@ export default ({ tab, setTab }) => {
         setTab(newValue);
       }}
       showLabels
-      className={classes.bottomNavigation}
+      classes={{ root: classes.root }}
+      className={classes.container}
     >
       <BottomNavigationAction
-        className={classes.label}
+        classes={{
+          label: classes.label,
+          root: classes.root,
+          selected: classes.selected
+        }}
         label='Characters'
         icon={<PeopleIcon className={classes.icon} />}
       />
       <BottomNavigationAction
-        className={classes.label}
+        classes={{
+          label: classes.label,
+          root: classes.root,
+          selected: classes.selected
+        }}
         label='Skills'
         icon={<AssessmentIcon className={classes.icon} />}
       />
       <BottomNavigationAction
-        className={classes.label}
+        classes={{
+          label: classes.label,
+          root: classes.root,
+          selected: classes.selected
+        }}
         label='Feedback'
         icon={<FeedbackIcon className={classes.icon} />}
       />
