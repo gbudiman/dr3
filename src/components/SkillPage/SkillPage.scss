@@ -1,0 +1,13 @@
+@import '../../colors.scss';
+
+.builder {
+  .MuiList-root {
+    .MuiListItem-root {
+      .MuiListItemText-root {
+        .MuiTypography-root {
+          color: $color-light;
+        }
+      }
+    }
+  }
+}

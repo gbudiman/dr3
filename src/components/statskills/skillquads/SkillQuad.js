@@ -11,7 +11,7 @@ function SkillQuad(props) {
     anomaly: 'top-end',
   }
   let handlePopOpen = (category, openState) => { props.passPopOpen(category, openState) }
-  let handleSkillToggle = (category) => { props.passSkillToggle(category) }
+  let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(category) }
   let generateSkillGrids = () => {
     return categories.map(category => {
       return <SkillGrid 
@@ -21,7 +21,7 @@ function SkillQuad(props) {
         skillQuantity={props.skillXp.grid.grid[category]}
         skillXp={props.skillXp.grid.xp[category]}
         passPopOpen={handlePopOpen}
-        passSkillToggle={handleSkillToggle}
+        passSkillVisibilityToggle={handleSkillVisibilityToggle}
         placement={placement[category]}
         openState={props.openState[category]}
         toggleState={props.skillHidden[category]} />

@@ -206,7 +206,7 @@ const App = () => {
     validateStatAndControls(changedStat);
   };
 
-  let handleReductionChange = (changedStat, adjustment) => {
+  let handleStatReductionChange = (changedStat, adjustment) => {
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(changedStat);
 
@@ -391,7 +391,7 @@ const App = () => {
     calcTotalXp();
   };
 
-  let handleSkillXpClick = category => {
+  let handleSkillVisibilityToggle = category => {
     if (!(category in skillHidden)) {
       skillHidden[category] = true;
     } else {
@@ -451,6 +451,7 @@ const App = () => {
   };
 
   let handleToonChange = (action, arg, arb) => {
+    console.log(action);
     if (action === 'new') {
       generateNewToon();
       persistToonStorage(true);
@@ -472,16 +473,37 @@ const App = () => {
   };
 
   let switchTab = () => {
+    let defaultState = () => {
+      return(
+        <CharacterPage
+          lineageStrain={lineageStrain}
+          selectedStrain={selectedStrain}
+          innate={innate}
+          stat={stat}
+          skillState={skillState}
+          skillXp={skillXp}
+          statXp={statXp}
+          totalXp={totalXp}
+          statControl={statControl}
+          skillHidden={skillHidden}
+          passSkillGridClick={handleSkillGridClick}
+          passStrainChange={handleStrainChange}
+          passStatClick={handleStatClick}
+          passStatChange={handleStatChange}
+          passStatReductionChange={handleStatReductionChange}
+          passSkillVisibilityToggle={handleSkillVisibilityToggle}
+        />
+      )
+    }
     switch (tab) {
       case 0:
-        console.log('character');
-        return <CharacterPage />;
+        return defaultState();
       case 1:
         return <SkillPage />;
       case 2:
         return <FeedbackPage />;
       default:
-        return <CharacterPage passStrainChange={handleStrainChange} />;
+        return defaultState();
     }
   };
 
@@ -493,9 +515,6 @@ const App = () => {
         toonStorage={toonStorage}
       />
       <div className='builder'>{switchTab(tab)}</div>
-      <div className='footer'>
-        <div className='text'>Gloria Budiman - DRpaedia 3.0.0</div>
-      </div>
       <Navigation setTab={setTab} tab={tab} />
     </div>
   );
