@@ -38,9 +38,6 @@ const FeedbackPage = () => {
         shortname={disqusShortname}
         config={disqusConfig}
       />
-      <div className='footer'>
-        <div className='text'>Gloria Budiman - DRpaedia 3.0.0</div>
-      </div>
     </div>
   );
 };

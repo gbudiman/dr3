@@ -17,25 +17,31 @@ const useStyles = makeStyles({
   secondary: {
     color: grey[400],
     fontFamily: 'Alegreya, serif'
+  },
+  buffer: {
+    height: '64px',
   }
 });
 
 const SkillPage = () => {
   const classes = useStyles();
   return (
-    <List className='container'>
-      {Object.keys(skillInfo).map(key => (
-        <ListItem key={key}>
-          <ListItemText
-            className='skills'
-            primary={skillInfo[key].name}
-            primaryTypographyProps={{ className: classes.primary }}
-            secondary={skillInfo[key].description}
-            secondaryTypographyProps={{ className: classes.secondary }}
-          />
-        </ListItem>
-      ))}
-    </List>
+    <React.Fragment>
+      <List className='container'>
+        {Object.keys(skillInfo).map(key => (
+          <ListItem key={key}>
+            <ListItemText
+              className='skills'
+              primary={skillInfo[key].name}
+              primaryTypographyProps={{ className: classes.primary }}
+              secondary={skillInfo[key].description}
+              secondaryTypographyProps={{ className: classes.secondary }}
+            />
+          </ListItem>
+        ))}
+      </List>
+      <div className={classes.buffer} />
+    </React.Fragment>
   );
 };
 
