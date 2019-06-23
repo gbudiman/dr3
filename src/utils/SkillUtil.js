@@ -1,4 +1,4 @@
-import { calcXp, calcTotalXp } from './XpUtil';
+import { calcTotalXp } from './XpUtil';
 import SkillCalc from './SkillCalc';
 
 const SkillUtil = () => {

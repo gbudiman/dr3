@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import SkillContainer from '../skillgrids/SkillContainer';
-import SkillInitializer from '../../utils/SkillInitializer';
-import StrainInitializer from '../../utils/StrainInitializer';
-import SkillCalc from '../../utils/SkillCalc';
 import StatSkill from '../statskills/StatSkill';
 import StrainPicker from '../strains/StrainPicker';
 import XpBar from '../xpbars/XpBar';
-import uuid from 'uuid';
-import skillInfo from '../../utils/skillInfo';
 import './CharacterPage.scss';
 
 const CharacterPage = (props) => {

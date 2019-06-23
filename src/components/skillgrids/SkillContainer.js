@@ -9,7 +9,6 @@ function SkillContainer(props) {
   let buildBoxes = () => {
     let jsxes = Object.keys(props.skillState).map(key => {
       let value = props.skillState[key];
-      const skillInfo = (tier, key) => console.log(`${tier} and ${key}`);
       return (
         <SkillBox
           key={key}
