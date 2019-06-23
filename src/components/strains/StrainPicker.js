@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 function StrainPicker(props) {
   const classes = useStyles();
 
-  let handleChange = event => { props.passChange(event.target.value) }
+  let handleChange = event => { props.passStrainChange(event.target.value) }
   let statCompressor = (stat) => { return [stat.hp, stat.mp, stat.rp, stat.inf].join('/') }
 
   let strainBuilder = () => {

@@ -16,7 +16,7 @@ function SkillGrid(props) {
   let isVisible = 'toggleState' in props && (props.toggleState === false || props.toggleState === undefined);
   let isFiltered = !isVisible;
 
-  let handleToggle = (event) => { 
+  let handlePopperToggle = (event) => { 
     setAnchorEl(anchorEl ? null : event.currentTarget);
     props.passPopOpen(props.category, anchorEl === null);
   }
@@ -61,7 +61,7 @@ function SkillGrid(props) {
 
     let getVisibleClassName = () => { return isVisible ? '' : 'hidden' };
     let getHiddenClassName = () => { return isFiltered ? '' : 'hidden' };
-    let handleSkillToggle = () => { props.passSkillToggle(props.category) };
+    let handleSkillVisibilityToggle = () => { props.passSkillVisibilityToggle(props.category) };
 
     return(
       <div className='table-container'>
@@ -77,8 +77,8 @@ function SkillGrid(props) {
             </tr>
           </tbody>
         </table>
-        <Visible className={getVisibleClassName()} onClick={handleSkillToggle} />
-        <Hidden className={getHiddenClassName()} onClick={handleSkillToggle} />
+        <Visible className={getVisibleClassName()} onClick={handleSkillVisibilityToggle} />
+        <Hidden className={getHiddenClassName()} onClick={handleSkillVisibilityToggle} />
       </div>
     )
   }
@@ -99,7 +99,7 @@ function SkillGrid(props) {
 
   return(
     <React.Fragment>
-      <div className={getQuadClassName()} onClick={handleToggle}>
+      <div className={getQuadClassName()} onClick={handlePopperToggle}>
         <div className='symbol'>{getCategorySymbol()}</div>
         <div className='bold'>{props.skillTotalXp}</div>
       </div>

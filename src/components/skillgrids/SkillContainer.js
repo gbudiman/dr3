@@ -3,34 +3,39 @@ import SkillBox from './SkillBox';
 import './SkillGrid.scss';
 
 function SkillContainer(props) {
-  let handleClick = (sid, tier) => { props.passClick(sid, tier); }
+  let handleClick = (sid, tier) => {
+    props.passClick(sid, tier);
+  };
   let buildBoxes = () => {
-    let jsxes = Object.keys(props.skillState).map((key) => {
+    let jsxes = Object.keys(props.skillState).map(key => {
       let value = props.skillState[key];
-      return(
-        <SkillBox 
+      const skillInfo = (tier, key) => console.log(`${tier} and ${key}`);
+      return (
+        <SkillBox
           key={key}
           category={value.category}
           t1={key}
           t4={value.t4}
           innate={value.innate}
-          maxTier={value.maxTier}  
+          maxTier={value.maxTier}
           acquired={value.acquired}
           t4acquired={value.t4acquired}
           visible={value.visible}
-          passClick={handleClick} />
-      )
-    })
+          passClick={handleClick}
+          skillInfo={props.skillInfo}
+        />
+      );
+    });
 
     return jsxes;
-  }
+  };
 
-  return(
+  return (
     <div className='skill-container'>
       {buildBoxes()}
       <div className='buffer' />
     </div>
-  )
+  );
 }
 
 export default SkillContainer;

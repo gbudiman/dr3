@@ -1,0 +1,28 @@
+@import '../../colors.scss';
+
+.bottom-nav {
+  width: 100%;
+  color: $color-dark;
+
+  .button:active {
+    color: $color-dark;
+    .icon {
+      color: $color-light;
+    }
+  }
+}
+
+.MuiBottomNavigationAction-wrapper {
+  .MuiBottomNavigationAction-label {
+    font-family: Alegreya, serif;
+    color: $color-midtone;
+
+    &.Mui-selected {
+      color: $color-light;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    color: $color-midtone;
+  }
+}
