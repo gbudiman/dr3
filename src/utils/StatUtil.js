@@ -1,4 +1,4 @@
-import { calcXp, calcTotalXp } from './XpUtil';
+import { calcXp } from './XpUtil';
 
 const StatUtil = () => {
   let handleStatClick = (su, changedStat, adjustment) => {

@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 import Navigation from './components/navigation/Navigation';
 import StateUtil from './utils/StateUtil';
 import ToonUtil from './utils/ToonUtil';
-import { calcXp, calcTotalXp } from './utils/XpUtil';
 import { switchTab } from './utils/NavigationUtil';
-import SkillInitializer from './utils/SkillInitializer';
-import SkillCalc from './utils/SkillCalc';
-import SkillContainer from './components/skillgrids/SkillContainer';
-import StrainPicker from './components/strains/StrainPicker';
-import StatSkill from './components/statskills/StatSkill';
-import XpBar from './components/xpbars/XpBar';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 
 const App = () => {
