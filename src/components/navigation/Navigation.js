@@ -1,4 +1,5 @@
 import React from 'react';
+import './Navigation.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -13,7 +14,7 @@ const useStyles = makeStyles({
     position: 'fixed',
     bottom: 0,
     backgroundColor: grey[800],
-    zIndex: 1000
+    zIndex: 1000,
   },
   root: {
     color: grey[500],

@@ -7,7 +7,7 @@ function StatSkill(props) {
   let handleStatChange = (stat, value) => { props.passStatChange(stat, value) }
   let handleStatReductionChange = (stat, adjustment) => { props.passStatReductionChange(stat, adjustment) }
   let handleSkillClick = (action, category, tier) => { props.passSkillClick(action, category, tier) }
-  let handleSkillToggle = (category) => { props.passSkillToggle(category) }
+  let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(category) }
   let [openState, setOpenState] = useState({
     hp: 'closed',
     mp: 'closed',
@@ -44,7 +44,7 @@ function StatSkill(props) {
       <SkillQuad 
         passClick={handleSkillClick} 
         passPopOpen={handlePopOpen}
-        passSkillToggle={handleSkillToggle}
+        passSkillVisibilityToggle={handleSkillVisibilityToggle}
         skillXp={props.skillXp} 
         skillHidden={props.skillHidden}
         openState={openState} />

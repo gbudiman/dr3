@@ -4,7 +4,10 @@ import ToonSter from '../toonsters/ToonSter';
 import './AppBarWrapper.scss';
 
 function AppBarWrapper(props) {
-  let handleToonChange = (action, arg, arb) => { props.passChange(action, arg, arb) };
+  let handleToonChange = (action, arg, arb) => { 
+    props.passChange(props.su, action, arg, arb) 
+  };
+  
   return(
     <AppBar position='fixed'>
       <div className='container'>
@@ -12,8 +15,8 @@ function AppBarWrapper(props) {
         <div className='toonster-container'>
           <ToonSter 
             passChange={handleToonChange} 
-            currentToon={props.currentToon} 
-            toonStorage={props.toonStorage} />
+            currentToon={props.su.currentToon} 
+            toonStorage={props.su.toonStorage} />
         </div>
       </div>
     </AppBar>

@@ -11,3 +11,18 @@
     }
   }
 }
+
+.MuiBottomNavigationAction-wrapper {
+  .MuiBottomNavigationAction-label {
+    font-family: Alegreya, serif;
+    color: $color-midtone;
+
+    &.Mui-selected {
+      color: $color-light;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    color: $color-midtone;
+  }
+}
