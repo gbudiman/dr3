@@ -297,10 +297,6 @@ const App = () => {
     su.setSkillState(Object.assign({}, su.skillState));
   };
 
-  let handleToonChange = (action, arg, arb) => { 
-    toonUtil.handleToonChange(su, action, arg, arb);
-  }
-
   let switchTab = () => {
     let defaultState = () => {
       return(
@@ -331,7 +327,7 @@ const App = () => {
     <div className='app-window'>
       <AppBarWrapper
         su={su}
-        passChange={handleToonChange}
+        passChange={toonUtil.handleToonChange}
       />
       <div className='builder'>{switchTab(su.tab)}</div>
       <Navigation setTab={su.setTab} tab={su.tab} />
