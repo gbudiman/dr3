@@ -144,6 +144,7 @@ const StatUtil = () => {
     handleStatClick: handleStatClick,
     handleStatChange: handleStatChange,
     handleStatReductionChange: handleStatReductionChange,
+    validateStatAndControls: validateStatAndControls,
   }
 }
 

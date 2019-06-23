@@ -11,12 +11,12 @@ import skillInfo from '../../utils/skillInfo';
 import './CharacterPage.scss';
 
 const CharacterPage = (props) => {
-  let handleStrainChange = (value) => { props.passStrainChange(value) }
+  let handleStrainChange = (value) => { props.passStrainChange(props.su, value) }
   let handleStatClick = (stat, adjustment) => { props.passStatClick(props.su, stat, adjustment) }
   let handleStatChange = (stat, value) => { props.passStatChange(props.su, stat, value) }
   let handleStatReductionChange = (stat, adjustment) => { props.passStatReductionChange(props.su, stat, adjustment) }
-  let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(category) } 
-  let handleSkillGridClick = (sid, tier) => { props.passSkillGridClick(sid, tier) }
+  let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(props.su, category) } 
+  let handleSkillGridClick = (sid, tier) => { props.passSkillGridClick(props.su, sid, tier) }
 
   return (
     <div className='container'>
