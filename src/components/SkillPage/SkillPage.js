@@ -1,5 +1,5 @@
 import React from 'react';
-import './SkillPage.scss';
+//import './SkillPage.scss';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -10,7 +10,9 @@ import skillInfo from '../../utils/skillInfo';
 const useStyles = makeStyles({
   primary: {
     color: grey[400],
-    fontFamily: 'Alegreya, serif'
+    fontFamily: 'Alegreya, serif',
+    fontSize: '18px',
+    textDecoration: 'underline'
   },
   secondary: {
     color: grey[400],
