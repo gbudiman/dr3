@@ -7,9 +7,9 @@
   width: calc(56% - 40px);
 }
 @mixin triafter($color) {
-  position:absolute;
+  position: absolute;
   top: 0px;
-  right:-16px;  
+  right: -16px;
   content: '';
   width: 0px;
   height: 0px;
@@ -23,7 +23,7 @@
 @mixin trixtend($color, $index) {
   background-color: $color;
   text-align: right;
-  
+
   @if $index == 4 {
     @include pfxSkillWidth();
     border-top-right-radius: 16px;
@@ -78,7 +78,7 @@
 
   &.skill-tier-3 {
     height: 12px;
-    padding-top:4px; 
+    padding-top: 4px;
     &:after {
       border-width: 12px 0 12px 12px !important;
       right: -12px;
@@ -91,57 +91,134 @@
 }
 .skill-container {
   height: calc(100vh - 166px);
-  overflow-x: hidden;
-  overflow-y: auto;
+  // overflow-x: hidden;
+  // overflow-y: auto;
   width: 100%;
 }
 .skill-hidden {
   display: none;
 }
-.skill-tier-1.skill-innate {}
-.skill-combat-0           { @include trileft($color-combat-4) }
-.skill-combat-1           { @include trione($color-combat-4) }
-.skill-combat-2           { @include trixtend($color-combat-3, 2) }
-.skill-combat-3           { @include trixtend($color-combat-2, 3) }
-.skill-combat-4           { @include trixtend($color-combat-1, 4) }
-.skill-wasteland-0        { @include trileft($color-wasteland-4) }
-.skill-wasteland-1        { @include trione($color-wasteland-4) }
-.skill-wasteland-2        { @include trixtend($color-wasteland-3, 2) }
-.skill-wasteland-3        { @include trixtend($color-wasteland-2, 3) }
-.skill-wasteland-4        { @include trixtend($color-wasteland-1, 4) }
-.skill-anomaly-0          { @include trileft($color-anomaly-4) }
-.skill-anomaly-1          { @include trione($color-anomaly-4) }
-.skill-anomaly-2          { @include trixtend($color-anomaly-3, 2) }
-.skill-anomaly-3          { @include trixtend($color-anomaly-2, 3) }
-.skill-anomaly-4          { @include trixtend($color-anomaly-1, 4) }
-.skill-civilized-0        { @include trileft($color-civilized-4) }
-.skill-civilized-1        { @include trione($color-civilized-4) }
-.skill-civilized-2        { @include trixtend($color-civilized-3, 2) }
-.skill-civilized-3        { @include trixtend($color-civilized-2, 3) }
-.skill-civilized-4        { @include trixtend($color-civilized-1, 4) }
-.skill-unused-1           { @include trione($color-unused-4) }
-.skill-unused-2           { @include trixtend($color-unused-3, 2) }
-.skill-unused-3           { @include trixtend($color-unused-2, 3) }
-.skill-unused-4           { @include trixtend($color-unused-1, 4) }
-.skill-combat-1:after     { @include triafter($color-combat-4) }
-.skill-combat-2:after     { @include triafter($color-combat-3) }
-.skill-combat-3:after     { @include triafter($color-combat-2) }
-.skill-wasteland-1:after  { @include triafter($color-wasteland-4) }
-.skill-wasteland-2:after  { @include triafter($color-wasteland-3) }
-.skill-wasteland-3:after  { @include triafter($color-wasteland-2) }
-.skill-anomaly-1:after    { @include triafter($color-anomaly-4) }
-.skill-anomaly-2:after    { @include triafter($color-anomaly-3) }
-.skill-anomaly-3:after    { @include triafter($color-anomaly-2) }
-.skill-civilized-1:after  { @include triafter($color-civilized-4) }
-.skill-civilized-2:after  { @include triafter($color-civilized-3) }
-.skill-civilized-3:after  { @include triafter($color-civilized-2) }
-.skill-unused-1:after     { @include triafter($color-unused-4) }
-.skill-unused-2:after     { @include triafter($color-unused-3) }
-.skill-unused-3:after     { @include triafter($color-unused-2) }
+.skill-tier-1.skill-innate {
+}
+.skill-combat-0 {
+  @include trileft($color-combat-4);
+}
+.skill-combat-1 {
+  @include trione($color-combat-4);
+}
+.skill-combat-2 {
+  @include trixtend($color-combat-3, 2);
+}
+.skill-combat-3 {
+  @include trixtend($color-combat-2, 3);
+}
+.skill-combat-4 {
+  @include trixtend($color-combat-1, 4);
+}
+.skill-wasteland-0 {
+  @include trileft($color-wasteland-4);
+}
+.skill-wasteland-1 {
+  @include trione($color-wasteland-4);
+}
+.skill-wasteland-2 {
+  @include trixtend($color-wasteland-3, 2);
+}
+.skill-wasteland-3 {
+  @include trixtend($color-wasteland-2, 3);
+}
+.skill-wasteland-4 {
+  @include trixtend($color-wasteland-1, 4);
+}
+.skill-anomaly-0 {
+  @include trileft($color-anomaly-4);
+}
+.skill-anomaly-1 {
+  @include trione($color-anomaly-4);
+}
+.skill-anomaly-2 {
+  @include trixtend($color-anomaly-3, 2);
+}
+.skill-anomaly-3 {
+  @include trixtend($color-anomaly-2, 3);
+}
+.skill-anomaly-4 {
+  @include trixtend($color-anomaly-1, 4);
+}
+.skill-civilized-0 {
+  @include trileft($color-civilized-4);
+}
+.skill-civilized-1 {
+  @include trione($color-civilized-4);
+}
+.skill-civilized-2 {
+  @include trixtend($color-civilized-3, 2);
+}
+.skill-civilized-3 {
+  @include trixtend($color-civilized-2, 3);
+}
+.skill-civilized-4 {
+  @include trixtend($color-civilized-1, 4);
+}
+.skill-unused-1 {
+  @include trione($color-unused-4);
+}
+.skill-unused-2 {
+  @include trixtend($color-unused-3, 2);
+}
+.skill-unused-3 {
+  @include trixtend($color-unused-2, 3);
+}
+.skill-unused-4 {
+  @include trixtend($color-unused-1, 4);
+}
+.skill-combat-1:after {
+  @include triafter($color-combat-4);
+}
+.skill-combat-2:after {
+  @include triafter($color-combat-3);
+}
+.skill-combat-3:after {
+  @include triafter($color-combat-2);
+}
+.skill-wasteland-1:after {
+  @include triafter($color-wasteland-4);
+}
+.skill-wasteland-2:after {
+  @include triafter($color-wasteland-3);
+}
+.skill-wasteland-3:after {
+  @include triafter($color-wasteland-2);
+}
+.skill-anomaly-1:after {
+  @include triafter($color-anomaly-4);
+}
+.skill-anomaly-2:after {
+  @include triafter($color-anomaly-3);
+}
+.skill-anomaly-3:after {
+  @include triafter($color-anomaly-2);
+}
+.skill-civilized-1:after {
+  @include triafter($color-civilized-4);
+}
+.skill-civilized-2:after {
+  @include triafter($color-civilized-3);
+}
+.skill-civilized-3:after {
+  @include triafter($color-civilized-2);
+}
+.skill-unused-1:after {
+  @include triafter($color-unused-4);
+}
+.skill-unused-2:after {
+  @include triafter($color-unused-3);
+}
+.skill-unused-3:after {
+  @include triafter($color-unused-2);
+}
 
 .skill-unused-0 {
   background-color: $color-unused-4;
   width: 16px;
 }
-
-

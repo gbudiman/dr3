@@ -8,10 +8,12 @@ import skillInfo from '../../utils/skillInfo';
 
 const useStyles = makeStyles({
   primary: {
-    color: grey[400]
+    color: grey[400],
+    fontFamily: 'Alegreya, serif'
   },
   secondary: {
-    color: grey[400]
+    color: grey[400],
+    fontFamily: 'Alegreya, serif'
   }
 });
 

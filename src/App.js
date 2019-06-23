@@ -493,9 +493,6 @@ const App = () => {
         toonStorage={toonStorage}
       />
       <div className='builder'>{switchTab(tab)}</div>
-      <div className='footer'>
-        <div className='text'>Gloria Budiman - DRpaedia 3.0.0</div>
-      </div>
       <Navigation setTab={setTab} tab={tab} />
     </div>
   );
