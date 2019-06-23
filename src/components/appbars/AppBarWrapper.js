@@ -12,8 +12,8 @@ function AppBarWrapper(props) {
         <div className='toonster-container'>
           <ToonSter 
             passChange={handleToonChange} 
-            currentToon={props.currentToon} 
-            toonStorage={props.toonStorage} />
+            currentToon={props.su.currentToon} 
+            toonStorage={props.su.toonStorage} />
         </div>
       </div>
     </AppBar>

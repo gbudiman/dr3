@@ -22,25 +22,25 @@ const CharacterPage = (props) => {
     <div className='container'>
       <StrainPicker
         passStrainChange={handleStrainChange}
-        selectedStrain={props.selectedStrain}
-        lineages={props.lineageStrain.lineages}
+        selectedStrain={props.su.selectedStrain}
+        lineages={props.su.lineageStrain.lineages}
       />
-      <XpBar totalXp={props.totalXp} skillState={props.skillState} />
+      <XpBar totalXp={props.su.totalXp} skillState={props.su.skillState} />
       <StatSkill
         passStatClick={handleStatClick}
         passStatChange={handleStatChange}
         passStatReductionChange={handleStatReductionChange}
         passSkillVisibilityToggle={handleSkillVisibilityToggle}
-        stat={props.stat}
-        statXp={props.statXp}
-        statControl={props.statControl}
-        innate={props.innate}
-        skillXp={props.skillXp}
-        skillHidden={props.skillHidden}
+        stat={props.su.stat}
+        statXp={props.su.statXp}
+        statControl={props.su.statControl}
+        innate={props.su.innate}
+        skillXp={props.su.skillXp}
+        skillHidden={props.su.skillHidden}
       />
       <SkillContainer
         passClick={handleSkillGridClick}
-        skillState={props.skillState}
+        skillState={props.su.skillState}
       />
     </div>
   );

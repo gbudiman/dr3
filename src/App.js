@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
 import Navigation from './components/navigation/Navigation';
+import StateUtil from './utils/StateUtil';
 import SkillInitializer from './utils/SkillInitializer';
-import StrainInitializer from './utils/StrainInitializer';
 import SkillCalc from './utils/SkillCalc';
 import SkillContainer from './components/skillgrids/SkillContainer';
 import StrainPicker from './components/strains/StrainPicker';
@@ -16,34 +16,10 @@ import SkillPage from './components/SkillPage/SkillPage';
 import FeedbackPage from './components/FeedbackPage/FeedbackPage';
 
 const App = () => {
-  const [tab, setTab] = useState(0);
-
-  let lineageStrain = StrainInitializer();
-  let [skillState, setSkillState] = useState(SkillInitializer());
-  let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
-  let [skillHidden, setSkillHidden] = useState({});
-  let [selectedStrain, setSelectedStrain] = useState(null);
-  let [stat, setStat] = useState({});
-  let [statXp, setStatXp] = useState({});
-  let [statControl, setStatControl] = useState({
-    hp: { inc: true, dec: false },
-    mp: { inc: true, dec: false },
-    rp: { inc: true, dec: false },
-    inf: { inc: true, dec: false },
-    ir: { inc: false, dec: false }
-  });
-  let [innate, setInnate] = useState({});
-  let [totalXp, setTotalXp] = useState({ stat: 0, skill: 0 });
-  let [localStorageHasBeenLoaded, setLocalStorageHasBeenLoaded] = useState(
-    false
-  );
-  let [toonStorage, setToonStorage] = useState({});
-  let [currentToon, setCurrentToon] = useState({});
-  let [toonData, setToonData] = useState({});
-  let statLimit = { rp: 6, inf: 8 };
+  let su = StateUtil();
 
   let loadNewToon = tid => {
-    const j = toonData[tid];
+    const j = su.toonData[tid];
 
     if (j == null) {
       // critical localStorageError
@@ -56,153 +32,153 @@ const App = () => {
       console.log(localStorage.getItem('toonData'));
       loadBlankToon();
     } else {
-      setSkillState(j.skill_state);
-      setSkillXp(j.skill_xp);
-      setSkillHidden(j.skill_hidden);
-      setSelectedStrain(j.selected_strain);
-      setStat(j.stat);
-      setStatXp(j.stat_xp);
-      setStatControl(j.stat_control);
-      setInnate(j.innate);
-      setTotalXp(j.total_xp);
+      su.setSkillState(j.skill_state);
+      su.setSkillXp(j.skill_xp);
+      su.setSkillHidden(j.skill_hidden);
+      su.setSelectedStrain(j.selected_strain);
+      su.setStat(j.stat);
+      su.setStatXp(j.stat_xp);
+      su.setStatControl(j.stat_control);
+      su.setInnate(j.innate);
+      su.setTotalXp(j.total_xp);
     }
   };
 
   let loadBlankToon = () => {
-    skillState = SkillInitializer();
+    su.skillState = SkillInitializer();
 
-    setSkillState(skillState);
-    setSkillXp(SkillCalc(skillState));
-    setSkillHidden({});
-    setSelectedStrain(null);
-    setStat({});
-    setStatXp({});
-    setStatControl({
+    su.setSkillState(su.skillState);
+    su.setSkillXp(SkillCalc(su.skillState));
+    su.setSkillHidden({});
+    su.setSelectedStrain(null);
+    su.setStat({});
+    su.setStatXp({});
+    su.setStatControl({
       hp: { inc: true, dec: false },
       mp: { inc: true, dec: false },
       rp: { inc: true, dec: false },
       inf: { inc: true, dec: false },
       ir: { inc: false, dec: false }
     });
-    setInnate({});
-    setTotalXp({ stat: 0, skill: 0 });
+    su.setInnate({});
+    su.setTotalXp({ stat: 0, skill: 0 });
   };
 
   let persistToonStorage = writeChange => {
-    setToonStorage(Object.assign({}, toonStorage));
+    su.setToonStorage(Object.assign({}, su.toonStorage));
     if (writeChange)
-      localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
+      localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
   };
 
   let persistCurrentToon = () => {
-    setCurrentToon(currentToon);
-    localStorage.setItem('currentToon', currentToon);
+    su.setCurrentToon(su.currentToon);
+    localStorage.setItem('currentToon', su.currentToon);
   };
 
   let generateNewToon = () => {
-    currentToon = uuid.v1();
-    toonStorage[currentToon] = { name: 'new', state: 'enabled' };
-    persistCurrentToon(currentToon);
+    su.currentToon = uuid.v1();
+    su.toonStorage[su.currentToon] = { name: 'new', state: 'enabled' };
+    persistCurrentToon(su.currentToon);
   };
 
   useEffect(() => {
-    if (localStorageHasBeenLoaded === false) {
+    if (su.localStorageHasBeenLoaded === false) {
       loadState();
-      setLocalStorageHasBeenLoaded(true);
+      su.setLocalStorageHasBeenLoaded(true);
     } else {
       saveState();
     }
   });
 
   let saveState = () => {
-    toonData[currentToon] = {
-      skill_state: skillState,
-      skill_xp: skillXp,
-      skill_hidden: skillHidden,
-      selected_strain: selectedStrain,
-      stat: stat,
-      stat_xp: statXp,
-      stat_control: statControl,
-      innate: innate,
-      total_xp: totalXp
+    su.toonData[su.currentToon] = {
+      skill_state: su.skillState,
+      skill_xp: su.skillXp,
+      skill_hidden: su.skillHidden,
+      selected_strain: su.selectedStrain,
+      stat: su.stat,
+      stat_xp: su.statXp,
+      stat_control: su.statControl,
+      innate: su.innate,
+      total_xp: su.totalXp,
     };
-    localStorage.setItem('toonData', JSON.stringify(toonData));
+    localStorage.setItem('toonData', JSON.stringify(su.toonData));
   };
 
   let loadState = () => {
-    toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
+    su.toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
 
     let firstEnabledToon;
     let getPreviousSessionToon = () => {
       let previousSessionToon = localStorage.getItem('currentToon');
 
-      if (toonStorage != null && previousSessionToon) {
-        if (previousSessionToon in toonStorage) return previousSessionToon;
+      if (su.toonStorage != null && previousSessionToon) {
+        if (previousSessionToon in su.toonStorage) return previousSessionToon;
       }
     };
     let getFirstEnabledToon = () => {
-      return Object.keys(toonStorage).find(x => {
-        return toonStorage[x].state === 'enabled';
+      return Object.keys(su.toonStorage).find(x => {
+        return su.toonStorage[x].state === 'enabled';
       });
     };
 
-    if (toonStorage != null) {
+    if (su.toonStorage != null) {
       firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
-      let deferredDeletes = Object.keys(toonStorage).filter(
-        tid => toonStorage[tid].state === 'deleted'
+      let deferredDeletes = Object.keys(su.toonStorage).filter(
+        tid => su.toonStorage[tid].state === 'deleted'
       );
       deferredDeletes.forEach(tid => {
-        delete toonStorage[tid];
-        delete toonData[tid];
+        delete su.toonStorage[tid];
+        delete su.toonData[tid];
       });
 
       persistToonStorage();
     }
 
-    if (toonStorage == null) {
-      toonStorage = {};
+    if (su.toonStorage == null) {
+      su.toonStorage = {};
       generateNewToon();
       persistToonStorage(true);
     } else if (firstEnabledToon == null) {
       generateNewToon();
       persistToonStorage(true);
     } else {
-      currentToon = firstEnabledToon;
-      toonData = JSON.parse(localStorage.getItem('toonData'));
-      persistCurrentToon(currentToon);
-      setToonData(toonData);
+      su.currentToon = firstEnabledToon;
+      su.toonData = JSON.parse(localStorage.getItem('toonData'));
+      persistCurrentToon(su.currentToon);
+      su.setToonData(su.toonData);
       persistToonStorage(false);
-      loadNewToon(currentToon);
+      loadNewToon(su.currentToon);
     }
   };
 
   let handleStrainChange = newStrain => {
-    let lineage = lineageStrain.strains[newStrain];
-    let innateStat = lineageStrain.lineages[lineage].innate;
+    let lineage = su.lineageStrain.strains[newStrain];
+    let innateStat = su.lineageStrain.lineages[lineage].innate;
 
-    setSelectedStrain(newStrain);
-    innate = {
+    su.setSelectedStrain(newStrain);
+    su.innate = {
       hp: innateStat.hp,
       mp: innateStat.mp,
       rp: innateStat.rp,
       inf: innateStat.inf
     };
-    setInnate(innate);
+    su.setInnate(su.innate);
 
-    for (const lstat in statLimit) {
+    for (const lstat in su.statLimit) {
       validateStatAndControls(lstat, true);
     }
   };
 
   let handleStatClick = (changedStat, adjustment) => {
-    let currentStat = changedStat in stat ? stat[changedStat] : 0;
-    stat[changedStat] = currentStat + adjustment;
+    let currentStat = changedStat in su.stat ? su.stat[changedStat] : 0;
+    su.stat[changedStat] = currentStat + adjustment;
     validateStatAndControls(changedStat);
   };
 
   let handleStatChange = (changedStat, newValue) => {
-    stat[changedStat] = parseInt(newValue) || 0;
+    su.stat[changedStat] = parseInt(newValue) || 0;
     validateStatAndControls(changedStat);
   };
 
@@ -210,37 +186,37 @@ const App = () => {
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(changedStat);
 
-    statControl[reductionStatKey] = {};
+    su.statControl[reductionStatKey] = {};
 
     if (h.reductionValue() < 0) {
-      stat[reductionStatKey] = 0;
+      su.stat[reductionStatKey] = 0;
     } else if (h.reductionValue() + adjustment < 0) {
-      stat[reductionStatKey] = 0;
+      su.stat[reductionStatKey] = 0;
     } else if (h.totalValue() < 0) {
-      stat[reductionStatKey] = -h.totalValue();
+      su.stat[reductionStatKey] = -h.totalValue();
     } else if (h.totalValue() === 0 && h.totalValue() - adjustment >= 0) {
-      stat[reductionStatKey] = h.reductionValue() + adjustment;
+      su.stat[reductionStatKey] = h.reductionValue() + adjustment;
     } else if (h.totalValue() === 0 && h.totalValue() - adjustment < 0) {
-      stat[reductionStatKey] = h.reductionValue();
+      su.stat[reductionStatKey] = h.reductionValue();
     } else if (
       h.totalValue() === h.limit &&
       h.totalValue() - adjustment < h.limit
     ) {
-      stat[reductionStatKey] = h.reductionValue() + adjustment;
+      su.stat[reductionStatKey] = h.reductionValue() + adjustment;
     } else if (
       h.totalValue() === h.limit &&
       h.totalValue() - adjustment >= h.limit
     ) {
-      stat[reductionStatKey] = h.reductionValue();
+      su.stat[reductionStatKey] = h.reductionValue();
     } else {
-      stat[reductionStatKey] = h.reductionValue() + adjustment;
+      su.stat[reductionStatKey] = h.reductionValue() + adjustment;
     }
-    setStat(Object.assign({}, stat));
-    statControl[reductionStatKey].dec =
+    su.setStat(Object.assign({}, su.stat));
+    su.statControl[reductionStatKey].dec =
       h.reductionValue() > 0 && h.belowLimit();
-    statControl[reductionStatKey].inc = h.totalValue() > 0;
-    setStatControl(Object.assign({}, statControl));
-    calcXp(changedStat, stat[changedStat]);
+    su.statControl[reductionStatKey].inc = h.totalValue() > 0;
+    su.setStatControl(Object.assign({}, su.statControl));
+    calcXp(changedStat, su.stat[changedStat]);
     crossValidateControl(changedStat, 'main');
   };
 
@@ -252,29 +228,29 @@ const App = () => {
     } else {
       if (h.reductionValue() === 0) {
         if (h.acqValue() - h.reductionValue() < 0) {
-          stat[changedStat] = h.reductionValue();
+          su.stat[changedStat] = h.reductionValue();
         }
       } else {
         if (h.acqValue() < 0) {
-          stat[changedStat] = 0;
+          su.stat[changedStat] = 0;
         } else if (h.totalValue() < 0) {
-          stat[changedStat] = h.acqValue() - h.totalValue();
+          su.stat[changedStat] = h.acqValue() - h.totalValue();
         }
       }
 
       if (h.limit !== undefined && h.aboveLimit()) {
-        stat[changedStat] = h.limit - h.innateValue() + h.reductionValue();
+        su.stat[changedStat] = h.limit - h.innateValue() + h.reductionValue();
       }
     }
 
-    setStat(Object.assign({}, stat));
-    statControl[changedStat].inc = h.belowLimit();
-    statControl[changedStat].dec =
+    su.setStat(Object.assign({}, su.stat));
+    su.statControl[changedStat].inc = h.belowLimit();
+    su.statControl[changedStat].dec =
       h.reductionValue() === 0
         ? h.acqValue() > 0
         : h.totalValue() > 0 && h.acqValue() > 0;
-    setStatControl(Object.assign({}, statControl));
-    calcXp(changedStat, stat[changedStat]);
+    su.setStatControl(Object.assign({}, su.statControl));
+    calcXp(changedStat, su.stat[changedStat]);
     crossValidateControl(changedStat, 'reduction');
   };
 
@@ -282,8 +258,8 @@ const App = () => {
     let controlKey =
       target === 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control =
-      controlKey in statControl
-        ? statControl[controlKey]
+      controlKey in su.statControl
+        ? su.statControl[controlKey]
         : { inc: true, dec: true };
     let h = statHelper(changedStat);
 
@@ -294,24 +270,24 @@ const App = () => {
       control.inc = h.belowLimit();
       control.dec = h.acqValue() + h.reductionValue() > 0 && h.totalValue() > 0;
     }
-    setStatControl(Object.assign({}, statControl));
+    su.setStatControl(Object.assign({}, su.statControl));
   };
 
   let statHelper = key => {
     let reductionStatKey = key[0] + 'r';
     let innateValue = () => {
-      return key in innate ? innate[key] : 0;
+      return key in su.innate ? su.innate[key] : 0;
     };
     let acqValue = () => {
-      return key in stat ? stat[key] : 0;
+      return key in su.stat ? su.stat[key] : 0;
     };
     let reductionValue = () => {
-      return reductionStatKey in stat ? stat[reductionStatKey] : 0;
+      return reductionStatKey in su.stat ? su.stat[reductionStatKey] : 0;
     };
     let totalValue = () => {
       return innateValue() + acqValue() - reductionValue();
     };
-    let limit = statLimit[key];
+    let limit = su.statLimit[key];
     let belowOrAtLimit = () => {
       return limit === undefined || totalValue() <= limit;
     };
@@ -362,112 +338,111 @@ const App = () => {
     switch (changedStat) {
       case 'hp':
       case 'mp':
-        statXp[changedStat] = deciCalc(acquired || 0);
+        su.statXp[changedStat] = deciCalc(acquired || 0);
         break;
       case 'rp':
       case 'inf':
-        statXp[changedStat] = linearCalc(acquired || 0);
+        su.statXp[changedStat] = linearCalc(acquired || 0);
         break;
     }
 
-    setStatXp(Object.assign({}, statXp));
+    su.setStatXp(Object.assign({}, su.statXp));
     calcTotalXp();
   };
 
   let calcTotalXp = () => {
-    totalXp = {
-      stat: Object.values(statXp).reduce((a, b) => {
+    su.totalXp = {
+      stat: Object.values(su.statXp).reduce((a, b) => {
         return a + b;
       }, 0),
-      skill: skillXp.total
+      skill: su.skillXp.total
     };
-    setTotalXp(Object.assign({}, totalXp));
+    su.setTotalXp(Object.assign({}, su.totalXp));
   };
 
   let handleSkillGridClick = (sid, tier) => {
     updateSkillState(sid, tier);
-    skillXp = SkillCalc(skillState);
-    setSkillXp(skillXp);
+    su.skillXp = SkillCalc(su.skillState);
+    su.setSkillXp(su.skillXp);
     calcTotalXp();
   };
 
   let handleSkillVisibilityToggle = category => {
-    if (!(category in skillHidden)) {
-      skillHidden[category] = true;
+    if (!(category in su.skillHidden)) {
+      su.skillHidden[category] = true;
     } else {
-      skillHidden[category] = !skillHidden[category];
+      su.skillHidden[category] = !su.skillHidden[category];
     }
 
-    setSkillVisibility(category, !skillHidden[category]);
-    setSkillHidden(Object.assign({}, skillHidden));
+    setSkillVisibility(category, !su.skillHidden[category]);
+    su.setSkillHidden(Object.assign({}, su.skillHidden));
   };
 
   let updateSkillState = (sid, tier) => {
     if (tier > 0 && tier <= 3) {
       let t4acquired =
-        't4acquired' in skillState[sid] && skillState[sid].t4acquired === true;
+        't4acquired' in su.skillState[sid] && su.skillState[sid].t4acquired === true;
       let clickedAcquired =
-        tier <= skillState[sid].acquired || (tier === 4 && t4acquired);
+        tier <= su.skillState[sid].acquired || (tier === 4 && t4acquired);
       let clickedAtTier =
-        tier === skillState[sid].acquired || (tier === 4 && t4acquired);
+        tier === su.skillState[sid].acquired || (tier === 4 && t4acquired);
 
       if (clickedAtTier && clickedAcquired) {
         if (tier === 2 && t4acquired) {
-          skillState[sid].t4acquired = false;
+          su.skillState[sid].t4acquired = false;
         } else {
-          skillState[sid].acquired = tier - 1;
+          su.skillState[sid].acquired = tier - 1;
         }
       } else {
-        skillState[sid].acquired = tier;
+        su.skillState[sid].acquired = tier;
       }
 
-      if (skillState[sid].acquired < 2) skillState[sid].t4acquired = false;
-      if (skillState[sid].acquired === 1 && skillState[sid].innate)
-        skillState[sid].acquired = 0;
-      setSkillState(Object.assign({}, skillState));
+      if (su.skillState[sid].acquired < 2) su.skillState[sid].t4acquired = false;
+      if (su.skillState[sid].acquired === 1 && su.skillState[sid].innate)
+        su.skillState[sid].acquired = 0;
+      su.setSkillState(Object.assign({}, su.skillState));
     } else if (tier === 4) {
-      if (!('t4acquired' in skillState[sid])) {
-        skillState[sid].t4acquired = true;
+      if (!('t4acquired' in su.skillState[sid])) {
+        su.skillState[sid].t4acquired = true;
       } else {
-        skillState[sid].t4acquired = !skillState[sid].t4acquired;
+        su.skillState[sid].t4acquired = !su.skillState[sid].t4acquired;
       }
 
-      if (skillState[sid].t4acquired && skillState[sid].acquired <= 2) {
-        skillState[sid].acquired = 2;
+      if (su.skillState[sid].t4acquired && su.skillState[sid].acquired <= 2) {
+        su.skillState[sid].acquired = 2;
       }
-      setSkillState(Object.assign({}, skillState));
+      su.setSkillState(Object.assign({}, su.skillState));
     }
   };
 
   let setSkillVisibility = (category, state) => {
-    for (const key in skillState) {
-      let unacquired = skillState[key].acquired === 0;
-      if (unacquired && skillState[key].category === category) {
-        skillState[key].visible = state;
+    for (const key in su.skillState) {
+      let unacquired = su.skillState[key].acquired === 0;
+      if (unacquired && su.skillState[key].category === category) {
+        su.skillState[key].visible = state;
       }
     }
 
-    setSkillState(Object.assign({}, skillState));
+    su.setSkillState(Object.assign({}, su.skillState));
   };
 
   let handleToonChange = (action, arg, arb) => {
-    console.log(action);
     if (action === 'new') {
       generateNewToon();
       persistToonStorage(true);
       loadBlankToon();
     } else if (action === 'rename') {
-      toonStorage[arg].name = arb;
+      su.toonStorage[arg].name = arb;
       persistToonStorage(true);
     } else if (action === 'switch') {
-      currentToon = arg;
-      persistCurrentToon(currentToon);
-      loadNewToon(currentToon);
+      su.currentToon = arg;
+      persistCurrentToon(su.currentToon);
+      loadNewToon(su.currentToon);
     } else if (action === 'delete') {
-      toonStorage[arg].state = 'deleted';
+      su.toonStorage[arg].state = 'deleted';
       persistToonStorage(true);
     } else if (action === 'undelete') {
-      toonStorage[arg].state = 'enabled';
+      su.toonStorage[arg].state = 'enabled';
       persistToonStorage(true);
     }
   };
@@ -476,16 +451,7 @@ const App = () => {
     let defaultState = () => {
       return(
         <CharacterPage
-          lineageStrain={lineageStrain}
-          selectedStrain={selectedStrain}
-          innate={innate}
-          stat={stat}
-          skillState={skillState}
-          skillXp={skillXp}
-          statXp={statXp}
-          totalXp={totalXp}
-          statControl={statControl}
-          skillHidden={skillHidden}
+          su={su}
           passSkillGridClick={handleSkillGridClick}
           passStrainChange={handleStrainChange}
           passStatClick={handleStatClick}
@@ -495,7 +461,7 @@ const App = () => {
         />
       )
     }
-    switch (tab) {
+    switch (su.tab) {
       case 0:
         return defaultState();
       case 1:
@@ -510,12 +476,11 @@ const App = () => {
   return (
     <div className='app-window'>
       <AppBarWrapper
+        su={su}
         passChange={handleToonChange}
-        currentToon={currentToon}
-        toonStorage={toonStorage}
       />
-      <div className='builder'>{switchTab(tab)}</div>
-      <Navigation setTab={setTab} tab={tab} />
+      <div className='builder'>{switchTab(su.tab)}</div>
+      <Navigation setTab={su.setTab} tab={su.tab} />
     </div>
   );
 };
