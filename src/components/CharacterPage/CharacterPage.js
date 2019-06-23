@@ -12,9 +12,9 @@ import './CharacterPage.scss';
 
 const CharacterPage = (props) => {
   let handleStrainChange = (value) => { props.passStrainChange(value) }
-  let handleStatClick = (stat, adjustment) => { props.passStatClick(stat, adjustment) }
-  let handleStatChange = (stat, value) => { props.passStatChange(stat, value) }
-  let handleStatReductionChange = (stat, adjustment) => { props.passStatReductionChange(stat, adjustment) }
+  let handleStatClick = (stat, adjustment) => { props.passStatClick(props.su, stat, adjustment) }
+  let handleStatChange = (stat, value) => { props.passStatChange(props.su, stat, value) }
+  let handleStatReductionChange = (stat, adjustment) => { props.passStatReductionChange(props.su, stat, adjustment) }
   let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(category) } 
   let handleSkillGridClick = (sid, tier) => { props.passSkillGridClick(sid, tier) }
 
