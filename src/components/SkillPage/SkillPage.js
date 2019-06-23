@@ -9,12 +9,12 @@ import skillInfo from '../../utils/skillInfo';
 
 const useStyles = makeStyles({
   primary: {
-    fontFamily: 'Alegreya, serif',
-    fontSize: '18px',
-    textDecoration: 'underline',
+    color: grey[400],
+    fontFamily: 'Alegreya, serif'
   },
   secondary: {
-    fontFamily: 'Alegreya, serif',
+    color: grey[400],
+    fontFamily: 'Alegreya, serif'
   }
 });
 
