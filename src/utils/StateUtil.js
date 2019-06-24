@@ -1,7 +1,7 @@
 import SkillInitializer from './SkillInitializer';
 import StrainInitializer from './StrainInitializer';
 import SkillCalc from './SkillCalc';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const StateUtil = () => {
   let lineageStrain = StrainInitializer();

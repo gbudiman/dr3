@@ -7,7 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 const SkillInfo = (props) => {
-  let [value, setValue] = React.useState(0);
+  let [value, setValue] = useState(0);
   let getInfoKeyArrays = () => {
     let tiers = [1,2,3].filter(n => n >= (props.innate ? 2 : 1));
     switch(props.maxTier) {

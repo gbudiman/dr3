@@ -4,7 +4,7 @@
   width: calc(44% - 40px);
 }
 @mixin pfxSkillWidth() {
-  width: calc(56% - 40px);
+  width: calc(56% - 44px);
 }
 @mixin triafter($color) {
   position: absolute;
@@ -39,21 +39,36 @@
 }
 @mixin trileft($color) {
   background-color: $color;
-  width: 0px;
+  width: 16px;
   text-align: center;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
-  cursor: default;
-  color: transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  border-right: 1px solid $color-off-dark;
+  border-top: 1px solid $color-off-dark;
+  border-bottom: 1px solid $color-off-dark;
+  z-index: 21;
+  margin: 0;
+  padding: 2px 8px 8px 6px;
   &:hover {
-    filter: none;
+    filter: brightness(125%);
+  }
+
+  svg {
+    margin-top: 4px;
+    margin-bottom: -6px;
+    padding-top: 0px;
   }
 }
 @mixin trione($color) {
   background-color: $color;
   z-index: 20;
+  margin-left: -12px;
   &:hover {
     filter: brightness(125%);
+  }
+
+  .text {
+    margin-left: 8px;
   }
 }
 @mixin tabbed($color) {
@@ -238,7 +253,8 @@
 
 .skill-info {
   font-family: 'Bellefair', serif;
-  margin-left: 12px;
+  margin-left: 14px;
+  margin-right: 4px;
 
   &.hidden {
     display: none;

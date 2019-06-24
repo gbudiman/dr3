@@ -24,6 +24,7 @@ function SkillContainer(props) {
             visible={value.visible}
             passClick={handleClick}
             skillInfo={props.skillInfo}
+            infoExpanded={props.skillInfoVisible[key]}
           />
           <SkillInfo
             key={'info_' + key}
