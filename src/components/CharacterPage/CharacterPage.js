@@ -36,6 +36,7 @@ const CharacterPage = (props) => {
       <SkillContainer
         passClick={handleSkillGridClick}
         skillState={props.su.skillState}
+        skillInfoVisible={props.su.skillInfoVisible}
       />
     </div>
   );
