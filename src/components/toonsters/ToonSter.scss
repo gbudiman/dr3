@@ -89,6 +89,11 @@
   .hidden {
     color: transparent;
   }
+
+  svg {
+    z-index: 61;
+    cursor: pointer;
+  }
 }
 
 .toon-delete {
@@ -127,6 +132,7 @@
     font-weight: bolder;
     text-decoration: underline;
     background: linear-gradient(90deg, $color-dark 0%, $color-gray 200%);
+    z-index: 60;
   }
 }
 
