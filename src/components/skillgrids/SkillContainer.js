@@ -1,4 +1,5 @@
 import React from 'react';
+import SkillInfo from './SkillInfo';
 import SkillBox from './SkillBox';
 import './SkillGrid.scss';
 
@@ -10,19 +11,29 @@ function SkillContainer(props) {
     let jsxes = Object.keys(props.skillState).map(key => {
       let value = props.skillState[key];
       return (
-        <SkillBox
-          key={key}
-          category={value.category}
-          t1={key}
-          t4={value.t4}
-          innate={value.innate}
-          maxTier={value.maxTier}
-          acquired={value.acquired}
-          t4acquired={value.t4acquired}
-          visible={value.visible}
-          passClick={handleClick}
-          skillInfo={props.skillInfo}
-        />
+        <React.Fragment key={key}>
+          <SkillBox
+            key={'box_' + key}
+            category={value.category}
+            t1={key}
+            t4={value.t4}
+            innate={value.innate}
+            maxTier={value.maxTier}
+            acquired={value.acquired}
+            t4acquired={value.t4acquired}
+            visible={value.visible}
+            passClick={handleClick}
+            skillInfo={props.skillInfo}
+          />
+          <SkillInfo
+            key={'info_' + key}
+            name={key}
+            innate={value.innate}
+            maxTier={value.maxTier}
+            category={value.category}
+            visible={value.visible}
+            expanded={props.skillInfoVisible[key]} />
+        </React.Fragment>
       );
     });
 

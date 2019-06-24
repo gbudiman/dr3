@@ -56,6 +56,19 @@
     filter: brightness(125%);
   }
 }
+@mixin tabbed($color) {
+  border-left: 4px solid $color;
+
+  .MuiTabs-root {
+    .MuiTabs-flexContainer {
+      .MuiTabs-scroller {
+        .MuiTabs-indicator {
+          background-color: $color;
+        }
+      }
+    }
+  }
+}
 .buffer {
   height: 64px;
 }
@@ -221,4 +234,57 @@
 .skill-unused-0 {
   background-color: $color-unused-4;
   width: 16px;
+}
+
+.skill-info {
+  font-family: 'Bellefair', serif;
+  margin-left: 12px;
+
+  &.hidden {
+    display: none;
+  }
+  .skill-tab-container {
+    background-color: $color-light;
+
+    &.combat {
+      @include tabbed($color-combat-4);
+    }
+    &.civilized {
+      @include tabbed($color-civilized-4);
+    }
+    &.wasteland {
+      @include tabbed($color-wasteland-4);
+    }
+    &.anomaly {
+      @include tabbed($color-anomaly-4);
+    }
+
+    .MuiTabs-root {
+      min-height: 0;
+      .MuiTabs-flexContainer {
+        .MuiTabs-scroller {
+          .MuiTabs-flexContainer {
+            .MuiButtonBase-root {
+              padding: 4px;
+              min-height: 0;
+              .MuiTab-wrapper {
+                font-family: 'Bellefair', serif;
+                text-transform: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    div {
+      .react-swipeable-view-container {
+        div {
+          .skill-description {
+            padding: 8px;
+          }
+        }
+      }
+    }
+  }
 }

@@ -37,7 +37,9 @@ function SkillBox(props) {
   }
 
   return(
-    <div>{buildGrids()}</div>
+    <React.Fragment>
+      <div>{buildGrids()}</div>
+    </React.Fragment>
   )
 }
 

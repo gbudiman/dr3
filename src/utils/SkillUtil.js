@@ -3,10 +3,14 @@ import SkillCalc from './SkillCalc';
 
 const SkillUtil = () => {
   let handleSkillGridClick = (su, sid, tier) => {
-    updateSkillState(su, sid, tier);
-    su.skillXp = SkillCalc(su.skillState);
-    su.setSkillXp(su.skillXp);
-    calcTotalXp(su);
+    if (tier === 0) {
+      updateSkillInfoVisibility(su, sid);
+    } else {
+      updateSkillState(su, sid, tier);
+      su.skillXp = SkillCalc(su.skillState);
+      su.setSkillXp(su.skillXp);
+      calcTotalXp(su);
+    }
   };
 
   let handleSkillVisibilityToggle = (su, category) => {
@@ -19,6 +23,17 @@ const SkillUtil = () => {
     setSkillVisibility(su, category, !su.skillHidden[category]);
     su.setSkillHidden(Object.assign({}, su.skillHidden));
   };
+
+  let updateSkillInfoVisibility = (su, sid) => {
+    if (sid in su.skillInfoVisible) {
+      su.skillInfoVisible[sid] = !su.skillInfoVisible[sid];
+    } else {
+      su.skillInfoVisible[sid] = true;
+    }
+
+    console.log(su.skillInfoVisible);
+    su.setSkillInfoVisible(Object.assign({}, su.skillInfoVisible));
+  }
 
   let updateSkillState = (su, sid, tier) => {
     if (tier > 0 && tier <= 3) {

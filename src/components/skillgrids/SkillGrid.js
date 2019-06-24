@@ -1,7 +1,11 @@
 import React from 'react';
 
 function SkillGrid(props) {
-  let handleClick = () => { props.passClick(props.sid, props.tier) };
+  let handleClick = () => { props.passClick(props.sid, props.tier) }
+
+  let displaySkillInfo = () => {
+    console.log(props);
+  }
 
   let getTextualRepresentation = () => {
     let textual = props.tier > 0 ? props.name : '|';
