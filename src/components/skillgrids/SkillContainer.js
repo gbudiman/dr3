@@ -1,6 +1,10 @@
 import React from 'react';
 import SkillInfo from './SkillInfo';
 import SkillBox from './SkillBox';
+import Grow from '@material-ui/core/Grow';
+import Fade from '@material-ui/core/Fade';
+import Paper from '@material-ui/core/Paper';
+import Zoom from '@material-ui/core/Zoom';
 import './SkillGrid.scss';
 
 function SkillContainer(props) {
@@ -26,14 +30,18 @@ function SkillContainer(props) {
             skillInfo={props.skillInfo}
             infoExpanded={props.skillInfoVisible[key]}
           />
-          <SkillInfo
-            key={'info_' + key}
-            name={key}
-            innate={value.innate}
-            maxTier={value.maxTier}
-            category={value.category}
-            visible={value.visible}
-            expanded={props.skillInfoVisible[key]} />
+          <Grow in={props.skillInfoVisible[key]} timeout={250}>
+            <Paper elevation={0} style={{ transformOrigin: '0 0 0' }}>
+              <SkillInfo
+                key={'info_' + key}
+                name={key}
+                innate={value.innate}
+                maxTier={value.maxTier}
+                category={value.category}
+                visible={value.visible}
+                expanded={props.skillInfoVisible[key]} />
+            </Paper>
+          </Grow>
         </React.Fragment>
       );
     });
