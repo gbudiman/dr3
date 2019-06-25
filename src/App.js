@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.scss';
-import Navigation from './components/navigation/Navigation';
+import Navigation from './components/Navigation/Navigation';
 import StateUtil from './utils/StateUtil';
 import ToonUtil from './utils/ToonUtil';
 import { switchTab } from './utils/NavigationUtil';

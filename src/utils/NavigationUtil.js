@@ -1,7 +1,7 @@
 import React from 'react';
-import CharacterPage from '../components/CharacterPage/CharacterPage';
-import SkillPage from '../components/SkillPage/SkillPage';
-import FeedbackPage from '../components/FeedbackPage/FeedbackPage';
+import CharacterPage from '../Characters/Page';
+import SkillPage from '../Skills/Page';
+import FeedbackPage from '../Feedback/Page';
 import StatUtil from './StatUtil';
 import StrainUtil from './StrainUtil';
 import SkillUtil from './SkillUtil';
@@ -12,7 +12,7 @@ export function switchTab(su) {
   let skillUtil = SkillUtil();
 
   let defaultState = () => {
-    return(
+    return (
       <CharacterPage
         su={su}
         passSkillGridClick={skillUtil.handleSkillGridClick}
@@ -22,13 +22,17 @@ export function switchTab(su) {
         passStatChange={statUtil.handleStatChange}
         passStatReductionChange={statUtil.handleStatReductionChange}
       />
-    )
-  }
+    );
+  };
 
   switch (su.tab) {
-    case 0: return defaultState();
-    case 1: return <SkillPage />;
-    case 2: return <FeedbackPage />;
-    default: return defaultState();
+    case 0:
+      return defaultState();
+    case 1:
+      return <SkillPage />;
+    case 2:
+      return <FeedbackPage />;
+    default:
+      return defaultState();
   }
-};
+}
