@@ -51,10 +51,16 @@
     cursor: pointer;
     border-radius: 16px;
     padding-bottom: 4px;
+    margin-top: -2px;
 
     .toon-subrow {
       width: 100%;
       padding: 4px 0px;
+
+      svg {
+        margin-top: -2px;
+        margin-left: 8px;
+      }
     }
   }
 
@@ -88,6 +94,11 @@
 
   .hidden {
     color: transparent;
+  }
+
+  svg {
+    z-index: 61;
+    cursor: pointer;
   }
 }
 
@@ -127,6 +138,7 @@
     font-weight: bolder;
     text-decoration: underline;
     background: linear-gradient(90deg, $color-dark 0%, $color-gray 200%);
+    z-index: 60;
   }
 }
 

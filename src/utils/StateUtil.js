@@ -1,13 +1,14 @@
 import SkillInitializer from './SkillInitializer';
 import StrainInitializer from './StrainInitializer';
 import SkillCalc from './SkillCalc';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const StateUtil = () => {
   let lineageStrain = StrainInitializer();
   let [skillState, setSkillState] = useState(SkillInitializer());
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
   let [skillHidden, setSkillHidden] = useState({});
+  let [skillInfoVisible, setSkillInfoVisible] = useState({});
   let [selectedStrain, setSelectedStrain] = useState(null);
   let [stat, setStat] = useState({});
   let [statXp, setStatXp] = useState({});
@@ -37,6 +38,8 @@ const StateUtil = () => {
     setSkillXp: setSkillXp,
     skillHidden: skillHidden,
     setSkillHidden: setSkillHidden,
+    skillInfoVisible: skillInfoVisible,
+    setSkillInfoVisible: setSkillInfoVisible,
     selectedStrain: selectedStrain,
     setSelectedStrain: setSelectedStrain,
     stat: stat,

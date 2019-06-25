@@ -20,6 +20,7 @@ const ToonUtil = () => {
       su.setSkillState(j.skill_state);
       su.setSkillXp(j.skill_xp);
       su.setSkillHidden(j.skill_hidden);
+      su.setSkillInfoVisible(j.skill_info_visible || {});
       su.setSelectedStrain(j.selected_strain);
       su.setStat(j.stat);
       su.setStatXp(j.stat_xp);
@@ -35,6 +36,7 @@ const ToonUtil = () => {
     su.setSkillState(su.skillState);
     su.setSkillXp(SkillCalc(su.skillState));
     su.setSkillHidden({});
+    su.setSkillInfoVisible({});
     su.setSelectedStrain(null);
     su.setStat({});
     su.setStatXp({});
@@ -71,6 +73,7 @@ const ToonUtil = () => {
       skill_state: su.skillState,
       skill_xp: su.skillXp,
       skill_hidden: su.skillHidden,
+      skill_info_visible: su.skillInfoVisible,
       selected_strain: su.selectedStrain,
       stat: su.stat,
       stat_xp: su.statXp,

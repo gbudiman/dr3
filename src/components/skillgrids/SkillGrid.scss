@@ -1,15 +1,15 @@
 @import '../../colors.scss';
 
 @mixin longSkillWidth() {
-  width: calc(44% - 40px);
+  width: calc(44% - 37px);
 }
 @mixin pfxSkillWidth() {
-  width: calc(56% - 40px);
+  width: calc(56% - 46px);
 }
 @mixin triafter($color) {
   position: absolute;
   top: 0px;
-  right: -16px;
+  right: -15.5px;
   content: '';
   width: 0px;
   height: 0px;
@@ -39,25 +39,57 @@
 }
 @mixin trileft($color) {
   background-color: $color;
-  width: 0px;
+  width: 18px;
   text-align: center;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
-  cursor: default;
-  color: transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  border-right: 1px solid $color-off-dark;
+  border-top: 1px solid $color-off-dark;
+  border-bottom: 1px solid $color-off-dark;
+  z-index: 21;
+  margin: 0;
+  padding: 2px 8px 8px 6px;
   &:hover {
     filter: none;
+  }
+
+  svg {
+    margin-top: 4px;
+    margin-bottom: -6px;
+    margin-left: -1;
+    padding-top: 0px;
   }
 }
 @mixin trione($color) {
   background-color: $color;
   z-index: 20;
+  margin-left: -12px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
   &:hover {
     filter: brightness(125%);
   }
+
+  .text {
+    margin-left: 8px;
+    margin-right: -8px;
+  }
+}
+@mixin tabbed($color) {
+  border-left: 4px solid $color;
+
+  .MuiTabs-root {
+    .MuiTabs-flexContainer {
+      .MuiTabs-scroller {
+        .MuiTabs-indicator {
+          background-color: $color;
+        }
+      }
+    }
+  }
 }
 .buffer {
-  height: 64px;
+  height: 128px;
 }
 .skill-grid {
   @include longSkillWidth();
@@ -79,6 +111,7 @@
   &.skill-tier-3 {
     height: 12px;
     padding-top: 4px;
+    margin-left: -2px;
     &:after {
       border-width: 12px 0 12px 12px !important;
       right: -12px;
@@ -92,8 +125,13 @@
 .skill-container {
   height: calc(100vh - 166px);
   // overflow-x: hidden;
-  // overflow-y: auto;
+  overflow-y: auto;
   width: 100%;
+
+  .MuiPaper-root {
+    background-color: transparent;
+    border: 0;
+  }
 }
 .skill-hidden {
   display: none;
@@ -221,4 +259,61 @@
 .skill-unused-0 {
   background-color: $color-unused-4;
   width: 16px;
+}
+
+.skill-info {
+  font-family: 'Bellefair', serif;
+  margin-left: 15px;
+  margin-right: 2px;
+  margin-top: 0px;
+  z-index: 25;
+  position: relative;
+
+  &.hidden {
+    display: none;
+  }
+  .skill-tab-container {
+    background-color: $color-light;
+
+    &.combat {
+      @include tabbed($color-combat-4);
+    }
+    &.civilized {
+      @include tabbed($color-civilized-4);
+    }
+    &.wasteland {
+      @include tabbed($color-wasteland-4);
+    }
+    &.anomaly {
+      @include tabbed($color-anomaly-4);
+    }
+
+    .MuiTabs-root {
+      min-height: 0;
+      .MuiTabs-flexContainer {
+        .MuiTabs-scroller {
+          .MuiTabs-flexContainer {
+            .MuiButtonBase-root {
+              padding: 4px;
+              min-height: 0;
+              .MuiTab-wrapper {
+                font-family: 'Bellefair', serif;
+                text-transform: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    div {
+      .react-swipeable-view-container {
+        div {
+          .skill-description {
+            padding: 8px;
+          }
+        }
+      }
+    }
+  }
 }

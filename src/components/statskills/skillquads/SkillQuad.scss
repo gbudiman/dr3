@@ -29,6 +29,7 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    user-select: none;
     
     .symbol {
       margin-top:-3px;
@@ -93,11 +94,12 @@
   max-width: 224px;
   padding: 8px 16px 6px 12px;
   border: 0;
-  margin: 18px 0 0 0;
+  margin: 18.5px 0 0 0;
   border-radius: 16px;
   font-family: 'Bellefair', serif;
   font-size: 14px;
   z-index: 24;
+  user-select: none;
 
   &.muted {
     background-color: $color-light;
