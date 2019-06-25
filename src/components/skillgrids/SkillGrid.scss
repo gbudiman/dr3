@@ -64,8 +64,6 @@
   background-color: $color;
   z-index: 20;
   margin-left: -12px;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
   &:hover {
     filter: brightness(125%);
   }
