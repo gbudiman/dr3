@@ -1,5 +1,4 @@
 import React from 'react';
-//import './SkillPage.scss';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -12,15 +11,29 @@ const useStyles = makeStyles({
     color: grey[400],
     fontFamily: 'Alegreya, serif',
     fontSize: '18px',
-    textDecoration: 'underline'
+    textDecoration: 'underline',
   },
   secondary: {
     color: grey[400],
-    fontFamily: 'Alegreya, serif'
+    fontFamily: 'Alegreya, serif',
+    textAlign: 'justify',
+    textJustify: 'auto',
+  },
+  page: {
+    color: grey[500],
+    fontFamily: 'Alegreya, serif',
+    fontStyle: 'italic',
+  },
+  flexigrid: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   buffer: {
     height: '64px',
-  }
+  },
+  noFlex: {
+    display: 'inline-block',
+  },
 });
 
 const SkillPage = () => {
@@ -29,14 +42,14 @@ const SkillPage = () => {
     <React.Fragment>
       <List className='container'>
         {Object.keys(skillInfo).map(key => (
-          <ListItem key={key}>
-            <ListItemText
-              className='skills'
-              primary={skillInfo[key].name}
-              primaryTypographyProps={{ className: classes.primary }}
-              secondary={skillInfo[key].description}
-              secondaryTypographyProps={{ className: classes.secondary }}
-            />
+          <ListItem key={key} className={classes.noFlex}>
+            <div className={classes.flexigrid}>
+              <div className={classes.primary}>{skillInfo[key].name}</div>
+              <div className={classes.page}>Staring page: {skillInfo[key].startingPage}</div>
+            </div>
+            <div className={classes.flexigrid}>
+              <div className={classes.secondary}>{skillInfo[key].description}</div>
+            </div>
           </ListItem>
         ))}
       </List>
