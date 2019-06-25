@@ -4,7 +4,7 @@
   width: calc(44% - 37px);
 }
 @mixin pfxSkillWidth() {
-  width: calc(56% - 48px);
+  width: calc(56% - 46px);
 }
 @mixin triafter($color) {
   position: absolute;
@@ -64,6 +64,8 @@
   background-color: $color;
   z-index: 20;
   margin-left: -12px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
   &:hover {
     filter: brightness(125%);
   }
@@ -109,6 +111,7 @@
   &.skill-tier-3 {
     height: 12px;
     padding-top: 4px;
+    margin-left: -2px;
     &:after {
       border-width: 12px 0 12px 12px !important;
       right: -12px;

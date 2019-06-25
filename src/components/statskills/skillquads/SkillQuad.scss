@@ -29,6 +29,7 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    user-select: none;
     
     .symbol {
       margin-top:-3px;
@@ -98,6 +99,7 @@
   font-family: 'Bellefair', serif;
   font-size: 14px;
   z-index: 24;
+  user-select: none;
 
   &.muted {
     background-color: $color-light;
