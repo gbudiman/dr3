@@ -45,7 +45,7 @@ const SkillPage = () => {
           <ListItem key={key} className={classes.noFlex}>
             <div className={classes.flexigrid}>
               <div className={classes.primary}>{skillInfo[key].name}</div>
-              <div className={classes.page}>Staring page: {skillInfo[key].startingPage}</div>
+              <div className={classes.page}>Starting page: {skillInfo[key].startingPage}</div>
             </div>
             <div className={classes.flexigrid}>
               <div className={classes.secondary}>{skillInfo[key].description}</div>
