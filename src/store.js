@@ -1,5 +1,5 @@
 import { routerMiddleware } from 'connected-react-router';
-import { createStore, compose, applyMiddleware } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import history from './history';

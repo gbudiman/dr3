@@ -1,33 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import grey from '@material-ui/core/colors/grey';
 import PeopleIcon from '@material-ui/icons/People';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import FeedbackIcon from '@material-ui/icons/Feedback';
-
-const useStyles = makeStyles({
-  container: {
-    width: '100%',
-    position: 'fixed',
-    bottom: 0,
-    backgroundColor: grey[800],
-    zIndex: 1000,
-  },
-  root: {
-    color: grey[500],
-    '&$selected': {
-      color: grey[300]
-    }
-  },
-  label: {
-    fontFamily: 'Alegreya, serif'
-  },
-  selected: {
-    color: grey[300]
-  }
-});
+import useStyles from './styles';
 
 export default ({ tab, setTab }) => {
   const classes = useStyles();
@@ -42,6 +20,8 @@ export default ({ tab, setTab }) => {
       className={classes.container}
     >
       <BottomNavigationAction
+        component={Link}
+        to='/characters'
         classes={{
           label: classes.label,
           root: classes.root,
@@ -51,6 +31,8 @@ export default ({ tab, setTab }) => {
         icon={<PeopleIcon className={classes.icon} />}
       />
       <BottomNavigationAction
+        component={Link}
+        to='/skills'
         classes={{
           label: classes.label,
           root: classes.root,
@@ -60,6 +42,8 @@ export default ({ tab, setTab }) => {
         icon={<AssessmentIcon className={classes.icon} />}
       />
       <BottomNavigationAction
+        component={Link}
+        to='/feedback'
         classes={{
           label: classes.label,
           root: classes.root,
