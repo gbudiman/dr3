@@ -5,6 +5,7 @@ function SkillInitializer() {
       if (!('maxTier' in h[key])) h[key].maxTier = 4;
       h[key].acquired = 0;
       h[key].t4acquired = false;
+      if (!('t4only' in h[key])) h[key].t4only = false;
       h[key].visible = true;
     }
 
@@ -53,7 +54,7 @@ function SkillInitializer() {
     awareness: { t4: 'Veteran' },
     enhanced_movement: { t4: 'Flanker' },
     foraging: { t4: 'Scavenger' },
-    hunting: { t4: 'Wasteland Striker' },
+    hunting: { t4: 'Wasteland Stalker' },
     malicious: { t4: 'Inquisitor' },
     mental_endurance: { t4: 'Mind Killer' },
     sailing: { t4: 'Bluejacket' },
@@ -73,8 +74,15 @@ function SkillInitializer() {
     faithful_spirit: { t4: 'Pernicious Saviour' },
     faithful_will: { t4: 'Life Binder' },
   })
+  let s_community = categorify('community', {
+    natural_leader: { t4: 'Natural Leader', t4only: true },
+    combat_veteran: { t4: 'Combat Veteran', t4only: true },
+    wasteland_mentor: { t4: 'Wasteland Mentor', t4only: true },
+    friend_to_all: { t4: 'Friend to All', t4only: true },
+    compassionate_guard: { t4: 'Compassionate Guard', t4only: true },
+  })
 
-  let skeleton = Object.assign(s_combat, s_civilized, s_wasteland, s_anomaly);
+  let skeleton = Object.assign(s_combat, s_civilized, s_wasteland, s_anomaly, s_community);
   return autofill(skeleton);
 }
 

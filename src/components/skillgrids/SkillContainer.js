@@ -8,12 +8,10 @@ import Zoom from '@material-ui/core/Zoom';
 import './SkillGrid.scss';
 
 function SkillContainer(props) {
-  let handleClick = (sid, tier) => {
-    props.passClick(sid, tier);
-  };
-  let buildBoxes = () => {
-    let jsxes = Object.keys(props.skillState).map(key => {
-      let value = props.skillState[key];
+  const handleClick = (sid, tier) => { props.passClick(sid, tier) }
+  const buildBoxes = () => {
+    return Object.keys(props.skillState).map(key => {
+      const value = props.skillState[key];
       return (
         <React.Fragment key={key}>
           <SkillBox
@@ -39,14 +37,13 @@ function SkillContainer(props) {
                 maxTier={value.maxTier}
                 category={value.category}
                 visible={value.visible}
+                t4only={value.t4only}
                 expanded={props.skillInfoVisible[key]} />
             </Paper>
           </Grow>
         </React.Fragment>
       );
     });
-
-    return jsxes;
   };
 
   return (

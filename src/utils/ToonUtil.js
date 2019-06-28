@@ -3,7 +3,7 @@ import SkillCalc from './SkillCalc';
 import uuid from 'uuid';
 
 const ToonUtil = () => { 
-  let loadNewToon = (su, tid) => {
+  const loadNewToon = (su, tid) => {
     const j = su.toonData[tid];
 
     if (j == null) {
@@ -17,7 +17,7 @@ const ToonUtil = () => {
       console.log(localStorage.getItem('toonData'));
       loadBlankToon(su);
     } else {
-      su.setSkillState(j.skill_state);
+      su.setSkillState(Object.assign(SkillInitializer(), j.skill_state));
       su.setSkillXp(j.skill_xp);
       su.setSkillHidden(j.skill_hidden);
       su.setSkillInfoVisible(j.skill_info_visible || {});
@@ -30,7 +30,7 @@ const ToonUtil = () => {
     }
   };
 
-  let loadBlankToon = (su) => {
+  const loadBlankToon = (su) => {
     su.skillState = SkillInitializer();
 
     su.setSkillState(su.skillState);
@@ -51,24 +51,24 @@ const ToonUtil = () => {
     su.setTotalXp({ stat: 0, skill: 0 });
   };
 
-  let persistToonStorage = (su, writeChange) => {
+  const persistToonStorage = (su, writeChange) => {
     su.setToonStorage(Object.assign({}, su.toonStorage));
     if (writeChange)
       localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
   };
 
-  let persistCurrentToon = (su) => {
+  const persistCurrentToon = (su) => {
     su.setCurrentToon(su.currentToon);
     localStorage.setItem('currentToon', su.currentToon);
   };
 
-  let generateNewToon = (su) => {
+  const generateNewToon = (su) => {
     su.currentToon = uuid.v1();
     su.toonStorage[su.currentToon] = { name: 'new', state: 'enabled' };
     persistCurrentToon(su, su.currentToon);
   };
 
-  let saveState = (su) => {
+  const saveState = (su) => {
     su.toonData[su.currentToon] = {
       skill_state: su.skillState,
       skill_xp: su.skillXp,
@@ -84,7 +84,7 @@ const ToonUtil = () => {
     localStorage.setItem('toonData', JSON.stringify(su.toonData));
   };
 
-  let loadState = (su) => {
+  const loadState = (su) => {
     su.toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
 
     let firstEnabledToon;
@@ -132,7 +132,7 @@ const ToonUtil = () => {
     }
   };
 
-  let handleToonChange = (su, action, arg, arb) => {
+  const handleToonChange = (su, action, arg, arb) => {
     switch(action) {
       case 'new':
         generateNewToon(su);
@@ -159,7 +159,7 @@ const ToonUtil = () => {
     }
   };
 
-  let handleAppLoad = (su) => {
+  const handleAppLoad = (su) => {
     if (su.localStorageHasBeenLoaded === false) {
       loadState(su);
       su.setLocalStorageHasBeenLoaded(true);
