@@ -181,6 +181,12 @@
 .skill-anomaly-4 {
   @include trixtend($color-anomaly-1, 4);
 }
+.skill-community-0 {
+  @include trileft($color-midtone);
+}
+.skill-community-4 {
+  @include trixtend($color-midtone, 4);
+}
 .skill-civilized-0 {
   @include trileft($color-civilized-4);
 }

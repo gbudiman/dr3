@@ -23,6 +23,7 @@ function SkillContainer(props) {
             maxTier={value.maxTier}
             acquired={value.acquired}
             t4acquired={value.t4acquired}
+            t4only={value.t4only}
             visible={value.visible}
             passClick={handleClick}
             skillInfo={props.skillInfo}

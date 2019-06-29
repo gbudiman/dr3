@@ -83,6 +83,7 @@ function SkillInitializer() {
   })
 
   let skeleton = Object.assign(s_combat, s_civilized, s_wasteland, s_anomaly, s_community);
+  //let skeleton = Object.assign(s_anomaly, s_community);
   return autofill(skeleton);
 }
 

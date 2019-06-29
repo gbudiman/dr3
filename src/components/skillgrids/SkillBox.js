@@ -3,12 +3,12 @@ import SkillGrid from './SkillGrid';
 import { humanify } from '../../utils/StringUtil';
 
 function SkillBox(props) {
-  let isAcquired = (tier) => { 
+  const isAcquired = (tier) => { 
     if (tier === 4 && 't4acquired' in props) return props.t4acquired;
     return (tier === 1 && props.innate === true) || props.acquired >= tier;
   };
-  let handleClick = (sid, tier) => { props.passClick(props.t1, tier) };
-  let getName = (tier) => {
+  const handleClick = (sid, tier) => { props.passClick(props.t1, tier) };
+  const getName = (tier) => {
     switch(tier) {
       case 0: return null;
       case 1: return humanify(props.t1);
@@ -17,8 +17,11 @@ function SkillBox(props) {
       case 4: return props.t4;
     }
   }
-  let buildGrids = () => {
-    let jsxes = [...Array(props.maxTier + 1).keys()].map((tier) => {
+
+  const buildGrids = () => {
+    const tiers = props.t4only ? [0, 4] : [0, 1, 2, 3, 4];
+
+    return tiers.map((tier) => {
       return(
         <SkillGrid 
           key={props.t1 + '_' + tier}
@@ -33,8 +36,6 @@ function SkillBox(props) {
           passClick={handleClick} />
       )
     })
-
-    return jsxes;
   }
 
   return(
