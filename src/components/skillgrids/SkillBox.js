@@ -19,7 +19,7 @@ function SkillBox(props) {
   }
 
   const buildGrids = () => {
-    const tiers = props.t4only ? [0, 4] : [0, 1, 2, 3, 4];
+    const tiers = props.t4only ? [0, 4] : [...Array(props.maxTier + 1).keys()];
 
     return tiers.map((tier) => {
       return(

@@ -75,11 +75,11 @@ function SkillInitializer() {
     faithful_will: { t4: 'Life Binder' },
   })
   let s_community = categorify('community', {
-    natural_leader: { t4: 'Natural Leader', t4only: true },
     combat_veteran: { t4: 'Combat Veteran', t4only: true },
-    wasteland_mentor: { t4: 'Wasteland Mentor', t4only: true },
-    friend_to_all: { t4: 'Friend to All', t4only: true },
     compassionate_guard: { t4: 'Compassionate Guard', t4only: true },
+    friend_to_all: { t4: 'Friend to All', t4only: true },
+    natural_leader: { t4: 'Natural Leader', t4only: true },
+    wasteland_mentor: { t4: 'Wasteland Mentor', t4only: true },
   })
 
   let skeleton = Object.assign(s_combat, s_civilized, s_wasteland, s_anomaly, s_community);
