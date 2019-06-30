@@ -64,8 +64,8 @@ const SkillUtil = () => {
       } else {
         su.skillState[sid].t4acquired = !su.skillState[sid].t4acquired;
       }
-
-      if (su.skillState[sid].t4acquired && su.skillState[sid].acquired <= 2) {
+      
+      if (!su.skillState[sid].t4only && su.skillState[sid].t4acquired && su.skillState[sid].acquired <= 2) {
         su.skillState[sid].acquired = 2;
       }
       su.setSkillState(Object.assign({}, su.skillState));

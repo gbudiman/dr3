@@ -182,10 +182,26 @@
   @include trixtend($color-anomaly-1, 4);
 }
 .skill-community-0 {
-  @include trileft($color-midtone);
+  @include trileft($color-community-4);
 }
 .skill-community-4 {
-  @include trixtend($color-midtone, 4);
+  background-color: $color-community-4;
+  text-align: right;
+
+  &.skill-tier-4 {
+    &.skill-grid {
+      width: calc(107% - 49px);
+      z-index: 16;
+      margin-left: -7%;
+      border-radius: 16px;
+      &:hover {
+        filter: brightness(125%);
+      }
+    }
+  }
+
+  &.skill-unused-4 {
+  }
 }
 .skill-civilized-0 {
   @include trileft($color-civilized-4);
@@ -290,6 +306,9 @@
     }
     &.anomaly {
       @include tabbed($color-anomaly-4);
+    }
+    &.community {
+      @include tabbed($color-community-4);
     }
 
     .MuiTabs-root {

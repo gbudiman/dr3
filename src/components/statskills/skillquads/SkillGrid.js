@@ -7,6 +7,7 @@ import Wasteland from '@material-ui/icons/Pets';
 import Anomaly from '@material-ui/icons/AcUnit';
 import Civilized from '@material-ui/icons/AccountBalance';
 import Combat from '@material-ui/icons/Gavel';
+import Community from '@material-ui/icons/People';
 import { upcase } from '../../../utils/StringUtil';
 
 function SkillGrid(props) {
@@ -88,6 +89,7 @@ function SkillGrid(props) {
       case 'combat': return <Combat fontSize='small' />;
       case 'civilized': return <Civilized fontSize='small' />;
       case 'anomaly': return <Anomaly fontSize='small' />;
+      case 'community': return <Community fontSize='small' />;
     }
   }
   useEffect(() => {
