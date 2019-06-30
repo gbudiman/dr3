@@ -3,7 +3,6 @@ function SkillCalc(h) {
     let grid = {};
     let xp = {};
 
-    console.log(h.friend_to_all);
     for (const key in h) {
       let category = h[key].category;
       let acquiredTier = h[key].acquired;

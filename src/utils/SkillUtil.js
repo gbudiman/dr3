@@ -31,7 +31,6 @@ const SkillUtil = () => {
       su.skillInfoVisible[sid] = true;
     }
 
-    console.log(su.skillInfoVisible);
     su.setSkillInfoVisible(Object.assign({}, su.skillInfoVisible));
   }
 
@@ -74,7 +73,7 @@ const SkillUtil = () => {
 
   let setSkillVisibility = (su, category, state) => {
     for (const key in su.skillState) {
-      let unacquired = su.skillState[key].acquired === 0;
+      let unacquired = su.skillState[key].acquired === 0 && !su.skillState[key].t4acquired;
       if (unacquired && su.skillState[key].category === category) {
         su.skillState[key].visible = state;
       }
