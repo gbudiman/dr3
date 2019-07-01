@@ -3,13 +3,13 @@ import SkillGrid from './SkillGrid';
 import './SkillQuad.scss';
 
 function SkillQuad(props) {
-  let categories = ['combat', 'civilized', 'community', 'wasteland', 'anomaly'];
+  let categories = ['combat', 'civilized', 'wasteland', 'anomaly', 'community'];
   let placement = {
     combat: 'top-start',
     wasteland: 'top',
     civilized: 'top',
-    community: 'top',
-    anomaly: 'top-end',
+    anomaly: 'top',
+    community: 'top-end',
   }
   let handlePopOpen = (category, openState) => { props.passPopOpen(category, openState) }
   let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(category) }
