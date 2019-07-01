@@ -2,9 +2,7 @@ import React from 'react';
 import SkillInfo from './SkillInfo';
 import SkillBox from './SkillBox';
 import Grow from '@material-ui/core/Grow';
-import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
-import Zoom from '@material-ui/core/Zoom';
 import './SkillGrid.scss';
 
 function SkillContainer(props) {
