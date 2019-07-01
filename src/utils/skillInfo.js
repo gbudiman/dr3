@@ -714,5 +714,35 @@ export default {
       '5 Mind, successful Strike or Ranged Attack to the torso, and call "Takedown" to Stun Target for 5 seconds. Target must sit or flail to the ground.',
     name: 'Take Down',
     startingPage: 111
-  }
+  },
+  naturalLeader: {
+    description: 'Rewarded for positive feedback based on fair play, inclusivity, and creating social experiences that encourage and empower newer participants in being involved with the shared narrative of the Dystopia Rising universe.',
+    name: 'Natural Leader',
+    startingPage: 138,
+  },
+  combatVeteran: {
+    description: 'Rewarded for positive feedback based on fair play, creating engaging combat experiences, and assisting above and beyond in promoting safety and inclusive engagement in the contact-safe combat aspect of Dystopia Rising. A true Combat Veteran realizes they as an individual don’t need to win every fight and instead, that the community as a whole all should have the best chance for victory.',
+    name: 'Combat Veteran',
+    startingPage: 139,
+  },
+  wastelandMentor: {
+    description: 'Rewarded for positive feedback given to individuals who exemplify positivity and healthy community engagement between participants when they are not in character or sometimes not at events but engaging members of our community. Wasteland Mentors help one another outside of the wastelands as much as they help one another within them.',
+    name: 'Wasteland Mentor',
+    startingPage: 139,
+  },
+  ohCaptain: {
+    description: 'Rewarded for positive feedback given to individuals who assist others in steering their story, negotiating shared experiences, and guiding their role-play and interpersonal engagements in a direction that makes for a more enjoyable experience for as many people as possible.',
+    name: 'Oh Captain',
+    startingPage: 139,
+  },
+  friendToAll: {
+    description: 'Rewarded for positive feedback given to individuals who reach outside of their established friend circles and in-character groups to help others, be inclusive, and build up the community as a whole. While each branch can be small or large, as a larger community it is important to remember to respect and engage the friends you do not yet know with compassion and an earnest effort to be inclusive.',
+    name: 'Friend to All',
+    startingPage: 139,
+  },
+  compassionateGuard: {
+    description: 'Rewarded for positive feedback given to individuals who actively ensure that the spirit of inclusivity is promoted both at and between events. A player who has received positive feedback reports based on their willingness to assist others in trouble, to be a bastion of positivity, and to help others both communicate and listen with care and compassion can earn this Achievement.',
+    name: 'Compassionate Guard',
+    startingPage: 139,
+  },
 };

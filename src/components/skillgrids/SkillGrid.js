@@ -3,20 +3,20 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 function SkillGrid(props) {
-  let handleClick = () => { props.passClick(props.sid, props.tier) }
+  const handleClick = () => { props.passClick(props.sid, props.tier) }
 
-  let getTextualRepresentation = () => {
+  const getTextualRepresentation = () => {
     if (props.tier === 0) {
       return props.infoExpanded ? <ExpandLess fontSize='small'/> : <ExpandMore fontSize='small'/>;
     } else {
-      let innateMarker = props.innate && props.tier === 1 ? '*' : '';
+      const innateMarker = props.innate && props.tier === 1 ? '*' : '';
 
       return <span className='text'>{props.name + innateMarker}</span>;
     }
   }
 
-  let getClassName = () => {
-    let classes = [
+  const getClassName = () => {
+    const classes = [
       'skill-grid',
       `skill-${props.category}-${props.tier}`,
       `skill-tier-${props.tier}`,

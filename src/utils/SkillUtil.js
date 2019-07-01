@@ -2,7 +2,7 @@ import { calcTotalXp } from './XpUtil';
 import SkillCalc from './SkillCalc';
 
 const SkillUtil = () => {
-  let handleSkillGridClick = (su, sid, tier) => {
+  const handleSkillGridClick = (su, sid, tier) => {
     if (tier === 0) {
       updateSkillInfoVisibility(su, sid);
     } else {
@@ -13,7 +13,7 @@ const SkillUtil = () => {
     }
   };
 
-  let handleSkillVisibilityToggle = (su, category) => {
+  const handleSkillVisibilityToggle = (su, category) => {
     if (!(category in su.skillHidden)) {
       su.skillHidden[category] = true;
     } else {
@@ -24,24 +24,23 @@ const SkillUtil = () => {
     su.setSkillHidden(Object.assign({}, su.skillHidden));
   };
 
-  let updateSkillInfoVisibility = (su, sid) => {
+  const updateSkillInfoVisibility = (su, sid) => {
     if (sid in su.skillInfoVisible) {
       su.skillInfoVisible[sid] = !su.skillInfoVisible[sid];
     } else {
       su.skillInfoVisible[sid] = true;
     }
 
-    console.log(su.skillInfoVisible);
     su.setSkillInfoVisible(Object.assign({}, su.skillInfoVisible));
   }
 
-  let updateSkillState = (su, sid, tier) => {
+  const updateSkillState = (su, sid, tier) => {
     if (tier > 0 && tier <= 3) {
-      let t4acquired =
+      const t4acquired =
         't4acquired' in su.skillState[sid] && su.skillState[sid].t4acquired === true;
-      let clickedAcquired =
+      const clickedAcquired =
         tier <= su.skillState[sid].acquired || (tier === 4 && t4acquired);
-      let clickedAtTier =
+      const clickedAtTier =
         tier === su.skillState[sid].acquired || (tier === 4 && t4acquired);
 
       if (clickedAtTier && clickedAcquired) {
@@ -64,17 +63,17 @@ const SkillUtil = () => {
       } else {
         su.skillState[sid].t4acquired = !su.skillState[sid].t4acquired;
       }
-
-      if (su.skillState[sid].t4acquired && su.skillState[sid].acquired <= 2) {
+      
+      if (!su.skillState[sid].t4only && su.skillState[sid].t4acquired && su.skillState[sid].acquired <= 2) {
         su.skillState[sid].acquired = 2;
       }
       su.setSkillState(Object.assign({}, su.skillState));
     }
   };
 
-  let setSkillVisibility = (su, category, state) => {
+  const setSkillVisibility = (su, category, state) => {
     for (const key in su.skillState) {
-      let unacquired = su.skillState[key].acquired === 0;
+      const unacquired = su.skillState[key].acquired === 0 && !su.skillState[key].t4acquired;
       if (unacquired && su.skillState[key].category === category) {
         su.skillState[key].visible = state;
       }
