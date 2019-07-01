@@ -1,4 +1,6 @@
-export default theme => ({
+import { makeStyles } from '@material-ui/core';
+
+export default makeStyles(theme => ({
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
@@ -25,4 +27,4 @@ export default theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   }
-});
+}));
