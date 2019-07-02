@@ -37,8 +37,8 @@ function SkillGrid(props) {
     ].join(' ')
   }
   const drawSkillTable = () => {
-    const quant = props.skillQuantity;
-    const xp = props.skillXp;
+    const quant = props.skillQuantity || {};
+    const xp = props.skillXp || {};
 
     const quantRow = () => {
       return [1,2,3,4].map(tier => {
