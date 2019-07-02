@@ -103,7 +103,7 @@ function SkillGrid(props) {
     <React.Fragment>
       <div className={getQuadClassName()} onClick={handlePopperToggle}>
         <div className='symbol'>{getCategorySymbol()}</div>
-        <div className='bold'>{props.skillTotalXp}</div>
+        <div className='bold'>{props.skillTotalXp || 0}</div>
       </div>
       <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} transition className={getOverlayClassName()}>
         {drawSkillTable()}
