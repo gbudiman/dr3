@@ -8,17 +8,18 @@ import Tab from '@material-ui/core/Tab';
 
 const SkillInfo = (props) => {
   let [value, setValue] = useState(0);
-  let getInfoKeyArrays = () => {
-    let tiers = [1,2,3].filter(n => n >= (props.innate ? 2 : 1));
+  const getInfoKeyArrays = () => {
+    if (props.t4only) return [tierify(props.name, 4)];
+    const tiers = [1,2,3].filter(n => n >= (props.innate ? 2 : 1));
     switch(props.maxTier) {
       case 1: return [camelize(props.name)];
       default: return tiers.map(tier => tierify(props.name, tier));
     }
   }
-  let handleChange = (event, newValue) => { setValue(newValue) }
-  let handleChangeIndex = index => { setValue(index) }
+  const handleChange = (event, newValue) => { setValue(newValue) }
+  const handleChangeIndex = index => { setValue(index) }
 
-  let getSkillDescriptions = () => {
+  const getSkillDescriptions = () => {
     return getInfoKeyArrays().map(skillInfoKey => {
       return(
         <div className='skill-description' key={skillInfoKey}>
@@ -29,7 +30,7 @@ const SkillInfo = (props) => {
     })
   }
 
-  let getSkillNames = () => {
+  const getSkillNames = () => {
     let tierCount = getInfoKeyArrays().length;
     let tierTabTitles = [];
     switch(tierCount) {
@@ -42,22 +43,22 @@ const SkillInfo = (props) => {
     })
   }
 
-  let getTabClassName = () => {
+  const getTabClassName = () => {
     return [
       'skill-tab-container',
       props.category,
     ].join(' ')
   }
 
-  let getInfoClassName = () => {
+  const getInfoClassName = () => {
     return [
       'skill-info',
       (props.expanded && props.visible) ? '' : 'hidden'
     ].join(' ')
   }
 
-  let buildTabs = () => {
-    let renderMultiTierTab = () => {
+  const buildTabs = () => {
+    const renderMultiTierTab = () => {
       if (props.maxTier > 1) {
         return (
           <Tabs

@@ -7,6 +7,7 @@ import Wasteland from '@material-ui/icons/Pets';
 import Anomaly from '@material-ui/icons/AcUnit';
 import Civilized from '@material-ui/icons/AccountBalance';
 import Combat from '@material-ui/icons/Gavel';
+import Community from '@material-ui/icons/People';
 import { upcase } from '../../../utils/StringUtil';
 
 function SkillGrid(props) {
@@ -16,11 +17,11 @@ function SkillGrid(props) {
   let isVisible = 'toggleState' in props && (props.toggleState === false || props.toggleState === undefined);
   let isFiltered = !isVisible;
 
-  let handlePopperToggle = (event) => { 
+  const handlePopperToggle = (event) => { 
     setAnchorEl(anchorEl ? null : event.currentTarget);
     props.passPopOpen(props.category, anchorEl === null);
   }
-  let getQuadClassName = () => {
+  const getQuadClassName = () => {
     return [
       'skillgrid',
       props.category,
@@ -28,18 +29,18 @@ function SkillGrid(props) {
       anchorEl === null ? '' : 'overlay-active',
     ].join(' ')
   }
-  let getOverlayClassName = () => {
+  const getOverlayClassName = () => {
     return [
       'skillgrid-overlay',
       props.category,
       isVisible ? '' : 'muted',
     ].join(' ')
   }
-  let drawSkillTable = () => {
-    let quant = props.skillQuantity;
-    let xp = props.skillXp;
+  const drawSkillTable = () => {
+    const quant = props.skillQuantity || {};
+    const xp = props.skillXp || {};
 
-    let quantRow = () => {
+    const quantRow = () => {
       return [1,2,3,4].map(tier => {
         return(
           <td key={tier} className={`quantity numeric t${tier}`}>
@@ -49,7 +50,7 @@ function SkillGrid(props) {
       })
     }
 
-    let xpRow = () => {
+    const xpRow = () => {
       return [1,2,3,4].map(tier => {
         return(
           <td key={tier} className={`xp numeric bold t${tier}`}>
@@ -59,9 +60,9 @@ function SkillGrid(props) {
       })
     }
 
-    let getVisibleClassName = () => { return isVisible ? '' : 'hidden' };
-    let getHiddenClassName = () => { return isFiltered ? '' : 'hidden' };
-    let handleSkillVisibilityToggle = () => { props.passSkillVisibilityToggle(props.category) };
+    const getVisibleClassName = () => { return isVisible ? '' : 'hidden' };
+    const getHiddenClassName = () => { return isFiltered ? '' : 'hidden' };
+    const handleSkillVisibilityToggle = () => { props.passSkillVisibilityToggle(props.category) };
 
     return(
       <div className='table-container'>
@@ -82,12 +83,13 @@ function SkillGrid(props) {
       </div>
     )
   }
-  let getCategorySymbol = () => {
+  const getCategorySymbol = () => {
     switch(props.category) {
       case 'wasteland': return <Wasteland fontSize='small' />;
       case 'combat': return <Combat fontSize='small' />;
       case 'civilized': return <Civilized fontSize='small' />;
       case 'anomaly': return <Anomaly fontSize='small' />;
+      case 'community': return <Community fontSize='small' />;
     }
   }
   useEffect(() => {
@@ -101,7 +103,7 @@ function SkillGrid(props) {
     <React.Fragment>
       <div className={getQuadClassName()} onClick={handlePopperToggle}>
         <div className='symbol'>{getCategorySymbol()}</div>
-        <div className='bold'>{props.skillTotalXp}</div>
+        <div className='bold'>{props.skillTotalXp || 0}</div>
       </div>
       <Popper id={id} open={open} anchorEl={anchorEl} placement={props.placement} transition className={getOverlayClassName()}>
         {drawSkillTable()}
