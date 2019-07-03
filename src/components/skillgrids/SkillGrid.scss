@@ -64,8 +64,6 @@
   background-color: $color;
   z-index: 20;
   margin-left: -12px;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
   &:hover {
     filter: brightness(125%);
   }
@@ -311,6 +309,16 @@
         div {
           .skill-description {
             padding: 8px;
+
+            .skill-page-start {
+              margin-top: 8px;
+              margin-bottom: 8px;
+              border-top: 1px solid $color-midtone;
+              width: 100%;
+              text-align: right;
+              font-style: italic;
+              color: $color-midtone;
+            }
           }
         }
       }

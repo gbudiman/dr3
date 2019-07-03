@@ -20,7 +20,12 @@ const SkillInfo = (props) => {
 
   let getSkillDescriptions = () => {
     return getInfoKeyArrays().map(skillInfoKey => {
-      return <div className='skill-description' key={skillInfoKey}>{skillInfo[skillInfoKey].description}</div>;
+      return(
+        <div className='skill-description' key={skillInfoKey}>
+          <div className='skill-blob-text'>{skillInfo[skillInfoKey].description}</div>
+          <div className='skill-page-start'>Starting page: {skillInfo[skillInfoKey].startingPage}</div>
+        </div>
+      )
     })
   }
 
