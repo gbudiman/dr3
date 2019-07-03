@@ -9,8 +9,8 @@ import history from './history';
 import { MuiThemeProvider } from '@material-ui/core';
 import theme from './theme';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
-import Router from './Router';
-import Navigation from './components/Navigation/Navigation';
+import RouterWrapper from './RouterWrapper';
+import Navigation from './components/navigation/Navigation';
 
 const App = ({ isLoggedIn }) => {
   let su = StateUtil();
@@ -25,7 +25,7 @@ const App = ({ isLoggedIn }) => {
       <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
           <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
-          <Router />
+          <RouterWrapper su={su}/>
           <Navigation setTab={su.setTab} tab={su.tab} />
         </MuiThemeProvider>
       </ConnectedRouter>
