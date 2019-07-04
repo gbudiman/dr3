@@ -5,6 +5,7 @@
   &.civilized { background-color: $color-civilized-4; }
   &.wasteland { background-color: $color-wasteland-4; }
   &.anomaly { background-color: $color-anomaly-4; }
+  &.community { background-color: $color-community-4; }
   color: $color-light;
 }
 
@@ -120,7 +121,7 @@
   &.combat {
     border-bottom-left-radius: 0px;
   }
-  &.anomaly {
+  &.community {
     border-bottom-right-radius: 0px;
   }
 

@@ -21,6 +21,7 @@ export function camelize(s) {
 }
 
 export function tierify(s, tier) {
-  let tierPrefix = { 1: 'basic', 2: 'proficient', 3: 'master' };
+  if (tier === 4) return camelize(s);
+  const tierPrefix = { 1: 'basic', 2: 'proficient', 3: 'master' };
   return tierPrefix[tier] + upcase(camelize(s))
 }
