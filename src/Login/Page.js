@@ -1,20 +1,18 @@
 import React from 'react';
 import { Paper, Typography } from '@material-ui/core';
-import useStyles from './styles';
-
 import LoginForm from './Form';
+import './styles.scss';
 
-const Page = ({ addSession, theme }) => {
-  const classes = useStyles(theme);
+const Page = ({ createSession }) => {
   return (
-    <main className={classes.main}>
-      <Paper className={classes.paper}>
+    <div className='container'>
+      <Paper className='paper'>
         <Typography component='h1' variant='h5'>
           Sign In
         </Typography>
-        <LoginForm classes={classes} onSubmit={addSession} />
+        <LoginForm onSubmit={createSession} />
       </Paper>
-    </main>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import addSession from './actions/createSession';
+import createSession from './actions/createSession';
 import Page from './Page';
 
 const mapStateToProps = state => ({
@@ -8,5 +8,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addSession }
+  { createSession }
 )(Page);

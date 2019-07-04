@@ -6,17 +6,10 @@ import Skills from './Skills/Page';
 import Feedback from './Feedback/Page';
 import './App.scss';
 
-export default ({ isLoggedIn, theme }) => (
+export default ({ isLoggedIn }) => (
   <Switch className='builder'>
-    <Route
-      exact
-      path='/'
-      render={() => (isLoggedIn ? <Characters /> : <Login />)}
-    />
-    <Route
-      path='/characters'
-      render={() => (isLoggedIn ? <Characters /> : <Login />)}
-    />
+    <Route path='/login' component={Login} />
+    <Route exact path={['/', '/characters']} component={Characters} />
     <Route path='/skills' component={Skills} />
     <Route path='/feedback' component={Feedback} />
   </Switch>

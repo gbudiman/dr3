@@ -3,7 +3,7 @@ import SkillContainer from '../components/skillgrids/SkillContainer';
 import StatSkill from '../components/statskills/StatSkill';
 import StrainPicker from '../components/strains/StrainPicker';
 import XpBar from '../components/xpbars/XpBar';
-import './Page.scss';
+import './styles.scss';
 
 const CharacterPage = props => {
   let handleStrainChange = value => {

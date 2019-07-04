@@ -1,11 +1,11 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from '@material-ui/core';
-
 import RenderField from '../Shared/RenderField';
+import './styles.scss';
 
-const Form = ({ classes, handleSubmit }) => (
-  <form className={classes.form} onSubmit={handleSubmit}>
+const Form = ({ handleSubmit }) => (
+  <form className='form' onSubmit={handleSubmit}>
     <Field component={RenderField} name='email' label='Email' type='text' />
     <Field
       component={RenderField}
@@ -14,7 +14,7 @@ const Form = ({ classes, handleSubmit }) => (
       type='password'
     />
     <Button
-      className={classes.submit}
+      className='submit'
       color='primary'
       fullWidth
       onClick={handleSubmit}

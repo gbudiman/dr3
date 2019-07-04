@@ -1,10 +1,9 @@
 import React from 'react';
 import Disqus from 'disqus-react';
 import Typography from '@material-ui/core/Typography';
-import useStyles from './styles';
+import './styles.scss';
 
 const FeedbackPage = () => {
-  const classes = useStyles();
   const disqusShortname = 'DRpaedia3';
   const disqusConfig = {
     url: 'http://drpaedia3.herokuapp.com',
@@ -13,8 +12,8 @@ const FeedbackPage = () => {
   };
 
   return (
-    <div className={classes.disqus}>
-      <Typography className={classes.header} variant='h6'>
+    <div className='disqus'>
+      <Typography className='header' variant='h6'>
         Feedback
       </Typography>
       <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>

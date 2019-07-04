@@ -12,7 +12,7 @@ import AppBarWrapper from './components/appbars/AppBarWrapper';
 import Router from './Router';
 import Navigation from './components/Navigation/Navigation';
 
-const App = ({ isLoggedIn }) => {
+export default () => {
   let su = StateUtil();
   let toonUtil = ToonUtil();
 
@@ -24,13 +24,13 @@ const App = ({ isLoggedIn }) => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
-          <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
-          <Router />
-          <Navigation setTab={su.setTab} tab={su.tab} />
+          <div className='app-window'>
+            <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
+            <Router />
+            <Navigation setTab={su.setTab} tab={su.tab} />
+          </div>
         </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>
   );
 };
-
-export default App;

@@ -8,12 +8,6 @@ body {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -31,12 +25,6 @@ body {
 .MuiPaper-root.MuiAppBar-colorPrimary {
   background-color: $color-dark;
   color: $color-light;
-}
-
-#disqus_thread {
-  width: 90%;
-  margin: auto;
-  background-color: $color-off-dark;
 }
 
 .app-window {
@@ -74,13 +62,5 @@ body {
       max-width: 480px;
       padding: 0 16px;
     }
-  }
-}
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
   }
 }
