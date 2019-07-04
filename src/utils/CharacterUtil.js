@@ -4,10 +4,11 @@ import StatUtil from './StatUtil';
 import StrainUtil from './StrainUtil';
 import SkillUtil from './SkillUtil';
 
-export default su => {
+const CharacterUtil = props => {
   let statUtil = StatUtil();
   let strainUtil = StrainUtil();
   let skillUtil = SkillUtil();
+  let su = props.su;
 
   return (
     <CharacterPage
@@ -21,3 +22,5 @@ export default su => {
     />
   );
 };
+
+export default CharacterUtil;

@@ -24,11 +24,9 @@ export default () => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
-          <div className='app-window'>
-            <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
-            <Router />
-            <Navigation setTab={su.setTab} tab={su.tab} />
-          </div>
+          <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
+          <Router su={su} />
+          <Navigation setTab={su.setTab} tab={su.tab} />
         </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>
