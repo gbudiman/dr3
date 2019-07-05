@@ -14,24 +14,23 @@ import reducer from './reducers';
 
 const App = () => {
   const su = StateUtil();
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
     reducer,
+    su,
     composeWithDevTools(applyMiddleware(sagaMiddleware))
-  )
-  const action = type => store.dispatch({type})
+  );
 
   sagaMiddleware.run(authSaga);
 
   useEffect(() => {
-    store.dispatch({ type: 'INITIALIZE_STATE_UTIL', payload: { su: su }});
     store.dispatch({ type: 'APP_LOAD' })
   }, su);
 
   return (
     <Provider store={store}>
       <div className='app-window'>
-        <AppBarWrapper store={store} su={su} />
+        <AppBarWrapper />
         <div className='builder'>{switchTab(su, store)}</div>
         <Navigation setTab={su.setTab} tab={su.tab} />
       </div>

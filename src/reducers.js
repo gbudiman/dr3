@@ -4,26 +4,22 @@ import { toonUpdateSaga } from './sagas/auth';
 
 const toonUtil = ToonUtil();
 const skillUtil = SkillUtil();
-let su = null;
 
-export default function auth(state, action) {
+export default function reducer(state, action) {
   const payload = action.payload;
 
   switch(action.type) {
-    case 'INITIALIZE_STATE_UTIL': su = payload.su; break;
-    case 'APP_LOAD': toonUtil.handleAppLoad(su); break;
-    case 'CREATE_NEW_CHARACTER': toonUtil.handleToonChange(su, 'new'); break;
-    case 'SWITCH_CHARACTER': toonUtil.handleToonChange(su, 'switch', payload.toonId); break;
-    case 'RENAME_CHARACTER': toonUtil.handleToonChange(su, 'rename', payload.toonId, payload.value); break;
-    case 'DELETE_CHARACTER': toonUtil.handleToonChange(su, 'delete', payload.toonId); break;
-    case 'UNDELETE_CHARACTER': toonUtil.handleToonChange(su, 'undelete', payload.toonId); break;
+    case 'APP_LOAD': toonUtil.handleAppLoad(state); return state;
+    case 'CREATE_NEW_CHARACTER': toonUtil.handleToonChange(state, 'new'); return state;
+    case 'SWITCH_CHARACTER': toonUtil.handleToonChange(state, 'switch', payload.toonId); return state;
+    case 'RENAME_CHARACTER': toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); return state;
+    case 'DELETE_CHARACTER': toonUtil.handleToonChange(state, 'delete', payload.toonId); return state;
+    case 'UNDELETE_CHARACTER': toonUtil.handleToonChange(state, 'undelete', payload.toonId); return state;
     case 'CLICKED_SKILL_GRID': 
-      skillUtil.handleSkillGridClick(su, payload.sid, payload.tier); 
-      toonUtil.saveState(su);
-      break;
-    case 'REMOTE_CHARACTERS_LOADED':
-      toonUtil.mergeRemoteToons(su, payload); break;
-      break;
+      skillUtil.handleSkillGridClick(state, payload.sid, payload.tier); 
+      toonUtil.saveState(state);
+      return state;
+    case 'REMOTE_CHARACTERS_LOADED': toonUtil.mergeRemoteToons(state, payload); return state;
     default: return state;
   }
 }

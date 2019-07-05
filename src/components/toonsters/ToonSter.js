@@ -15,36 +15,6 @@ import { call, put, takeEvery, takeLatest, all } from 'redux-saga/effects'
 function ToonSter(props) {
   let [anchorEl, setAnchorEl] = useState(null);
   let handleClick = event => { setAnchorEl(anchorEl ? null : event.currentTarget) }
-  let handleChange = (tid, newValue) => {
-    props.store.dispatch({
-      type: 'RENAME_CHARACTER',
-      payload: {
-        toonId: tid,
-        value: newValue,
-        remoteId: props.toonStorage[tid].remoteId,
-      }
-    })
-  };
-  let handleSwitch = tid => {
-    props.store.dispatch({
-      type: 'SWITCH_CHARACTER',
-      payload: { toonId: tid },
-    })
-  };
-  let handleDelete = tid => {
-    props.store.dispatch({
-      type: 'DELETE_CHARACTER',
-      payload: { toonId: tid },
-    })
-  };
-  let handleUndelete = tid => {
-    props.store.dispatch({
-      type: 'UNDELETE_CHARACTER',
-      payload: { toonId: tid },
-    })
-  };
-  let handleNewToon = () => { props.store.dispatch({ type: 'CREATE_NEW_CHARACTER' }) }
-
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
   let toonLister = () => {
@@ -53,10 +23,10 @@ function ToonSter(props) {
       return (
         <ToonName
           name={tprop.name}
-          passChange={handleChange}
-          passSwitch={handleSwitch}
-          passDelete={handleDelete}
-          passUndelete={handleUndelete}
+          passChange={props.handleChange}
+          passSwitch={props.handleSwitch}
+          passDelete={props.handleDelete}
+          passUndelete={props.handleUndelete}
           key={tid}
           tid={tid}
           selected={tid === props.currentToon}
@@ -88,7 +58,7 @@ function ToonSter(props) {
             <div className='overlay'>
               {toonLister()}
               <Divider className='toon-divider' />
-              <NewToon handleNewToon={handleNewToon} />
+              <NewToon handleNewToon={props.handleNewToon} />
               <Divider className='toon-divider' />
               <DebugReset />
             </div>
@@ -100,15 +70,49 @@ function ToonSter(props) {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    currentToon: state.currentToon,
+    toonStorage: state.toonStorage,
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    renameCharacter: (tid, newValue, remoteId) => { 
+      dispatch({
+        type: 'RENAME_CHARACTER',
+        payload: {
+          toonId: tid,
+          value: newValue,
+          remoteId: remoteId,
+        }
+      })
+    },
+    handleSwitch: (tid) => { dispatch({type: 'SWITCH_CHARACTER', payload: { toonId: tid }}) },
+    handleDelete: (tid) => { dispatch({type: 'DELETE_CHARACTER', payload: { toonId: tid }}) },
+    handleUnDelete: (tid) => { dispatch({type: 'UNDELETE_CHARACTER', payload: { toonId: tid }}) },
+    handleNewToon: () => { dispatch({type: 'CREATE_NEW_CHARACTER'}) },
+  }
+}
+
+const mergeProps = (stateProps, dispatchProps) => {
+  const handleChange = (tid, newValue) => {
+    dispatchProps.renameCharacter(
+      tid,
+      newValue,
+      stateProps.toonStorage[tid].remoteId,
+    )
+  }
+
+  return ({
+    ...stateProps,
+    ...dispatchProps,
+    handleChange
+  })
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+  mergeProps,
 )(ToonSter);
-//export default ToonSter;

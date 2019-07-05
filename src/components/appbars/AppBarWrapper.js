@@ -5,20 +5,12 @@ import ToonSter from '../toonsters/ToonSter';
 import './AppBarWrapper.scss';
 
 function AppBarWrapper(props) {
-  let handleToonChange = (action, arg, arb) => { 
-    props.passChange(props.su, action, arg, arb) 
-  };
-  
   return(
     <AppBar position='fixed'>
       <div className='container'>
         <div className='title'>DRpaedia3</div>
         <div className='toonster-container'>
-          <ToonSter 
-            //passChange={handleToonChange} 
-            currentToon={props.su.currentToon} 
-            toonStorage={props.su.toonStorage}
-            store={props.store} />
+          <ToonSter />
         </div>
       </div>
     </AppBar>
@@ -26,17 +18,13 @@ function AppBarWrapper(props) {
 }
 
 const mapStateToProps = state => {
-  //console.log(state);
-  return {};
-}
-
-const mapDispatchToProps = dispatch => {
-  //console.log(dispatch);
-  return {};
+  return {
+    currentToon: state.currentToon,
+    toonStorage: state.toonStorage,
+  }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null
 )(AppBarWrapper);
-//export default AppBarWrapper;
