@@ -49,11 +49,13 @@ const ToonUtil = () => {
     });
     su.setInnate({});
     su.setTotalXp({ stat: 0, skill: 0 });
+
+    saveState(su);
   };
 
   const persistToonStorage = (su, writeChange) => {
     su.setToonStorage(Object.assign({}, su.toonStorage));
-    if (writeChange)
+    if (writeChange) 
       localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
   };
 
@@ -65,7 +67,8 @@ const ToonUtil = () => {
   const generateNewToon = (su) => {
     su.currentToon = uuid.v1();
     su.toonStorage[su.currentToon] = { name: 'new', state: 'enabled' };
-    persistCurrentToon(su, su.currentToon);
+    persistCurrentToon(su);
+    persistToonStorage(su, true);
   };
 
   const saveState = (su) => {
@@ -136,7 +139,6 @@ const ToonUtil = () => {
     switch(action) {
       case 'new':
         generateNewToon(su);
-        persistToonStorage(su, true);
         loadBlankToon(su);
         break;
       case 'rename':
@@ -144,6 +146,7 @@ const ToonUtil = () => {
         persistToonStorage(su,true);
         break;
       case 'switch':
+        console.log('switching to ' + arg);
         su.currentToon = arg;
         persistCurrentToon(su);
         loadNewToon(su, su.currentToon);
@@ -171,6 +174,7 @@ const ToonUtil = () => {
   return {
     handleToonChange: handleToonChange,
     handleAppLoad: handleAppLoad,
+    saveState: saveState,
   }
 }
 

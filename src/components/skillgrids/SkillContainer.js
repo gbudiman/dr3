@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import SkillInfo from './SkillInfo';
 import SkillBox from './SkillBox';
@@ -6,7 +7,10 @@ import Paper from '@material-ui/core/Paper';
 import './SkillGrid.scss';
 
 function SkillContainer(props) {
-  const handleClick = (sid, tier) => { props.passClick(sid, tier) }
+  const handleClick = (sid, tier) => { 
+    props.store.dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier }})
+  }
+  
   const buildBoxes = () => {
     return Object.keys(props.skillState).map(key => {
       const value = props.skillState[key];
@@ -53,4 +57,5 @@ function SkillContainer(props) {
   );
 }
 
-export default SkillContainer;
+export default connect()(SkillContainer);
+//export default SkillContainer;

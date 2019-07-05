@@ -32,6 +32,7 @@ const fetchCharacters = async() => {
 function* auth() {
   yield generateToken();
   yield fetchCharacters();
+  yield put({ type: 'REMOTE_CHARACTERS_LOADED '});
 }
 
 export default function* rootSaga() {

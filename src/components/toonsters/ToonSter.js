@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import './ToonSter.scss';
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
@@ -12,25 +13,35 @@ import DebugReset from './DebugReset';
 
 function ToonSter(props) {
   let [anchorEl, setAnchorEl] = useState(null);
-
-  let handleClick = event => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
+  let handleClick = event => { setAnchorEl(anchorEl ? null : event.currentTarget) }
   let handleChange = (tid, newValue) => {
-    props.passChange('rename', tid, newValue);
+    props.store.dispatch({
+      type: 'RENAME_CHARACTER',
+      payload: {
+        toonId: tid,
+        value: newValue,
+      }
+    })
   };
   let handleSwitch = tid => {
-    props.passChange('switch', tid);
+    props.store.dispatch({
+      type: 'SWITCH_CHARACTER',
+      payload: { toonId: tid },
+    })
   };
   let handleDelete = tid => {
-    props.passChange('delete', tid);
+    props.store.dispatch({
+      type: 'DELETE_CHARACTER',
+      payload: { toonId: tid },
+    })
   };
   let handleUndelete = tid => {
-    props.passChange('undelete', tid);
+    props.store.dispatch({
+      type: 'UNDELETE_CHARACTER',
+      payload: { toonId: tid },
+    })
   };
-  let handleNewToon = () => {
-    props.passChange('new');
-  };
+  let handleNewToon = () => { props.store.dispatch({ type: 'CREATE_NEW_CHARACTER' }) }
 
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
@@ -86,4 +97,16 @@ function ToonSter(props) {
   );
 }
 
-export default ToonSter;
+const mapStateToProps = state => {
+  return {};
+}
+
+const mapDispatchToProps = dispatch => {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ToonSter);
+//export default ToonSter;

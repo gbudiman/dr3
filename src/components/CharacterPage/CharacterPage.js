@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import SkillContainer from '../skillgrids/SkillContainer';
 import StatSkill from '../statskills/StatSkill';
@@ -34,6 +35,7 @@ const CharacterPage = (props) => {
         skillHidden={props.su.skillHidden}
       />
       <SkillContainer
+        store={props.store}
         passClick={handleSkillGridClick}
         skillState={props.su.skillState}
         skillInfoVisible={props.su.skillInfoVisible}
@@ -42,4 +44,5 @@ const CharacterPage = (props) => {
   );
 };
 
-export default CharacterPage;
+export default connect()(CharacterPage);
+//export default CharacterPage;

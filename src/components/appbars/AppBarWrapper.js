@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import ToonSter from '../toonsters/ToonSter';
@@ -14,13 +15,28 @@ function AppBarWrapper(props) {
         <div className='title'>DRpaedia3</div>
         <div className='toonster-container'>
           <ToonSter 
-            passChange={handleToonChange} 
+            //passChange={handleToonChange} 
             currentToon={props.su.currentToon} 
-            toonStorage={props.su.toonStorage} />
+            toonStorage={props.su.toonStorage}
+            store={props.store} />
         </div>
       </div>
     </AppBar>
   );
 }
 
-export default AppBarWrapper;
+const mapStateToProps = state => {
+  //console.log(state);
+  return {};
+}
+
+const mapDispatchToProps = dispatch => {
+  //console.log(dispatch);
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AppBarWrapper);
+//export default AppBarWrapper;
