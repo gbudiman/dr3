@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './sagas/auth';
+import authSaga from './sagas/auth';
 import reducer from './reducers';
 
 const App = () => {
@@ -17,14 +17,15 @@ const App = () => {
   const sagaMiddleware = createSagaMiddleware()
   const store = createStore(
     reducer,
-    su,
     composeWithDevTools(applyMiddleware(sagaMiddleware))
   )
   const action = type => store.dispatch({type})
 
+  sagaMiddleware.run(authSaga);
+
   useEffect(() => {
+    store.dispatch({ type: 'INITIALIZE_STATE_UTIL', payload: { su: su }});
     store.dispatch({ type: 'APP_LOAD' })
-    sagaMiddleware.run(rootSaga);
   }, su);
 
   return (

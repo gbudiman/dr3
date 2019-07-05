@@ -17,16 +17,16 @@ const ToonUtil = () => {
       console.log(localStorage.getItem('toonData'));
       loadBlankToon(su);
     } else {
-      su.setSkillState(Object.assign(SkillInitializer(), j.skill_state));
-      su.setSkillXp(j.skill_xp);
-      su.setSkillHidden(j.skill_hidden);
-      su.setSkillInfoVisible(j.skill_info_visible || {});
-      su.setSelectedStrain(j.selected_strain);
-      su.setStat(j.stat);
-      su.setStatXp(j.stat_xp);
-      su.setStatControl(j.stat_control);
-      su.setInnate(j.innate);
-      su.setTotalXp(j.total_xp);
+      su.skillState = Object.assign(SkillInitializer(), j.skill_state); su.setSkillState(su.skillState);
+      su.skillXp = j.skill_xp;                                          su.setSkillXp(su.skillXp);
+      su.skillHidden = j.skill_hidden;                                  su.setSkillHidden(su.skillHidden);
+      su.skillInfoVisible = j.skill_info_visible || {};                 su.setSkillInfoVisible(su.skillInfoVisible);
+      su.selectedStrain = j.selected_strain;                            su.setSelectedStrain(j.selected_strain);
+      su.stat = j.stat;                                                 su.setStat(su.stat);
+      su.statXp = j.stat_xp;                                            su.setStatXp(su.statXp);
+      su.statControl = j.stat_control;                                  su.setStatControl(su.statControl);
+      su.innate = j.innate;                                             su.setInnate(su.innate);
+      su.totalXp = j.total_xp;                                          su.setTotalXp(su.totalXp);
     }
   };
 
@@ -53,6 +53,28 @@ const ToonUtil = () => {
     saveState(su);
   };
 
+  const blankToonTemplate = () => {
+    const skillState = SkillInitializer();
+
+    return {
+      skillState: skillState,
+      skillXp: SkillCalc(skillState),
+      skillHidden: {},
+      selectedStrain: null,
+      stat: {},
+      statXp: {},
+      statControl: {
+        hp: { inc: true, dec: false },
+        mp: { inc: true, dec: false },
+        rp: { inc: true, dec: false },
+        inf: { inc: true, dec: false },
+        ir: { inc: false, dec: false }
+      },
+      innate: {},
+      totalXp: { stat: 0, skill: 0 }
+    }
+  }
+
   const persistToonStorage = (su, writeChange) => {
     su.setToonStorage(Object.assign({}, su.toonStorage));
     if (writeChange) 
@@ -70,6 +92,29 @@ const ToonUtil = () => {
     persistCurrentToon(su);
     persistToonStorage(su, true);
   };
+
+  const generateToonFromRemote = (su, remoteId, name) => {
+    const tid = uuid.v1();
+    su.toonStorage[tid] = { name: name, state: 'enabled', remoteId: remoteId };
+    persistToonStorage(su, true);
+    saveStateInBackground(su, tid, blankToonTemplate());
+  }
+
+  const saveStateInBackground = (su, tid, data) => {
+    su.toonData[tid] = {
+      skill_state: data.skillState,
+      skill_xp: data.skillXp,
+      skill_hidden: data.skillHidden,
+      skill_info_visible: data.skillInfoVisible,
+      selected_strain: data.selectedStrain,
+      stat: data.stat,
+      stat_xp: data.statXp,
+      stat_control: data.statControl,
+      innate: data.innate,
+      total_xp: data.totalXp,
+    }
+    localStorage.setItem('toonData', JSON.stringify(su.toonData));
+  }
 
   const saveState = (su) => {
     su.toonData[su.currentToon] = {
@@ -91,14 +136,14 @@ const ToonUtil = () => {
     su.toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
 
     let firstEnabledToon;
-    let getPreviousSessionToon = () => {
+    const getPreviousSessionToon = () => {
       let previousSessionToon = localStorage.getItem('currentToon');
 
       if (su.toonStorage != null && previousSessionToon) {
         if (previousSessionToon in su.toonStorage) return previousSessionToon;
       }
     };
-    let getFirstEnabledToon = () => {
+    const getFirstEnabledToon = () => {
       return Object.keys(su.toonStorage).find(x => {
         return su.toonStorage[x].state === 'enabled';
       });
@@ -107,7 +152,7 @@ const ToonUtil = () => {
     if (su.toonStorage != null) {
       firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
-      let deferredDeletes = Object.keys(su.toonStorage).filter(
+      const deferredDeletes = Object.keys(su.toonStorage).filter(
         tid => su.toonStorage[tid].state === 'deleted'
       );
       deferredDeletes.forEach(tid => {
@@ -143,7 +188,7 @@ const ToonUtil = () => {
         break;
       case 'rename':
         su.toonStorage[arg].name = arb;
-        persistToonStorage(su,true);
+        persistToonStorage(su, true);
         break;
       case 'switch':
         console.log('switching to ' + arg);
@@ -166,15 +211,42 @@ const ToonUtil = () => {
     if (su.localStorageHasBeenLoaded === false) {
       loadState(su);
       su.setLocalStorageHasBeenLoaded(true);
+      console.log('finished loading local storage');
     } else {
       saveState(su);
     }
+  }
+
+  const syncDownstream = (su, tid, value) => {
+    su.toonStorage[tid].name = value;
+    persistToonStorage(su, true);
+  }
+
+  const mergeRemoteToons = (su, remoteToons) => {
+    const mergedRemoteToons = indexRemoteToons(su.toonStorage);
+    remoteToons.forEach(remoteToon => {
+      const remoteId = remoteToon.id;
+      if (!(remoteId in mergedRemoteToons)) {
+        generateToonFromRemote(su, remoteId, remoteToon.name)
+      } else {
+        syncDownstream(su, mergedRemoteToons[remoteId], remoteToon.name)
+      }
+    })
+  }
+
+  const indexRemoteToons = (storage) => {
+    return Object.fromEntries(
+      Object.keys(storage).filter(x => 'remoteId' in storage[x]).map(uuid => {
+        return [storage[uuid].remoteId, uuid]
+      })
+    )
   }
 
   return {
     handleToonChange: handleToonChange,
     handleAppLoad: handleAppLoad,
     saveState: saveState,
+    mergeRemoteToons: mergeRemoteToons,
   }
 }
 

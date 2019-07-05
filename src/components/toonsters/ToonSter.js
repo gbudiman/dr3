@@ -10,6 +10,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import NewToon from './NewToon';
 import DebugReset from './DebugReset';
+import { call, put, takeEvery, takeLatest, all } from 'redux-saga/effects'
 
 function ToonSter(props) {
   let [anchorEl, setAnchorEl] = useState(null);
@@ -20,6 +21,7 @@ function ToonSter(props) {
       payload: {
         toonId: tid,
         value: newValue,
+        remoteId: props.toonStorage[tid].remoteId,
       }
     })
   };

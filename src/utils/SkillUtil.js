@@ -35,7 +35,6 @@ const SkillUtil = () => {
   }
 
   const updateSkillState = (su, sid, tier) => {
-    console.log(su);
     if (tier > 0 && tier <= 3) {
       const t4acquired =
         't4acquired' in su.skillState[sid] && su.skillState[sid].t4acquired === true;
