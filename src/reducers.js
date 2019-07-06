@@ -40,6 +40,13 @@ export default function reducer(state, action) {
       strainUtil.handleStrainChange(state, payload);
       return save(state);
     case 'REMOTE_CHARACTERS_LOADED': toonUtil.mergeRemoteToons(state, payload); return state;
+
+    case 'REMOTE_STRAINS_LOADED':
+      console.log(payload);
+      break;
+    case 'REMOTE_SKILLS_LOADED':
+      console.log(payload);
+      break;
     default: return state;
   }
 }

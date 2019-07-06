@@ -18,8 +18,26 @@ const generateToken = async() => {
 const configureJWT = (token) => { config.headers['Authorization'] = 'Bearer ' + token }
 const fetchCharacters = async() => { return await axios.get(api('characters'), config) }
 const updateCharacter = async(remoteId, body) => {
-  // devdrdb.dystopiarisingnetwork.com:5000/api/characters
   return await axios.put(api('character/' + remoteId), body, config);
+}
+const fetchRemoteStrain = async() => { return await axios.get(api('strains')) }
+
+function* fetchStrains() {
+  try {
+    const remoteStrains = yield call(fetchRemoteStrains);
+    yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* fetchSkills() {
+  try {
+    const remoteSkills = yield call(fetchRemoteSkills);
+    yield put({ type: 'REMOTE_SKILLS_LOADED', payload: remoteSkills.data })
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function* auth() {
@@ -27,7 +45,6 @@ function* auth() {
   try {
     const token = yield call(generateToken);
     yield configureJWT(token.data.access_token);
-    //yield put({ type: 'LOGIN_SUCCESSFUL', payload: token.data.access_token });
     const remoteCharacters = yield call(fetchCharacters);
     yield put({ type: 'REMOTE_CHARACTERS_LOADED', payload: remoteCharacters.data });
   } catch(e) {
@@ -54,6 +71,8 @@ function* queueUpstream(action) {
 
 export default function* authSaga() {
   yield all([
+    fetchStrains(),
+    fetchSkills(),
     watchLocalStorageLoaded(),
     watchUpstreamQueue(),
   ]);

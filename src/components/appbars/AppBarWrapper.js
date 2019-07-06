@@ -24,7 +24,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  null
-)(AppBarWrapper);
+export default AppBarWrapper;
