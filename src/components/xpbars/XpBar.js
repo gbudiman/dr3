@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import './XpBar.scss';
 import React, { useRef, useEffect } from 'react';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -64,4 +65,11 @@ function XpBar(props) {
   )
 }
 
-export default XpBar;
+const mapStateToProps = state => {
+  return {
+    totalXp: state.totalXp,
+    skillState: state.skillState,
+  }
+}
+
+export default connect(mapStateToProps)(XpBar);
