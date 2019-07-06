@@ -15,24 +15,9 @@ const CharacterPage = (props) => {
 
   return (
     <div className='container'>
-      <StrainPicker
-        passStrainChange={handleStrainChange}
-        selectedStrain={props.selectedStrain}
-        lineages={props.lineageStrain.lineages}
-      />
+      <StrainPicker />
       <XpBar totalXp={props.totalXp} skillState={props.skillState} />
-      <StatSkill
-        passStatClick={handleStatClick}
-        passStatChange={handleStatChange}
-        passStatReductionChange={handleStatReductionChange}
-        passSkillVisibilityToggle={handleSkillVisibilityToggle}
-        stat={props.stat}
-        statXp={props.statXp}
-        statControl={props.statControl}
-        innate={props.innate}
-        skillXp={props.skillXp}
-        skillHidden={props.skillHidden}
-      />
+      <StatSkill />
       <SkillContainer />
     </div>
   );
@@ -56,3 +41,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps
 )(CharacterPage);
+//export default CharacterPage;

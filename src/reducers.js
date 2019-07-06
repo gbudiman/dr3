@@ -1,12 +1,15 @@
 import ToonUtil from './utils/ToonUtil';
 import SkillUtil from './utils/SkillUtil';
 import StatUtil from './utils/StatUtil';
+import StrainUtil from './utils/StrainUtil';
 import { toonUpdateSaga } from './sagas/auth';
 
 const toonUtil = ToonUtil();
 const skillUtil = SkillUtil();
 const statUtil = StatUtil();
+const strainUtil = StrainUtil();
 const save = (state) => { toonUtil.saveState(state); return state; }
+
 export default function reducer(state, action) {
   const payload = action.payload;
 
@@ -32,6 +35,9 @@ export default function reducer(state, action) {
       return save(state);
     case 'STAT_CHANGED':
       statUtil.handleStatChange(state, payload.stat, payload.value);
+      return save(state);
+    case 'STRAIN_CHANGED':
+      strainUtil.handleStrainChange(state, payload);
       return save(state);
     case 'REMOTE_CHARACTERS_LOADED': toonUtil.mergeRemoteToons(state, payload); return state;
     default: return state;
