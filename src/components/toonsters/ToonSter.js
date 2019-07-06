@@ -106,7 +106,7 @@ const mergeProps = (stateProps, dispatchProps) => {
   return ({
     ...stateProps,
     ...dispatchProps,
-    handleChange
+    handleChange,
   })
 }
 

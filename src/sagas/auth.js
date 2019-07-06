@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { call, put, takeEvery, takeLatest, all } from 'redux-saga/effects'
+import { call, put, takeEvery, takeLatest, all} from 'redux-saga/effects'
 
 const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
 const config = {
@@ -7,6 +7,8 @@ const config = {
     'Authorization': null
   }
 }
+const inverseStrainLookup = {};
+const strainLookup = {};
 
 const generateToken = async() => {
   return await axios.get(
@@ -20,12 +22,18 @@ const fetchCharacters = async() => { return await axios.get(api('characters'), c
 const updateCharacter = async(remoteId, body) => {
   return await axios.put(api('character/' + remoteId), body, config);
 }
-const fetchRemoteStrain = async() => { return await axios.get(api('strains')) }
+const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
+const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
 
 function* fetchStrains() {
   try {
     const remoteStrains = yield call(fetchRemoteStrains);
-    yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
+    //yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
+    remoteStrains.data.filter(x => x.lineage !== null).map(strain => {
+      inverseStrainLookup[strain.name] = strain.id;
+      strainLookup[strain.id] = strain.name;
+    })
+    yield console.log('done');
   } catch (e) {
     console.log(e);
   }
@@ -34,7 +42,7 @@ function* fetchStrains() {
 function* fetchSkills() {
   try {
     const remoteSkills = yield call(fetchRemoteSkills);
-    yield put({ type: 'REMOTE_SKILLS_LOADED', payload: remoteSkills.data })
+
   } catch (e) {
     console.log(e);
   }
@@ -46,13 +54,23 @@ function* auth() {
     const token = yield call(generateToken);
     yield configureJWT(token.data.access_token);
     const remoteCharacters = yield call(fetchCharacters);
-    yield put({ type: 'REMOTE_CHARACTERS_LOADED', payload: remoteCharacters.data });
+    yield put({ 
+      type: 'REMOTE_CHARACTERS_LOADED', 
+      payload: {
+        characterData: remoteCharacters.data,
+        strainLookup: strainLookup,
+      }
+    });
   } catch(e) {
     console.log(e);
   }
 }
 
-function* watchUpstreamQueue() {
+function* watchStrainChange() {
+  yield takeLatest('STRAIN_CHANGED', queueUpstream);
+}
+
+function* watchNameChange() {
   yield takeLatest('RENAME_CHARACTER', queueUpstream);
 }
 
@@ -62,18 +80,24 @@ function* watchLocalStorageLoaded() {
 
 function* queueUpstream(action) {
   const payload = action.payload;
+  let upstreamData = null;
+
+  switch(action.type) {
+    case 'STRAIN_CHANGED': upstreamData = { strain_id: inverseStrainLookup[payload.strain] }; break;
+    case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
+  }
+
   if (payload.remoteId) {
-    yield updateCharacter(payload.remoteId, {
-      name: payload.value
-    });
+    yield updateCharacter(payload.remoteId, upstreamData);
   }
 }
 
 export default function* authSaga() {
   yield all([
     fetchStrains(),
-    fetchSkills(),
+    // fetchSkills(),
     watchLocalStorageLoaded(),
-    watchUpstreamQueue(),
+    watchNameChange(),
+    watchStrainChange(),
   ]);
 }

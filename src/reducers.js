@@ -37,16 +37,22 @@ export default function reducer(state, action) {
       statUtil.handleStatChange(state, payload.stat, payload.value);
       return save(state);
     case 'STRAIN_CHANGED':
-      strainUtil.handleStrainChange(state, payload);
+      strainUtil.handleStrainChange(state, payload.strain);
       return save(state);
-    case 'REMOTE_CHARACTERS_LOADED': toonUtil.mergeRemoteToons(state, payload); return state;
+    case 'REMOTE_CHARACTERS_LOADED': 
+      toonUtil.mergeRemoteToons(
+        state, 
+        payload.characterData,
+        payload.strainLookup,
+      ); 
+      return state;
 
     case 'REMOTE_STRAINS_LOADED':
-      console.log(payload);
-      break;
+      strainUtil.buildRemoteDictionary(state, payload);
+      return state;
     case 'REMOTE_SKILLS_LOADED':
-      console.log(payload);
-      break;
+      //console.log(payload);
+      return state;
     default: return state;
   }
 }

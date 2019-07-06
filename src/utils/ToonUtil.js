@@ -98,6 +98,8 @@ const ToonUtil = () => {
     su.toonStorage[tid] = { name: name, state: 'enabled', remoteId: remoteId };
     persistToonStorage(su, true);
     saveStateInBackground(su, tid, blankToonTemplate());
+
+    return tid;
   }
 
   const saveStateInBackground = (su, tid, data) => {
@@ -114,6 +116,12 @@ const ToonUtil = () => {
       total_xp: data.totalXp,
     }
     localStorage.setItem('toonData', JSON.stringify(su.toonData));
+  }
+
+  const saveStateInBackgroundSelective = (su, tid, mutation) => {
+    Object.assign(su.toonData[tid], mutation);
+    localStorage.setItem('toonData', JSON.stringify(su.toonData));
+    console.log(JSON.parse(localStorage.getItem('toonData')));
   }
 
   const saveState = (su) => {
@@ -217,19 +225,34 @@ const ToonUtil = () => {
     }
   }
 
-  const syncDownstream = (su, tid, value) => {
+  const syncName = (su, tid, value) => {
     su.toonStorage[tid].name = value;
     persistToonStorage(su, true);
   }
 
-  const mergeRemoteToons = (su, remoteToons) => {
+  const syncStrain = (su, tid, value) => {
+    console.log(tid);
+    console.log(su.currentToon);
+    if (tid === su.currentToon) {
+      su.selectedStrain = value;
+      su.setSelectedStrain(su.selectedStrain);
+      saveState(su);
+    } else {
+      //console.log(su.toonData[tid]);
+      saveStateInBackgroundSelective(su, tid, { selected_strain: value });
+    }
+  }
+
+  const mergeRemoteToons = (su, remoteToons, strainLookup) => {
     const mergedRemoteToons = indexRemoteToons(su.toonStorage);
     remoteToons.forEach(remoteToon => {
       const remoteId = remoteToon.id;
       if (!(remoteId in mergedRemoteToons)) {
-        generateToonFromRemote(su, remoteId, remoteToon.name)
-      } else {
-        syncDownstream(su, mergedRemoteToons[remoteId], remoteToon.name)
+        const tid = generateToonFromRemote(su, remoteId, remoteToon.name);
+        syncStrain(su, tid, strainLookup[remoteToon.strain_id]);
+      } else { 
+        syncName(su, mergedRemoteToons[remoteId], remoteToon.name);
+        syncStrain(su, mergedRemoteToons[remoteId], strainLookup[remoteToon.strain_id]);
       }
     })
   }
