@@ -7,7 +7,7 @@ import AppBarWrapper from './components/appbars/AppBarWrapper';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+//import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import authSaga from './sagas/auth';
 import reducer from './reducers';
@@ -18,7 +18,8 @@ const App = () => {
   const store = createStore(
     reducer,
     su,
-    composeWithDevTools(applyMiddleware(sagaMiddleware))
+    applyMiddleware(sagaMiddleware),
+    //composeWithDevTools(applyMiddleware(sagaMiddleware))
   );
 
   sagaMiddleware.run(authSaga);

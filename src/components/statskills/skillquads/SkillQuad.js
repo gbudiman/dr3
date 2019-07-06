@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import SkillGrid from './SkillGrid';
 import './SkillQuad.scss';
@@ -12,7 +13,6 @@ function SkillQuad(props) {
     community: 'top-end',
   }
   let handlePopOpen = (category, openState) => { props.passPopOpen(category, openState) }
-  let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(category) }
   let generateSkillGrids = () => {
     return categories.map(category => {
       return <SkillGrid 
@@ -22,7 +22,7 @@ function SkillQuad(props) {
         skillQuantity={props.skillXp.grid.grid[category]}
         skillXp={props.skillXp.grid.xp[category]}
         passPopOpen={handlePopOpen}
-        passSkillVisibilityToggle={handleSkillVisibilityToggle}
+        passSkillVisibilityToggle={props.handleSkillVisibilityToggle}
         placement={placement[category]}
         openState={props.openState[category]}
         toggleState={props.skillHidden[category]} />
@@ -36,4 +36,23 @@ function SkillQuad(props) {
   )
 }
 
-export default SkillQuad;
+const mapStateToProps = state => {
+  return {
+    skillXp: state.skillXp,
+    skillHidden: state.skillHidden,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleSkillVisibilityToggle: (category) => dispatch({
+      type: 'TOGGLE_SKILL_CATEGORY_VISIBILITY',
+      payload: category,
+    }),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SkillQuad);

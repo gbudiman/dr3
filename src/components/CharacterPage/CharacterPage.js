@@ -12,37 +12,47 @@ const CharacterPage = (props) => {
   let handleStatChange = (stat, value) => { props.passStatChange(props.su, stat, value) }
   let handleStatReductionChange = (stat, adjustment) => { props.passStatReductionChange(props.su, stat, adjustment) }
   let handleSkillVisibilityToggle = (category) => { props.passSkillVisibilityToggle(props.su, category) } 
-  let handleSkillGridClick = (sid, tier) => { props.passSkillGridClick(props.su, sid, tier) }
 
   return (
     <div className='container'>
       <StrainPicker
         passStrainChange={handleStrainChange}
-        selectedStrain={props.su.selectedStrain}
-        lineages={props.su.lineageStrain.lineages}
+        selectedStrain={props.selectedStrain}
+        lineages={props.lineageStrain.lineages}
       />
-      <XpBar totalXp={props.su.totalXp} skillState={props.su.skillState} />
+      <XpBar totalXp={props.totalXp} skillState={props.skillState} />
       <StatSkill
         passStatClick={handleStatClick}
         passStatChange={handleStatChange}
         passStatReductionChange={handleStatReductionChange}
         passSkillVisibilityToggle={handleSkillVisibilityToggle}
-        stat={props.su.stat}
-        statXp={props.su.statXp}
-        statControl={props.su.statControl}
-        innate={props.su.innate}
-        skillXp={props.su.skillXp}
-        skillHidden={props.su.skillHidden}
+        stat={props.stat}
+        statXp={props.statXp}
+        statControl={props.statControl}
+        innate={props.innate}
+        skillXp={props.skillXp}
+        skillHidden={props.skillHidden}
       />
-      <SkillContainer
-        store={props.store}
-        passClick={handleSkillGridClick}
-        skillState={props.su.skillState}
-        skillInfoVisible={props.su.skillInfoVisible}
-      />
+      <SkillContainer />
     </div>
   );
 };
 
-export default connect()(CharacterPage);
-//export default CharacterPage;
+const mapStateToProps = state => {
+  return {
+    selectedStrain: state.selectedStrain,
+    lineageStrain: state.lineageStrain,
+    totalXp: state.totalXp,
+    skillState: state.skillState,
+    stat: state.stat,
+    statXp: state.statXp,
+    statControl: state.statControl,
+    innate: state.innate,
+    skillXp: state.skillXp,
+    skillHidden: state.skillHidden,
+    skillInfoVisible: state.skillInfoVisible,
+  }
+}
+export default connect(
+  mapStateToProps
+)(CharacterPage);

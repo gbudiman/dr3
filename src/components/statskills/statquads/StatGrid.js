@@ -43,7 +43,7 @@ function StatGrid(props) {
           <div className={'stat-control left ' + (props.reductionControl.dec ? '' : 'disabled')} onClick={handleReductionSubtract}>
             <span>&laquo;</span>
           </div>
-          <div className={'numeric'}>{props.statReduction}</div>
+          <div className={'numeric'}>{props.reduction}</div>
           <div className={'stat-control right ' + (props.reductionControl.inc ? '' : 'disabled')} onClick={handleReductionAdd}>
             <span>&raquo;</span>
           </div>
@@ -53,10 +53,10 @@ function StatGrid(props) {
   }
   let getDeathSubtraction = () => {
     if (props.stat !== 'inf') return '';
-    return <span> - {props.statReduction}&nbsp;</span>;
+    return <span> - {props.reduction}&nbsp;</span>;
   }
   let getTotalStat = () => {
-    return <span> = {props.innate + props.acquired - props.statReduction} </span>;
+    return <span> = {props.innate + props.acquired - props.reduction} </span>;
   }
   let getClassName = () => {
     return [

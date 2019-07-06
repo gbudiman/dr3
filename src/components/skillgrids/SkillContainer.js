@@ -6,11 +6,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import './SkillGrid.scss';
 
-function SkillContainer(props) {
-  const handleClick = (sid, tier) => { 
-    props.store.dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier }})
-  }
-  
+function SkillContainer(props) {  
   const buildBoxes = () => {
     return Object.keys(props.skillState).map(key => {
       const value = props.skillState[key];
@@ -27,8 +23,7 @@ function SkillContainer(props) {
             t4acquired={value.t4acquired}
             t4only={value.t4only}
             visible={value.visible}
-            passClick={handleClick}
-            skillInfo={props.skillInfo}
+            passClick={props.handleClick}
             infoExpanded={props.skillInfoVisible[key]}
           />
           <Grow in={props.skillInfoVisible[key]} timeout={250}>
@@ -57,5 +52,19 @@ function SkillContainer(props) {
   );
 }
 
-export default connect()(SkillContainer);
-//export default SkillContainer;
+const mapStateToProps = state => {
+  return {
+    skillState: state.skillState,
+    skillInfoVisible: state.skillInfoVisible,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleClick: (sid, tier) => { 
+      dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier }})
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SkillContainer);

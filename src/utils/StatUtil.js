@@ -1,7 +1,7 @@
 import { calcXp } from './XpUtil';
 
 const StatUtil = () => {
-  let handleStatClick = (su, changedStat, adjustment) => {
+  let handleStatAdjustment = (su, changedStat, adjustment) => {
     let currentStat = changedStat in su.stat ? su.stat[changedStat] : 0;
     su.stat[changedStat] = currentStat + adjustment;
     validateStatAndControls(su, changedStat);
@@ -12,7 +12,7 @@ const StatUtil = () => {
     validateStatAndControls(su, changedStat);
   };
 
-  let handleStatReductionChange = (su, changedStat, adjustment) => {
+  let handleStatReductionAdjustment = (su, changedStat, adjustment) => {
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(su, changedStat);
 
@@ -141,9 +141,9 @@ const StatUtil = () => {
   };
 
   return {
-    handleStatClick: handleStatClick,
+    handleStatAdjustment: handleStatAdjustment,
     handleStatChange: handleStatChange,
-    handleStatReductionChange: handleStatReductionChange,
+    handleStatReductionAdjustment: handleStatReductionAdjustment,
     validateStatAndControls: validateStatAndControls,
   }
 }
