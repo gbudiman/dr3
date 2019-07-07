@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { call, put, takeEvery, takeLatest, all} from 'redux-saga/effects'
+import { call, put, putResolve, takeEvery, takeLatest, all} from 'redux-saga/effects'
 
 const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
 const config = {
@@ -22,6 +22,7 @@ const fetchCharacters = async() => { return await axios.get(api('characters'), c
 const updateCharacter = async(remoteId, body) => {
   return await axios.put(api('character/' + remoteId), body, config);
 }
+const fetchCharacter = async(remoteId) => { return await axios.get(api('character/' + remoteId), config) }
 const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
 const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
 
@@ -42,7 +43,23 @@ function* fetchStrains() {
 function* fetchSkills() {
   try {
     const remoteSkills = yield call(fetchRemoteSkills);
+  } catch (e) {
+    console.log(e);
+  }
+}
 
+function* fetchRemoteCharacter(params) {
+  console.log(params);
+  try {
+    const characterData = yield call(fetchCharacter, params.payload.remoteId);
+    yield put({
+      type: 'SWITCH_CHARACTER_WITH_REMOTE_DATA',
+      payload: {
+        characterData: characterData.data,
+        strainLookup: strainLookup,
+        tid: params.payload.toonId,
+      }
+    })
   } catch (e) {
     console.log(e);
   }
@@ -78,6 +95,10 @@ function* watchLocalStorageLoaded() {
   yield takeLatest('APP_LOAD', auth);
 }
 
+function* watchSyncRemoteCharacter() {
+  yield takeLatest('SYNC_REMOTE_CHARACTER', fetchRemoteCharacter);
+}
+
 function* queueUpstream(action) {
   const payload = action.payload;
   let upstreamData = null;
@@ -99,5 +120,6 @@ export default function* authSaga() {
     watchLocalStorageLoaded(),
     watchNameChange(),
     watchStrainChange(),
+    watchSyncRemoteCharacter(),
   ]);
 }

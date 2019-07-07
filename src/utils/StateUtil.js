@@ -29,8 +29,6 @@ const StateUtil = () => {
   let [currentToon, setCurrentToon] = useState({});
   let statLimit = { rp: 6, inf: 8 };
   let [tab, setTab] = useState(0);
-  let [remoteStrains, setRemoteStrains] = useState({});
-  let [remoteSkills, setRemoteSkills] = useState({});
 
   return {
     lineageStrain: lineageStrain,
@@ -65,10 +63,6 @@ const StateUtil = () => {
     statLimit: statLimit,
     tab: tab,
     setTab: setTab,
-    remoteStrains: remoteStrains,
-    setRemoteStrains: setRemoteStrains,
-    remoteSkills: remoteSkills,
-    setRemoteSkills: setRemoteSkills,
   }
 }
 

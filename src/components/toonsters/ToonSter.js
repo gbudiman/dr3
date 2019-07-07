@@ -87,7 +87,16 @@ const mapDispatchToProps = dispatch => {
         }
       })
     },
-    handleSwitch: (tid) => { dispatch({type: 'SWITCH_CHARACTER', payload: { toonId: tid }}) },
+    handleSwitch: (tid, remoteId) => { 
+      if (remoteId) {
+        dispatch({type: 'SYNC_REMOTE_CHARACTER', payload: { 
+          toonId: tid, 
+          remoteId: remoteId,
+        }});
+      } else {
+        dispatch({type: 'SWITCH_CHARACTER', payload: { toonId: tid }});
+      }
+    },
     handleDelete: (tid) => { dispatch({type: 'DELETE_CHARACTER', payload: { toonId: tid }}) },
     handleUnDelete: (tid) => { dispatch({type: 'UNDELETE_CHARACTER', payload: { toonId: tid }}) },
     handleNewToon: () => { dispatch({type: 'CREATE_NEW_CHARACTER'}) },
@@ -102,11 +111,13 @@ const mergeProps = (stateProps, dispatchProps) => {
       stateProps.toonStorage[tid].remoteId,
     )
   }
+  const handleSwitch = (tid) => { dispatchProps.handleSwitch(tid, stateProps.toonStorage[tid].remoteId); }
 
   return ({
     ...stateProps,
     ...dispatchProps,
     handleChange,
+    handleSwitch,
   })
 }
 

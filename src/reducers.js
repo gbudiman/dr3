@@ -17,10 +17,24 @@ export default function reducer(state, action) {
     case 'APP_LOAD': toonUtil.handleAppLoad(state); return state;
     case 'CREATE_NEW_CHARACTER': toonUtil.handleToonChange(state, 'new'); return state;
     case 'SWITCH_CHARACTER': toonUtil.handleToonChange(state, 'switch', payload.toonId); return state;
+    case 'SWITCH_CHARACTER_WITH_REMOTE_DATA': 
+      const synced = toonUtil.syncToon(state, payload);
+
+      console.log(synced.selectedStrain);
+      return {
+        ...state,
+        skillState: synced.skillState,
+        skillXp: synced.skillXp,
+        selectedStrain: synced.selectedStrain,
+        innate: strainUtil.handleStrainChange(state, synced.selectedStrain),
+        currentToon: synced.currentToon,
+        toonStorage: synced.toonStorage,
+        toonData: synced.toonData,
+      }
     case 'RENAME_CHARACTER': toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); return state;
     case 'DELETE_CHARACTER': toonUtil.handleToonChange(state, 'delete', payload.toonId); return state;
     case 'UNDELETE_CHARACTER': toonUtil.handleToonChange(state, 'undelete', payload.toonId); return state;
-
+    case 'SYNC_REMOTE_CHARACTER': return state;
     case 'TOGGLE_SKILL_CATEGORY_VISIBILITY':
       skillUtil.handleSkillVisibilityToggle(state, payload);
       return save(state);
@@ -37,6 +51,7 @@ export default function reducer(state, action) {
       statUtil.handleStatChange(state, payload.stat, payload.value);
       return save(state);
     case 'STRAIN_CHANGED':
+      console.log(state);
       strainUtil.handleStrainChange(state, payload.strain);
       return save(state);
     case 'REMOTE_CHARACTERS_LOADED': 

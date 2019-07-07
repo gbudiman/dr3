@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
 import uuid from 'uuid';
@@ -97,25 +98,6 @@ const ToonUtil = () => {
     const tid = uuid.v1();
     su.toonStorage[tid] = { name: name, state: 'enabled', remoteId: remoteId };
     persistToonStorage(su, true);
-    saveStateInBackground(su, tid, blankToonTemplate());
-
-    return tid;
-  }
-
-  const saveStateInBackground = (su, tid, data) => {
-    su.toonData[tid] = {
-      skill_state: data.skillState,
-      skill_xp: data.skillXp,
-      skill_hidden: data.skillHidden,
-      skill_info_visible: data.skillInfoVisible,
-      selected_strain: data.selectedStrain,
-      stat: data.stat,
-      stat_xp: data.statXp,
-      stat_control: data.statControl,
-      innate: data.innate,
-      total_xp: data.totalXp,
-    }
-    localStorage.setItem('toonData', JSON.stringify(su.toonData));
   }
 
   const saveStateInBackgroundSelective = (su, tid, mutation) => {
@@ -225,49 +207,58 @@ const ToonUtil = () => {
     }
   }
 
-  const syncName = (su, tid, value) => {
-    su.toonStorage[tid].name = value;
-    persistToonStorage(su, true);
-  }
+  const syncToon = (su, payload) => {
+    const characterData = payload.characterData;
+    const strainLookup = payload.strainLookup;
+    const tid = payload.tid;
 
-  const syncStrain = (su, tid, value) => {
-    console.log(tid);
-    console.log(su.currentToon);
-    if (tid === su.currentToon) {
-      su.selectedStrain = value;
-      su.setSelectedStrain(su.selectedStrain);
-      saveState(su);
-    } else {
-      //console.log(su.toonData[tid]);
-      saveStateInBackgroundSelective(su, tid, { selected_strain: value });
-    }
+    su.currentToon = tid;
+    localStorage.setItem('currentToon', su.currentToon);
+    su.skillState = SkillInitializer();
+    su.skillXp = SkillCalc(su.skill_state);
+    // su.skill_hidden: su.skillHidden;
+    // su.skill_info_visible: su.skillInfoVisible;
+    su.selectedStrain = strainLookup[characterData.strain_id];
+    // su.stat: su.stat;
+    // su.stat_xp: su.statXp;
+    // su.stat_control: su.statControl;
+    // su.innate: su.innate;
+    // su.total_xp: su.totalXp;
+
+    saveState(su);
+    return su;
+    //handleToonChange(su, 'switch', tid);
   }
 
   const mergeRemoteToons = (su, remoteToons, strainLookup) => {
+    const indexRemoteToons = (storage) => {
+      return Object.fromEntries(
+        Object.keys(storage).filter(x => 'remoteId' in storage[x]).map(uuid => {
+          return [storage[uuid].remoteId, uuid]
+        })
+      )
+    }
+    const syncName = (su, tid, value) => {
+      su.toonStorage[tid].name = value;
+      persistToonStorage(su, true);
+    }
+
     const mergedRemoteToons = indexRemoteToons(su.toonStorage);
+
     remoteToons.forEach(remoteToon => {
       const remoteId = remoteToon.id;
       if (!(remoteId in mergedRemoteToons)) {
-        const tid = generateToonFromRemote(su, remoteId, remoteToon.name);
-        syncStrain(su, tid, strainLookup[remoteToon.strain_id]);
+        generateToonFromRemote(su, remoteId, remoteToon.name);
       } else { 
         syncName(su, mergedRemoteToons[remoteId], remoteToon.name);
-        syncStrain(su, mergedRemoteToons[remoteId], strainLookup[remoteToon.strain_id]);
       }
     })
-  }
-
-  const indexRemoteToons = (storage) => {
-    return Object.fromEntries(
-      Object.keys(storage).filter(x => 'remoteId' in storage[x]).map(uuid => {
-        return [storage[uuid].remoteId, uuid]
-      })
-    )
   }
 
   return {
     handleToonChange: handleToonChange,
     handleAppLoad: handleAppLoad,
+    syncToon: syncToon,
     saveState: saveState,
     mergeRemoteToons: mergeRemoteToons,
   }
