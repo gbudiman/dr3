@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { calcXpComponents, totalStatXp } from './XpUtil';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
 import uuid from 'uuid';
@@ -212,18 +213,38 @@ const ToonUtil = () => {
     const strainLookup = payload.strainLookup;
     const tid = payload.tid;
 
+    const remoteStats = {
+      hp: characterData.body,
+      mp: characterData.mind,
+      rp: characterData.resolve,
+      inf: characterData.infection,
+      ir: 0,
+    }
+    const statXp = calcXpComponents(remoteStats);
+
     su.currentToon = tid;
     localStorage.setItem('currentToon', su.currentToon);
     su.skillState = SkillInitializer();
     su.skillXp = SkillCalc(su.skill_state);
-    // su.skill_hidden: su.skillHidden;
+    su.skillHidden = {};
     // su.skill_info_visible: su.skillInfoVisible;
     su.selectedStrain = strainLookup[characterData.strain_id];
+    su.stat = remoteStats;
     // su.stat: su.stat;
+    su.statXp = statXp;
     // su.stat_xp: su.statXp;
-    // su.stat_control: su.statControl;
+    su.statControl = {
+      hp: { inc: true, dec: false },
+      mp: { inc: true, dec: false },
+      rp: { inc: true, dec: false },
+      inf: { inc: true, dec: false },
+      ir: { inc: false, dec: false },
+    };
     // su.innate: su.innate;
-    // su.total_xp: su.totalXp;
+    su.totalXp = {
+      stat: totalStatXp(su),
+      skill: 0,
+    }
 
     saveState(su);
     return su;

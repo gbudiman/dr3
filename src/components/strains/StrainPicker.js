@@ -69,7 +69,6 @@ function StrainPicker(props) {
 const mapStateToProps = state => {
   return {
     lineages: state.lineageStrain.lineages,
-    remoteStrains: state.remoteStrains,
     selectedStrain: state.selectedStrain,
     currentToon: state.currentToon,
     toonStorage: state.toonStorage,
