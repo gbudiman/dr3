@@ -7,27 +7,10 @@ import StrainUtil from './StrainUtil';
 import SkillUtil from './SkillUtil';
 
 export function switchTab(su) {
-  let statUtil = StatUtil();
-  let strainUtil = StrainUtil();
-  let skillUtil = SkillUtil();
-
-  let defaultState = () => {
-    return(
-      <CharacterPage
-        passSkillGridClick={skillUtil.handleSkillGridClick}
-        passSkillVisibilityToggle={skillUtil.handleSkillVisibilityToggle}
-        passStrainChange={strainUtil.handleStrainChange}
-        passStatClick={statUtil.handleStatClick}
-        passStatChange={statUtil.handleStatChange}
-        passStatReductionChange={statUtil.handleStatReductionChange}
-      />
-    )
-  }
-
   switch (su.tab) {
-    case 0: return defaultState();
+    case 0: return <CharacterPage />;
     case 1: return <SkillPage />;
     case 2: return <FeedbackPage />;
-    default: return defaultState();
+    default: return <CharacterPage />;
   }
 };

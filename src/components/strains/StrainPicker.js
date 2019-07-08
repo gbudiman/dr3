@@ -89,6 +89,10 @@ const mapDispatchToProps = dispatch => {
 
 const mergeProps = (stateProps, dispatchProps) => {
   const handleStrainChange = (event) => {
+    console.log(stateProps.currentToon);
+    console.log(localStorage.getItem('currentToon'));
+    console.log(stateProps.toonStorage);
+    console.log(JSON.parse(localStorage.getItem('toonStorage')));
     const newStrain = event.target.value;
     dispatchProps.handleStrainChange(
       newStrain,

@@ -18,7 +18,6 @@ const generateToken = async() => {
 }
 
 const configureJWT = (token) => { config.headers['Authorization'] = 'Bearer ' + token }
-const fetchCharacters = async() => { return await axios.get(api('characters'), config) }
 const updateCharacter = async(remoteId, body) => {
   return await axios.put(api('character/' + remoteId), body, config);
 }
@@ -70,6 +69,19 @@ function* auth() {
   try {
     const token = yield call(generateToken);
     yield configureJWT(token.data.access_token);
+    yield put({
+      type: 'LOGIN_SUCCESSFUL',
+      payload: config,
+    });
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+function* fetchCharacters(params) {
+  const fetchCharacters = async() => { return await axios.get(api('characters'), config) }
+
+  try {
     const remoteCharacters = yield call(fetchCharacters);
     yield put({ 
       type: 'REMOTE_CHARACTERS_LOADED', 
@@ -95,6 +107,10 @@ function* watchLocalStorageLoaded() {
   yield takeLatest('APP_LOAD', auth);
 }
 
+function* watchLoginSuccessful() {
+  yield takeLatest('LOGIN_SUCCESSFUL', fetchCharacters);
+}
+
 function* watchSyncRemoteCharacter() {
   yield takeLatest('SYNC_REMOTE_CHARACTER', fetchRemoteCharacter);
 }
@@ -115,11 +131,12 @@ function* queueUpstream(action) {
 
 export default function* authSaga() {
   yield all([
-    fetchStrains(),
+    // fetchStrains(),
     // fetchSkills(),
     watchLocalStorageLoaded(),
     watchNameChange(),
     watchStrainChange(),
     watchSyncRemoteCharacter(),
+    watchLoginSuccessful(),
   ]);
 }

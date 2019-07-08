@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import './ToonSter.scss';
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import Popper from '@material-ui/core/Popper';
@@ -13,33 +14,68 @@ import DebugReset from './DebugReset';
 
 function ToonSter(props) {
   let [anchorEl, setAnchorEl] = useState(null);
-  let handleClick = event => { setAnchorEl(anchorEl ? null : event.currentTarget) }
+  const handleClick = event => { setAnchorEl(anchorEl ? null : event.currentTarget) }
   let open = Boolean(anchorEl);
   let id = open ? 'popper' : undefined;
-  let toonLister = () => {
-    return Object.keys(props.toonStorage).map(tid => {
-      let tprop = props.toonStorage[tid];
+  const toonLister = () => {
+    return Object.keys(toonStorage).map(tid => {
+      let tprop = toonStorage[tid];
       return (
         <ToonName
           name={tprop.name}
-          passChange={props.handleChange}
-          passSwitch={props.handleSwitch}
-          passDelete={props.handleDelete}
-          passUndelete={props.handleUndelete}
+          passChange={handleChange}
+          passSwitch={handleSwitch}
+          passDelete={handleDelete}
+          passUndelete={handleUndelete}
           key={tid}
           tid={tid}
-          selected={tid === props.currentToon}
+          selected={tid === currentToon}
           existance={tprop.state}
         />
       );
     });
   };
 
+  const { authConfig, currentToon, toonStorage } = useSelector(
+    state => ({
+      authConfig: state.authConfig,
+      currentToon: state.currentToon,
+      toonStorage: state.toonStorage,
+    })
+  )
+  // const authConfig = useSelector(state => state.authConfig);
+  // const currentToon = useSelector(state => state.currentToon);
+  // const toonStorage = useSelector(state => state.toonStorage);
+  const dispatch = useDispatch();
+  const handleChange = (toonId, newValue) => { 
+    dispatch({
+      type: 'RENAME_CHARACTER',
+      payload: {
+        toonId: toonId,
+        value: newValue,
+        remoteId: toonStorage[toonId].remoteId,
+      }
+    })
+  }
+  const handleSwitch = (toonId) => {
+    dispatch({ 
+      type: 'SWITCH_CHARACTER', 
+      payload: { toonId: toonId, remoteId: toonStorage[toonId].remoteId },
+    })
+  }
+  const handleDelete = (toonId) => {
+    dispatch({ type: 'DELETE_CHARACTER', payload: { toonId: toonId } })
+  }
+  const handleNewToon = () => { dispatch({ type: 'CREATE_NEW_CHARACTER' })}
+  const handleUndelete = (toonId) => {
+    dispatch({ type: 'UNDELETE_CHARACTER', payload: { toonId: toonId } })
+  }
+
   return (
     <div className='toonster'>
       <Button onClick={handleClick}>
-        {props.currentToon in props.toonStorage
-          ? props.toonStorage[props.currentToon].name
+        {currentToon in toonStorage
+          ? toonStorage[currentToon].name
           : 'default'}
         <ExpandLess className={open ? '' : 'expand-hidden'} />
         <ExpandMore className={open ? 'expand-hidden' : ''} />
@@ -57,7 +93,7 @@ function ToonSter(props) {
             <div className='overlay'>
               {toonLister()}
               <Divider className='toon-divider' />
-              <NewToon handleNewToon={props.handleNewToon} />
+              <NewToon handleNewToon={handleNewToon} />
               <Divider className='toon-divider' />
               <DebugReset />
             </div>
@@ -68,61 +104,4 @@ function ToonSter(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    currentToon: state.currentToon,
-    toonStorage: state.toonStorage,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    renameCharacter: (tid, newValue, remoteId) => { 
-      dispatch({
-        type: 'RENAME_CHARACTER',
-        payload: {
-          toonId: tid,
-          value: newValue,
-          remoteId: remoteId,
-        }
-      })
-    },
-    handleSwitch: (tid, remoteId) => { 
-      if (remoteId) {
-        dispatch({type: 'SYNC_REMOTE_CHARACTER', payload: { 
-          toonId: tid, 
-          remoteId: remoteId,
-        }});
-      } else {
-        dispatch({type: 'SWITCH_CHARACTER', payload: { toonId: tid }});
-      }
-    },
-    handleDelete: (tid) => { dispatch({type: 'DELETE_CHARACTER', payload: { toonId: tid }}) },
-    handleUnDelete: (tid) => { dispatch({type: 'UNDELETE_CHARACTER', payload: { toonId: tid }}) },
-    handleNewToon: () => { dispatch({type: 'CREATE_NEW_CHARACTER'}) },
-  }
-}
-
-const mergeProps = (stateProps, dispatchProps) => {
-  const handleChange = (tid, newValue) => {
-    dispatchProps.renameCharacter(
-      tid,
-      newValue,
-      stateProps.toonStorage[tid].remoteId,
-    )
-  }
-  const handleSwitch = (tid) => { dispatchProps.handleSwitch(tid, stateProps.toonStorage[tid].remoteId); }
-
-  return ({
-    ...stateProps,
-    ...dispatchProps,
-    handleChange,
-    handleSwitch,
-  })
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps,
-)(ToonSter);
+export default ToonSter;

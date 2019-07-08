@@ -1,13 +1,29 @@
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { calcXpComponents, totalStatXp } from './XpUtil';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
 import uuid from 'uuid';
 
-const ToonUtil = () => { 
-  const loadNewToon = (su, tid) => {
-    const j = su.toonData[tid];
 
+
+const ToonUtil = () => { 
+  const loadNewToon = async(su, tid) => {
+    const fetchCharacter = async(remoteId, config) => {
+      return await axios.get('http://devdrdb.dystopiarisingnetwork.com:5000/api/character/' + remoteId, su.authConfig);
+    }
+    
+    let j = su.toonData[tid];
+
+    // console.log(su);
+    console.log(su.toonStorage[tid]);
+    console.log(su.authConfig);
+    if (su.toonStorage[tid].remoteId) {
+      const remoteData = await fetchCharacter(su.toonStorage[tid].remoteId);
+      console.log(remoteData);
+    } else {
+      j = su.toonData[tid];
+    }
     if (j == null) {
       // critical localStorageError
       console.log('Critical localStorageError');
@@ -95,12 +111,6 @@ const ToonUtil = () => {
     persistToonStorage(su, true);
   };
 
-  const generateToonFromRemote = (su, remoteId, name) => {
-    const tid = uuid.v1();
-    su.toonStorage[tid] = { name: name, state: 'enabled', remoteId: remoteId };
-    persistToonStorage(su, true);
-  }
-
   const saveStateInBackgroundSelective = (su, tid, mutation) => {
     Object.assign(su.toonData[tid], mutation);
     localStorage.setItem('toonData', JSON.stringify(su.toonData));
@@ -158,9 +168,11 @@ const ToonUtil = () => {
       su.toonStorage = {};
       generateNewToon(su);
       persistToonStorage(su, true);
+      saveState(su);
     } else if (firstEnabledToon == null) {
       generateNewToon(su);
       persistToonStorage(su, true);
+      saveState(su);
     } else {
       su.currentToon = firstEnabledToon;
       su.toonData = JSON.parse(localStorage.getItem('toonData'));
@@ -222,6 +234,7 @@ const ToonUtil = () => {
     }
     const statXp = calcXpComponents(remoteStats);
 
+    console.log(su.toonStorage);
     su.currentToon = tid;
     localStorage.setItem('currentToon', su.currentToon);
     su.skillState = SkillInitializer();
@@ -252,6 +265,11 @@ const ToonUtil = () => {
   }
 
   const mergeRemoteToons = (su, remoteToons, strainLookup) => {
+    const generateToonFromRemote = (remoteId, name) => {
+      const tid = uuid.v1();
+      su.toonStorage[tid] = { name: name, state: 'enabled', remoteId: remoteId };
+    }
+
     const indexRemoteToons = (storage) => {
       return Object.fromEntries(
         Object.keys(storage).filter(x => 'remoteId' in storage[x]).map(uuid => {
@@ -259,9 +277,8 @@ const ToonUtil = () => {
         })
       )
     }
-    const syncName = (su, tid, value) => {
+    const syncName = (tid, value) => {
       su.toonStorage[tid].name = value;
-      persistToonStorage(su, true);
     }
 
     const mergedRemoteToons = indexRemoteToons(su.toonStorage);
@@ -269,11 +286,15 @@ const ToonUtil = () => {
     remoteToons.forEach(remoteToon => {
       const remoteId = remoteToon.id;
       if (!(remoteId in mergedRemoteToons)) {
-        generateToonFromRemote(su, remoteId, remoteToon.name);
+        generateToonFromRemote(remoteId, remoteToon.name);
       } else { 
-        syncName(su, mergedRemoteToons[remoteId], remoteToon.name);
+        syncName(mergedRemoteToons[remoteId], remoteToon.name);
       }
     })
+
+    //localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
+
+    return su.toonStorage;
   }
 
   return {

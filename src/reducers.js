@@ -10,17 +10,28 @@ const statUtil = StatUtil();
 const strainUtil = StrainUtil();
 const save = (state) => { toonUtil.saveState(state); return state; }
 
-export default function reducer(state, action) {
+export default function reducer(state = {}, action) {
   const payload = action.payload;
 
   switch(action.type) {
     case 'APP_LOAD': toonUtil.handleAppLoad(state); return state;
+    case 'LOGIN_SUCCESSFUL':
+      console.log('LOGIN Successful!');
+      console.log(payload);
+      state.setAuthConfig(payload);
+      return {
+        ...state,
+        authConfig: payload,
+      }
     case 'CREATE_NEW_CHARACTER': toonUtil.handleToonChange(state, 'new'); return state;
-    case 'SWITCH_CHARACTER': toonUtil.handleToonChange(state, 'switch', payload.toonId); return state;
+    case 'SWITCH_CHARACTER': 
+      console.log(state.authConfig);
+      console.log(state.toonStorage);
+      toonUtil.handleToonChange(state, 'switch', payload.toonId); 
+      return state;
     case 'SWITCH_CHARACTER_WITH_REMOTE_DATA': 
       const synced = toonUtil.syncToon(state, payload);
 
-      console.log(synced.selectedStrain);
       return {
         ...state,
         skillState: synced.skillState,
@@ -35,7 +46,11 @@ export default function reducer(state, action) {
         toonStorage: synced.toonStorage,
         toonData: synced.toonData,
       }
-    case 'RENAME_CHARACTER': toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); return state;
+    case 'RENAME_CHARACTER': 
+      console.log(state);
+      console.log(action);
+      toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); 
+      return state;
     case 'DELETE_CHARACTER': toonUtil.handleToonChange(state, 'delete', payload.toonId); return state;
     case 'UNDELETE_CHARACTER': toonUtil.handleToonChange(state, 'undelete', payload.toonId); return state;
     case 'SYNC_REMOTE_CHARACTER': return state;
@@ -59,12 +74,18 @@ export default function reducer(state, action) {
       strainUtil.handleStrainChange(state, payload.strain);
       return save(state);
     case 'REMOTE_CHARACTERS_LOADED': 
-      toonUtil.mergeRemoteToons(
+      const toonStorage = toonUtil.mergeRemoteToons(
         state, 
         payload.characterData,
         payload.strainLookup,
       ); 
-      return state;
+
+      state.setToonStorage(toonStorage);
+      return {
+        ...state,
+        toonStorage: toonStorage,
+        authConfig: state.authConfig,
+      }
 
     case 'REMOTE_STRAINS_LOADED':
       strainUtil.buildRemoteDictionary(state, payload);

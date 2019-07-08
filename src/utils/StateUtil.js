@@ -5,6 +5,8 @@ import { useState } from 'react';
 
 const StateUtil = () => {
   let lineageStrain = StrainInitializer();
+  let statLimit = { rp: 6, inf: 8 };
+
   let [skillState, setSkillState] = useState(SkillInitializer());
   let [skillXp, setSkillXp] = useState(SkillCalc(skillState));
   let [skillHidden, setSkillHidden] = useState({});
@@ -27,8 +29,9 @@ const StateUtil = () => {
   let [toonStorage, setToonStorage] = useState({});
   let [toonData, setToonData] = useState({});
   let [currentToon, setCurrentToon] = useState({});
-  let statLimit = { rp: 6, inf: 8 };
   let [tab, setTab] = useState(0);
+  let [authConfig, setAuthConfig] = useState('unset');
+  let [strainLookup, setStrainLookup] = useState({});
 
   return {
     lineageStrain: lineageStrain,
@@ -63,6 +66,10 @@ const StateUtil = () => {
     statLimit: statLimit,
     tab: tab,
     setTab: setTab,
+    authConfig: authConfig,
+    setAuthConfig: setAuthConfig,
+    strainLookup: strainLookup,
+    setStrainLookup: setStrainLookup,
   }
 }
 
