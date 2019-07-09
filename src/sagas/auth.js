@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { call, put, putResolve, takeEvery, takeLatest, all} from 'redux-saga/effects'
+import { call, put, putResolve, takeEvery, takeLatest, all, race } from 'redux-saga/effects'
 
 const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
 const config = {
@@ -24,16 +24,15 @@ const updateCharacter = async(remoteId, body) => {
 const fetchCharacter = async(remoteId) => { return await axios.get(api('character/' + remoteId), config) }
 const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
 const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
+let remoteStrainsLoaded = false;
 
 function* fetchStrains() {
+  if (remoteStrainsLoaded) return;
+
   try {
     const remoteStrains = yield call(fetchRemoteStrains);
-    //yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
-    remoteStrains.data.filter(x => x.lineage !== null).map(strain => {
-      inverseStrainLookup[strain.name] = strain.id;
-      strainLookup[strain.id] = strain.name;
-    })
-    yield console.log('done');
+    yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
+    remoteStrainsLoaded = true;
   } catch (e) {
     console.log(e);
   }
@@ -119,8 +118,9 @@ function* queueUpstream(action) {
   const payload = action.payload;
   let upstreamData = null;
 
+  console.log(action);
   switch(action.type) {
-    case 'STRAIN_CHANGED': upstreamData = { strain_id: inverseStrainLookup[payload.strain] }; break;
+    case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
     case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
   }
 
@@ -129,7 +129,7 @@ function* queueUpstream(action) {
   }
 }
 
-export default function* authSaga() {
+export function* appSaga() {
   yield all([
     // fetchStrains(),
     // fetchSkills(),

@@ -44,16 +44,16 @@ export function calcXp(su, changedStat, acquired) {
   calcTotalXp(su);
 };
 
-export function calcXpComponents(stats) {
-  return {
-    hp: deciCalc(stats.hp || 0),
-    mp: deciCalc(stats.mp || 0),
-    rp: linearCalc(stats.rp || 0),
-    inf: linearCalc(stats.inf || 0),
-  }
+export function calcXpComponents(su) {
+  console.log(su.stat);
+  Object.keys(su.stat).forEach(stat => {
+    //console.log(su.stat[stat])
+    calcXp(su, stat, su.stat[stat]);
+  })
 }
 
 export function calcTotalXp(su) {
+  //console.log(su);
   su.totalXp = {
     stat: totalStatXp(su),
     skill: su.skillXp.total

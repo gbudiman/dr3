@@ -30,8 +30,11 @@ const StateUtil = () => {
   let [toonData, setToonData] = useState({});
   let [currentToon, setCurrentToon] = useState({});
   let [tab, setTab] = useState(0);
-  let [authConfig, setAuthConfig] = useState('unset');
+  let [authConfig, setAuthConfig] = useState(null);
   let [strainLookup, setStrainLookup] = useState({});
+  let [inverseStrainLookup, setInverseStrainLookup] = useState({});
+  let [skillLookup, setSkillLookup] = useState({});
+  let [inverseSkillLookup, setInverseSkillLookup] = useState({});
 
   return {
     lineageStrain: lineageStrain,
@@ -70,6 +73,12 @@ const StateUtil = () => {
     setAuthConfig: setAuthConfig,
     strainLookup: strainLookup,
     setStrainLookup: setStrainLookup,
+    skillLookup: skillLookup,
+    setSkillLookup: setSkillLookup,
+    inverseStrainLookup: inverseStrainLookup,
+    setInverseStrainLookup: setInverseStrainLookup,
+    inverseSkillLookup: inverseSkillLookup,
+    setInverseSkillLookup: setInverseSkillLookup,
   }
 }
 

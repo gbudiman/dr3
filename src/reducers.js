@@ -47,8 +47,6 @@ export default function reducer(state = {}, action) {
         toonData: synced.toonData,
       }
     case 'RENAME_CHARACTER': 
-      console.log(state);
-      console.log(action);
       toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); 
       return state;
     case 'DELETE_CHARACTER': toonUtil.handleToonChange(state, 'delete', payload.toonId); return state;
@@ -70,7 +68,6 @@ export default function reducer(state = {}, action) {
       statUtil.handleStatChange(state, payload.stat, payload.value);
       return save(state);
     case 'STRAIN_CHANGED':
-      console.log(state);
       strainUtil.handleStrainChange(state, payload.strain);
       return save(state);
     case 'REMOTE_CHARACTERS_LOADED': 
@@ -87,12 +84,6 @@ export default function reducer(state = {}, action) {
         authConfig: state.authConfig,
       }
 
-    case 'REMOTE_STRAINS_LOADED':
-      strainUtil.buildRemoteDictionary(state, payload);
-      return state;
-    case 'REMOTE_SKILLS_LOADED':
-      //console.log(payload);
-      return state;
     default: return state;
   }
 }

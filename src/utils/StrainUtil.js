@@ -35,8 +35,19 @@ const StrainUtil = () => {
     } else { return { hp: 0, mp: 0, rp: 0, inf: 0 } }
   }
 
+  const buildLookupTable = (su, data) => {
+    data.filter(x => x.lineage !== null).map(strain => {
+      su.strainLookup[strain.id] = strain.name;
+      su.inverseStrainLookup[strain.name] = strain.id;
+    });
+
+    su.setStrainLookup(su.strainLookup);
+    su.setInverseStrainLookup(su.inverseStrainLookup);
+  }
+
   return {
     handleStrainChange: handleStrainChange,
+    buildLookupTable: buildLookupTable,
     getInnateStats: getInnateStats,
   }
 }

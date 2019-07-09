@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-import authSaga from './sagas/auth';
+import { appSaga } from './sagas/auth';
 import reducer from './reducers';
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
     composeWithDevTools(applyMiddleware(sagaMiddleware))
   );
 
-  sagaMiddleware.run(authSaga);
+  sagaMiddleware.run(appSaga);
 
   useEffect(() => {
     store.dispatch({ type: 'APP_LOAD' })

@@ -1,40 +1,55 @@
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { calcXpComponents, totalStatXp } from './XpUtil';
+import { calcXpComponents, totalStatXp, calcTotalXp } from './XpUtil';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
+import StrainUtil from './StrainUtil';
 import uuid from 'uuid';
 
-
+const lookupTablesConstructed = false;
+const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
+const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
 
 const ToonUtil = () => { 
   const loadNewToon = async(su, tid) => {
+    const login = async() => {
+      const tokenResponse = await axios.get(
+        'http://devdrdb.dystopiarisingnetwork.com:5000/api/generateToken',
+        { auth: { username: 'test', password: 'test1234'} }
+      );
+      const config = {
+        headers: { 'Authorization': 'Bearer ' + tokenResponse.data.access_token }
+      }
+      su.authConfig = config;
+      su.setAuthConfig(su.authConfig);
+    }
     const fetchCharacter = async(remoteId, config) => {
-      return await axios.get('http://devdrdb.dystopiarisingnetwork.com:5000/api/character/' + remoteId, su.authConfig);
+      if (su.authConfig == null) await login();
+      const remoteData = await axios.get('http://devdrdb.dystopiarisingnetwork.com:5000/api/character/' + remoteId, su.authConfig);
+      syncRemoteData(remoteData.data);
+      saveState(su);
     }
-    
-    let j = su.toonData[tid];
+    const syncRemoteData = (data) => {
+      const normalizedStrain = su.strainLookup[data.strain_id];
+      if (normalizedStrain) {
+        su.selectedStrain = su.strainLookup[data.strain_id];
+        su.setSelectedStrain(su.selectedStrain);
+      }
 
-    // console.log(su);
-    console.log(su.toonStorage[tid]);
-    console.log(su.authConfig);
-    if (su.toonStorage[tid].remoteId) {
-      const remoteData = await fetchCharacter(su.toonStorage[tid].remoteId);
-      console.log(remoteData);
-    } else {
-      j = su.toonData[tid];
+      su.stat = {
+        hp: data.body,
+        mp: data.mind,
+        rp: data.resolve,
+        inf: data.infection,
+        ir: 0,
+      };
+
+      su.setStat(su.stat);
+      calcXpComponents(su);
+      calcTotalXp(su);
     }
-    if (j == null) {
-      // critical localStorageError
-      console.log('Critical localStorageError');
-      console.log('Toon ID: ' + tid);
-      console.log('LS::currentToon: ' + localStorage.getItem('currentToon'));
-      console.log('======= toonStorage =====');
-      console.log(localStorage.getItem('toonStorage'));
-      console.log('======= toonData =======');
-      console.log(localStorage.getItem('toonData'));
-      loadBlankToon(su);
-    } else {
+    const hasRemoteData = 'remoteId' in su.toonStorage[tid] && su.toonStorage[tid].remoteId != null;
+    const loadData = (j) => {
       su.skillState = Object.assign(SkillInitializer(), j.skill_state); su.setSkillState(su.skillState);
       su.skillXp = j.skill_xp;                                          su.setSkillXp(su.skillXp);
       su.skillHidden = j.skill_hidden;                                  su.setSkillHidden(su.skillHidden);
@@ -45,6 +60,29 @@ const ToonUtil = () => {
       su.statControl = j.stat_control;                                  su.setStatControl(su.statControl);
       su.innate = j.innate;                                             su.setInnate(su.innate);
       su.totalXp = j.total_xp;                                          su.setTotalXp(su.totalXp);
+    }
+    
+    
+    let j = su.toonData[tid];
+    if (j == null) {
+      if (hasRemoteData) {
+        loadBlankToon(su);
+        fetchCharacter(su.toonStorage[tid].remoteId);
+      } else {
+        // critical localStorageError
+        console.log('Critical localStorageError');
+        console.log('Toon ID: ' + tid);
+        console.log('LS::currentToon: ' + localStorage.getItem('currentToon'));
+        console.log('======= toonStorage =====');
+        console.log(localStorage.getItem('toonStorage'));
+        console.log('======= toonData =======');
+        console.log(localStorage.getItem('toonData'));
+        loadBlankToon(su);
+      }
+    } else {
+      loadData(j);
+      console.log('loaded locally');
+      if (hasRemoteData) fetchCharacter(su.toonStorage[tid].remoteId);
     }
   };
 
@@ -118,6 +156,7 @@ const ToonUtil = () => {
   }
 
   const saveState = (su) => {
+    console.log('saving state');
     su.toonData[su.currentToon] = {
       skill_state: su.skillState,
       skill_xp: su.skillXp,
@@ -210,7 +249,16 @@ const ToonUtil = () => {
     }
   };
 
-  const handleAppLoad = (su) => {
+  const constructLookupTables = async(su) => {
+    const strainUtil = StrainUtil();
+    const remoteStrains = await fetchRemoteStrains();
+      
+    strainUtil.buildLookupTable(su, remoteStrains.data);
+  }
+
+  const handleAppLoad = async(su) => {
+    await constructLookupTables(su);
+
     if (su.localStorageHasBeenLoaded === false) {
       loadState(su);
       su.setLocalStorageHasBeenLoaded(true);
@@ -220,49 +268,49 @@ const ToonUtil = () => {
     }
   }
 
-  const syncToon = (su, payload) => {
-    const characterData = payload.characterData;
-    const strainLookup = payload.strainLookup;
-    const tid = payload.tid;
+  // const syncToon = (su, payload) => {
+  //   const characterData = payload.characterData;
+  //   const strainLookup = payload.strainLookup;
+  //   const tid = payload.tid;
 
-    const remoteStats = {
-      hp: characterData.body,
-      mp: characterData.mind,
-      rp: characterData.resolve,
-      inf: characterData.infection,
-      ir: 0,
-    }
-    const statXp = calcXpComponents(remoteStats);
+  //   const remoteStats = {
+  //     hp: characterData.body,
+  //     mp: characterData.mind,
+  //     rp: characterData.resolve,
+  //     inf: characterData.infection,
+  //     ir: 0,
+  //   }
+  //   const statXp = calcXpComponents(remoteStats);
 
-    console.log(su.toonStorage);
-    su.currentToon = tid;
-    localStorage.setItem('currentToon', su.currentToon);
-    su.skillState = SkillInitializer();
-    su.skillXp = SkillCalc(su.skill_state);
-    su.skillHidden = {};
-    // su.skill_info_visible: su.skillInfoVisible;
-    su.selectedStrain = strainLookup[characterData.strain_id];
-    su.stat = remoteStats;
-    // su.stat: su.stat;
-    su.statXp = statXp;
-    // su.stat_xp: su.statXp;
-    su.statControl = {
-      hp: { inc: true, dec: false },
-      mp: { inc: true, dec: false },
-      rp: { inc: true, dec: false },
-      inf: { inc: true, dec: false },
-      ir: { inc: false, dec: false },
-    };
-    // su.innate: su.innate;
-    su.totalXp = {
-      stat: totalStatXp(su),
-      skill: 0,
-    }
+  //   console.log(su.toonStorage);
+  //   su.currentToon = tid;
+  //   localStorage.setItem('currentToon', su.currentToon);
+  //   su.skillState = SkillInitializer();
+  //   su.skillXp = SkillCalc(su.skill_state);
+  //   su.skillHidden = {};
+  //   // su.skill_info_visible: su.skillInfoVisible;
+  //   su.selectedStrain = strainLookup[characterData.strain_id];
+  //   su.stat = remoteStats;
+  //   // su.stat: su.stat;
+  //   su.statXp = statXp;
+  //   // su.stat_xp: su.statXp;
+  //   su.statControl = {
+  //     hp: { inc: true, dec: false },
+  //     mp: { inc: true, dec: false },
+  //     rp: { inc: true, dec: false },
+  //     inf: { inc: true, dec: false },
+  //     ir: { inc: false, dec: false },
+  //   };
+  //   // su.innate: su.innate;
+  //   su.totalXp = {
+  //     stat: totalStatXp(su),
+  //     skill: 0,
+  //   }
 
-    saveState(su);
-    return su;
-    //handleToonChange(su, 'switch', tid);
-  }
+  //   saveState(su);
+  //   return su;
+  //   //handleToonChange(su, 'switch', tid);
+  // }
 
   const mergeRemoteToons = (su, remoteToons, strainLookup) => {
     const generateToonFromRemote = (remoteId, name) => {
@@ -292,7 +340,7 @@ const ToonUtil = () => {
       }
     })
 
-    //localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
+    localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
 
     return su.toonStorage;
   }
@@ -300,7 +348,7 @@ const ToonUtil = () => {
   return {
     handleToonChange: handleToonChange,
     handleAppLoad: handleAppLoad,
-    syncToon: syncToon,
+    //syncToon: syncToon,
     saveState: saveState,
     mergeRemoteToons: mergeRemoteToons,
   }

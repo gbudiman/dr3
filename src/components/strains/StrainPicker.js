@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import './StrainPicker.scss';
+import { useSelector, useDispatch } from 'react-redux'
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -27,12 +28,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function StrainPicker(props) {
+const StrainPicker = () => {
   const classes = useStyles();
   const statCompressor = (stat) => { return [stat.hp, stat.mp, stat.rp, stat.inf].join('/') }
   const strainBuilder = () => {
-    const optgroups = Object.keys(props.lineages).map((lineage) => {
-      const lineageData = props.lineages[lineage];
+    const optgroups = Object.keys(lineages).map((lineage) => {
+      const lineageData = lineages[lineage];
       const innateStat = lineageData.innate;
       const strainList = lineageData.strains;
 
@@ -52,12 +53,33 @@ function StrainPicker(props) {
 
     return optgroups;
   }
+  const { lineages, selectedStrain, inverseStrainLookup, currentToon, toonStorage } = useSelector(
+    state => ({
+      lineages: state.lineageStrain.lineages,
+      selectedStrain: state.selectedStrain,
+      currentToon: state.currentToon,
+      toonStorage: state.toonStorage,
+      inverseStrainLookup: state.inverseStrainLookup,
+    })
+  )
+  const dispatch = useDispatch();
+  const handleStrainChange = (event) => {
+    const newStrain = event.target.value
+    dispatch({
+      type: 'STRAIN_CHANGED',
+      payload: {
+        strain: newStrain,
+        strainId: inverseStrainLookup[newStrain],
+        remoteId: toonStorage[currentToon].remoteId,
+      }
+    })
+  }
 
   return(
     <NativeSelect 
-      value={props.selectedStrain || ''}
+      value={selectedStrain || ''}
       className={classes.root} 
-      onChange={props.handleStrainChange}
+      onChange={handleStrainChange}
       disableUnderline
     >
       <option value='' disabled> -- Lineage Strain -- </option>
@@ -66,49 +88,48 @@ function StrainPicker(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    lineages: state.lineageStrain.lineages,
-    selectedStrain: state.selectedStrain,
-    currentToon: state.currentToon,
-    toonStorage: state.toonStorage,
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     lineages: state.lineageStrain.lineages,
+//     selectedStrain: state.selectedStrain,
+//     currentToon: state.currentToon,
+//     toonStorage: state.toonStorage,
+//   }
+// }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    handleStrainChange: (strain, remoteId) => dispatch({
-      type: 'STRAIN_CHANGED',
-      payload: {
-        strain: strain,
-        remoteId: remoteId,
-      }
-    })
-  }
-}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     handleStrainChange: (strain, remoteId) => dispatch({
+//       type: 'STRAIN_CHANGED',
+//       payload: {
+//         strain: strain,
+//         remoteId: remoteId,
+//         remoteStrainId: 
+//       }
+//     })
+//   }
+// }
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const handleStrainChange = (event) => {
-    console.log(stateProps.currentToon);
-    console.log(localStorage.getItem('currentToon'));
-    console.log(stateProps.toonStorage);
-    console.log(JSON.parse(localStorage.getItem('toonStorage')));
-    const newStrain = event.target.value;
-    dispatchProps.handleStrainChange(
-      newStrain,
-      stateProps.toonStorage[stateProps.currentToon].remoteId,
-    )
-  }
+// const mergeProps = (stateProps, dispatchProps) => {
+//   const handleStrainChange = (event) => {
+//     const newStrain = event.target.value;
+//     dispatchProps.handleStrainChange(
+//       newStrain,
+//       stateProps.toonStorage[stateProps.currentToon].remoteId,
+//     )
+//   }
 
-  return ({
-    ...stateProps,
-    ...dispatchProps,
-    handleStrainChange,
-  })
-}
+//   return ({
+//     ...stateProps,
+//     ...dispatchProps,
+//     handleStrainChange,
+//   })
+// }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps,
-)(StrainPicker);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+//   mergeProps,
+// )(StrainPicker);
+
+export default StrainPicker;
