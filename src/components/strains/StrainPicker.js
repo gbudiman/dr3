@@ -88,48 +88,4 @@ const StrainPicker = () => {
   )
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     lineages: state.lineageStrain.lineages,
-//     selectedStrain: state.selectedStrain,
-//     currentToon: state.currentToon,
-//     toonStorage: state.toonStorage,
-//   }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     handleStrainChange: (strain, remoteId) => dispatch({
-//       type: 'STRAIN_CHANGED',
-//       payload: {
-//         strain: strain,
-//         remoteId: remoteId,
-//         remoteStrainId: 
-//       }
-//     })
-//   }
-// }
-
-// const mergeProps = (stateProps, dispatchProps) => {
-//   const handleStrainChange = (event) => {
-//     const newStrain = event.target.value;
-//     dispatchProps.handleStrainChange(
-//       newStrain,
-//       stateProps.toonStorage[stateProps.currentToon].remoteId,
-//     )
-//   }
-
-//   return ({
-//     ...stateProps,
-//     ...dispatchProps,
-//     handleStrainChange,
-//   })
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-//   mergeProps,
-// )(StrainPicker);
-
 export default StrainPicker;

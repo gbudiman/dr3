@@ -1,46 +1,101 @@
 import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './StatQuad.scss';
 import React from 'react';
 import StatGrid from './StatGrid';
 
 function StatQuad(props) {
-  let stats = ['hp', 'mp', 'rp', 'inf'];
-  let placement = {
+  const stats = ['hp', 'mp', 'rp', 'inf'];
+  const placement = {
     hp: 'bottom-start',
     mp: 'bottom',
     rp: 'bottom',
     inf: 'bottom-end',
   }
-  //let handleClick = (stat, adjustment) => { props.passClick(stat, adjustment) }
-  //let handleChange = (stat, value) => { props.passChange(stat, value) }
-  let handlePopOpen = (stat, state) => { props.passPopOpen(stat, state) }
-  //let handleReductionChange = (stat, adjustment) => { props.passReductionChange(stat, adjustment) };
+  const inverseAttributes = {
+    hp: 'body',
+    mp: 'mind',
+    rp: 'resolve',
+    inf: 'infection',
+    ir: 'death',
+  }
 
-  let makeGrids = () => {
+  const handlePopOpen = (stat, state) => { props.passPopOpen(stat, state) }
+  const makeGrids = () => {
     return stats.map(statKey => {
       const reductionKey = statKey[0] + 'r';
       const reduction = () => { 
-        return reductionKey in props.stat ? props.stat[reductionKey] : 0 
+        return reductionKey in stat ? stat[reductionKey] : 0 
       }
       return (
         <StatGrid 
           key={statKey}
           stat={statKey}
-          innate={props.innate[statKey] || 0}
-          acquired={props.stat[statKey] || 0}
+          innate={innate[statKey] || 0}
+          acquired={stat[statKey] || 0}
           reduction={reduction()}
-          xp={props.statXp[statKey] || 0}
-          statControl={props.statControl[statKey]}
-          reductionControl={props.statControl[statKey[0] + 'r'] || { inc: true, dec: false }}
-          passClick={props.handleStatAdjustment}
-          passChange={props.handleStatChange}
-          passReduction={props.handleReductionAdjustment}
+          xp={statXp[statKey] || 0}
+          statControl={statControl[statKey]}
+          reductionControl={statControl[statKey[0] + 'r'] || { inc: true, dec: false }}
+          passClick={handleStatAdjustment}
+          passChange={handleStatChange}
+          passReduction={handleReductionAdjustment}
           passPopOpen={handlePopOpen}
           placement={placement[statKey]}
           openState={props.openState[statKey]} />
       );
     })
   }
+  const dispatch = useDispatch();
+  const { stat, statXp, statControl, innate, currentToon, toonStorage } = useSelector(
+    state => ({
+      stat: state.stat,
+      statXp: state.statXp,
+      statControl: state.statControl,
+      innate: state.innate,
+      currentToon: state.currentToon,
+      toonStorage: state.toonStorage,
+    })
+  )
+  const handleStatAdjustment = (changedStat, adjustment) => {
+    const initialValue = stat[changedStat];
+    dispatch({
+      type: 'STAT_ADJUSTED',
+      payload: {
+        stat: changedStat,
+        adjustment: adjustment,
+      }
+    })
+    if (initialValue != stat[changedStat]) {
+      dispatch({
+        type: 'STAT_VALID_CHANGE',
+        payload: {
+          stat: inverseAttributes[changedStat],
+          value: stat[changedStat],
+          remoteId: toonStorage[currentToon].remoteId,
+        }
+      })
+    }
+  }
+  const handleReductionAdjustment = (changedStat, adjustment) => {
+    dispatch({
+      type: 'STAT_REDUCTION_ADJUSTED',
+      payload: {
+        stat: changedStat,
+        adjustment: adjustment,
+      }
+    })
+  }
+  const handleStatChange = (changedStat, value) => {
+    dispatch({
+      type: 'STAT_CHANGED',
+      payload: {
+        stat: changedStat,
+        value: value,
+      }
+    })
+  }
+
   return(
     <div className='statquad'>
       {makeGrids()}
@@ -48,49 +103,4 @@ function StatQuad(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    stat: state.stat,
-    statXp: state.statXp,
-    statControl: state.statControl,
-    innate: state.innate,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    handleStatAdjustment: (stat, adjustment) => {
-      dispatch({
-        type: 'STAT_ADJUSTED',
-        payload: {
-          stat: stat,
-          adjustment: adjustment,
-        }
-      })
-    },
-    handleReductionAdjustment: (stat, adjustment) => {
-      dispatch({
-        type: 'STAT_REDUCTION_ADJUSTED',
-        payload: {
-          stat: stat,
-          adjustment: adjustment,
-        }
-      })
-    },
-    handleStatChange: (stat, value) => {
-      dispatch({
-        type: 'STAT_CHANGED',
-        payload: {
-          stat: stat,
-          value: value,
-        }
-      })
-    }
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(StatQuad);
-//export default StatQuad;
+export default StatQuad;

@@ -16,8 +16,6 @@ export default function reducer(state = {}, action) {
   switch(action.type) {
     case 'APP_LOAD': toonUtil.handleAppLoad(state); return state;
     case 'LOGIN_SUCCESSFUL':
-      console.log('LOGIN Successful!');
-      console.log(payload);
       state.setAuthConfig(payload);
       return {
         ...state,
@@ -25,27 +23,8 @@ export default function reducer(state = {}, action) {
       }
     case 'CREATE_NEW_CHARACTER': toonUtil.handleToonChange(state, 'new'); return state;
     case 'SWITCH_CHARACTER': 
-      console.log(state.authConfig);
-      console.log(state.toonStorage);
       toonUtil.handleToonChange(state, 'switch', payload.toonId); 
       return state;
-    case 'SWITCH_CHARACTER_WITH_REMOTE_DATA': 
-      const synced = toonUtil.syncToon(state, payload);
-
-      return {
-        ...state,
-        skillState: synced.skillState,
-        skillXp: synced.skillXp,
-        selectedStrain: synced.selectedStrain,
-        stat: synced.stat,
-        statXp: synced.statXp,
-        statControl: synced.statControl,
-        innate: strainUtil.getInnateStats(state, synced.selectedStrain),
-        totalXp: synced.totalXp,
-        currentToon: synced.currentToon,
-        toonStorage: synced.toonStorage,
-        toonData: synced.toonData,
-      }
     case 'RENAME_CHARACTER': 
       toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); 
       return state;

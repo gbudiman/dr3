@@ -7,12 +7,6 @@ const StrainUtil = () => {
 
     su.selectedStrain = newStrain;
     su.setSelectedStrain(su.selectedStrain);
-    // su.innate = {
-    //   hp: innateStat.hp,
-    //   mp: innateStat.mp,
-    //   rp: innateStat.rp,
-    //   inf: innateStat.inf
-    // };
     su.innate = innateStats
     su.setInnate(su.innate);
 

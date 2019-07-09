@@ -102,6 +102,10 @@ function* watchNameChange() {
   yield takeLatest('RENAME_CHARACTER', queueUpstream);
 }
 
+function* watchStatValidChange() {
+  yield takeLatest('STAT_VALID_CHANGE', queueUpstream);
+}
+
 function* watchLocalStorageLoaded() {
   yield takeLatest('APP_LOAD', auth);
 }
@@ -122,6 +126,7 @@ function* queueUpstream(action) {
   switch(action.type) {
     case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
     case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
+    case 'STAT_VALID_CHANGE': upstreamData = { [payload.stat]: payload.value }; break;
   }
 
   if (payload.remoteId) {
@@ -136,6 +141,7 @@ export function* appSaga() {
     watchLocalStorageLoaded(),
     watchNameChange(),
     watchStrainChange(),
+    watchStatValidChange(),
     watchSyncRemoteCharacter(),
     watchLoginSuccessful(),
   ]);

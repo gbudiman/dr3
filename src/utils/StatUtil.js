@@ -1,18 +1,18 @@
 import { calcXp } from './XpUtil';
 
 const StatUtil = () => {
-  let handleStatAdjustment = (su, changedStat, adjustment) => {
+  const handleStatAdjustment = (su, changedStat, adjustment) => {
     let currentStat = changedStat in su.stat ? su.stat[changedStat] : 0;
     su.stat[changedStat] = currentStat + adjustment;
     validateStatAndControls(su, changedStat);
   };
 
-  let handleStatChange = (su, changedStat, newValue) => {
+  const handleStatChange = (su, changedStat, newValue) => {
     su.stat[changedStat] = parseInt(newValue) || 0;
     validateStatAndControls(su, changedStat);
   };
 
-  let handleStatReductionAdjustment = (su, changedStat, adjustment) => {
+  const handleStatReductionAdjustment = (su, changedStat, adjustment) => {
     let reductionStatKey = changedStat[0] + 'r';
     let h = statHelper(su, changedStat);
 
@@ -50,7 +50,7 @@ const StatUtil = () => {
     crossValidateControl(su, changedStat, 'main');
   };
 
-  let validateStatAndControls = (su, changedStat) => {
+  const validateStatAndControls = (su, changedStat) => {
     let h = statHelper(su, changedStat);
 
     if (h.totalValue() >= 0 && h.belowOrAtLimit() && h.acqValue() >= 0) {
@@ -82,9 +82,10 @@ const StatUtil = () => {
     su.setStatControl(Object.assign({}, su.statControl));
     calcXp(su, changedStat, su.stat[changedStat]);
     crossValidateControl(su, changedStat, 'reduction');
+    console.log('validation done');
   };
 
-  let crossValidateControl = (su, changedStat, target) => {
+  const crossValidateControl = (su, changedStat, target) => {
     let controlKey =
       target === 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control =
@@ -103,7 +104,7 @@ const StatUtil = () => {
     su.setStatControl(Object.assign({}, su.statControl));
   };
 
-  let statHelper = (su, key) => {
+  const statHelper = (su, key) => {
     let reductionStatKey = key[0] + 'r';
     let innateValue = () => {
       return key in su.innate ? su.innate[key] : 0;

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import './ToonSter.scss';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
