@@ -7,8 +7,8 @@ const config = {
     'Authorization': null
   }
 }
-const inverseStrainLookup = {};
-const strainLookup = {};
+// const inverseStrainLookup = {};
+// const strainLookup = {};
 
 const generateToken = async() => {
   return await axios.get(
@@ -21,81 +21,76 @@ const configureJWT = (token) => { config.headers['Authorization'] = 'Bearer ' + 
 const updateCharacter = async(remoteId, body) => {
   return await axios.put(api('character/' + remoteId), body, config);
 }
-const fetchCharacter = async(remoteId) => { return await axios.get(api('character/' + remoteId), config) }
-const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
-const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
-let remoteStrainsLoaded = false;
+// const fetchCharacter = async(remoteId) => { return await axios.get(api('character/' + remoteId), config) }
+// const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
+// const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
+// let remoteStrainsLoaded = false;
 
-function* fetchStrains() {
-  if (remoteStrainsLoaded) return;
+// function* fetchStrains() {
+//   if (remoteStrainsLoaded) return;
 
-  try {
-    const remoteStrains = yield call(fetchRemoteStrains);
-    yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
-    remoteStrainsLoaded = true;
-  } catch (e) {
-    console.log(e);
-  }
-}
+//   try {
+//     const remoteStrains = yield call(fetchRemoteStrains);
+//     yield put({ type: 'REMOTE_STRAINS_LOADED', payload: remoteStrains.data })
+//     remoteStrainsLoaded = true;
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
-function* fetchSkills() {
-  try {
-    const remoteSkills = yield call(fetchRemoteSkills);
-  } catch (e) {
-    console.log(e);
-  }
-}
+// function* fetchSkills() {
+//   try {
+//     const remoteSkills = yield call(fetchRemoteSkills);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
-function* fetchRemoteCharacter(params) {
-  console.log(params);
-  try {
-    const characterData = yield call(fetchCharacter, params.payload.remoteId);
-    yield put({
-      type: 'SWITCH_CHARACTER_WITH_REMOTE_DATA',
-      payload: {
-        characterData: characterData.data,
-        strainLookup: strainLookup,
-        tid: params.payload.toonId,
-      }
-    })
-  } catch (e) {
-    console.log(e);
-  }
-}
+// function* fetchRemoteCharacter(params) {
+//   console.log(params);
+//   try {
+//     const characterData = yield call(fetchCharacter, params.payload.remoteId);
+//     yield put({
+//       type: 'SWITCH_CHARACTER_WITH_REMOTE_DATA',
+//       payload: {
+//         characterData: characterData.data,
+//         strainLookup: strainLookup,
+//         tid: params.payload.toonId,
+//       }
+//     })
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
 function* auth() {
-  yield console.log('start saga');
   try {
     const token = yield call(generateToken);
     yield configureJWT(token.data.access_token);
-    yield put({
-      type: 'LOGIN_SUCCESSFUL',
-      payload: config,
-    });
   } catch(e) {
     console.log(e);
   }
 }
 
-function* fetchCharacters(params) {
-  const fetch = async() => { return await axios.get(api('characters'), config) }
+// function* fetchCharacters(params) {
+//   const fetch = async() => { return await axios.get(api('characters'), config) }
 
-  try {
-    console.log('begin fetching characters');
-    const remoteCharacters = yield call(fetch);
-    console.log('characters data available');
-    yield put({ 
-      type: 'REMOTE_CHARACTERS_LOADED', 
-      payload: {
-        characterData: remoteCharacters.data,
-        strainLookup: strainLookup,
-      }
-    });
+//   try {
+//     console.log('begin fetching characters');
+//     const remoteCharacters = yield call(fetch);
+//     console.log('characters data available');
+//     yield put({ 
+//       type: 'REMOTE_CHARACTERS_LOADED', 
+//       payload: {
+//         characterData: remoteCharacters.data,
+//         strainLookup: strainLookup,
+//       }
+//     });
 
-  } catch(e) {
-    console.log(e);
-  }
-}
+//   } catch(e) {
+//     console.log(e);
+//   }
+// }
 
 function* watchStrainChange() {
   yield takeLatest('STRAIN_CHANGED', queueUpstream);

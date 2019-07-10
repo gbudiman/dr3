@@ -30,6 +30,16 @@ const useStyles = makeStyles(theme => ({
 
 const StrainPicker = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { lineages, selectedStrain, inverseStrainLookup, currentToon, toonStorage } = useSelector(
+    state => ({
+      lineages: state.lineageStrain.lineages,
+      selectedStrain: state.selectedStrain,
+      currentToon: state.currentToon,
+      toonStorage: state.toonStorage,
+      inverseStrainLookup: state.inverseStrainLookup,
+    })
+  )
   const statCompressor = (stat) => { return [stat.hp, stat.mp, stat.rp, stat.inf].join('/') }
   const strainBuilder = () => {
     const optgroups = Object.keys(lineages).map((lineage) => {
@@ -53,16 +63,8 @@ const StrainPicker = () => {
 
     return optgroups;
   }
-  const { lineages, selectedStrain, inverseStrainLookup, currentToon, toonStorage } = useSelector(
-    state => ({
-      lineages: state.lineageStrain.lineages,
-      selectedStrain: state.selectedStrain,
-      currentToon: state.currentToon,
-      toonStorage: state.toonStorage,
-      inverseStrainLookup: state.inverseStrainLookup,
-    })
-  )
-  const dispatch = useDispatch();
+  
+  
   const handleStrainChange = (event) => {
     const newStrain = event.target.value
     dispatch({

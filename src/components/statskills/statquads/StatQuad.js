@@ -94,6 +94,14 @@ function StatQuad(props) {
         value: value,
       }
     })
+    dispatch({
+      type: 'STAT_VALID_CHANGE',
+      payload: {
+        stat: inverseAttributes[changedStat],
+        value: stat[changedStat],
+        remoteId: toonStorage[currentToon].remoteId,
+      }
+    })
   }
 
   return(

@@ -1,17 +1,19 @@
 import StatUtil from './StatUtil';
 
 const StrainUtil = () => {
-  const handleStrainChange = (su, newStrain) => {
+  const handleStrainChange = (su, newStrain, skipSetState=false) => {
     const statUtil = StatUtil();
     const innateStats = getInnateStats(su, newStrain);    
 
     su.selectedStrain = newStrain;
     su.setSelectedStrain(su.selectedStrain);
-    su.innate = innateStats
-    su.setInnate(su.innate);
+    su.innate = innateStats; // TODO(gbudiman): this looks like cheating, but doesn't update otherwise
+    su.setInnate({...{}, ...innateStats});
 
-    for (const lstat in su.statLimit) {
-      statUtil.validateStatAndControls(su, lstat, true);
+    if (!skipSetState) {
+      for (const lstat in su.statLimit) {
+        statUtil.validateStatAndControls(su, lstat);
+      }
     }
   }
 
@@ -34,9 +36,6 @@ const StrainUtil = () => {
       su.strainLookup[strain.id] = strain.name;
       su.inverseStrainLookup[strain.name] = strain.id;
     });
-
-    su.setStrainLookup(su.strainLookup);
-    su.setInverseStrainLookup(su.inverseStrainLookup);
   }
 
   return {
