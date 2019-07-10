@@ -79,6 +79,7 @@ function SkillInitializer() {
     compassionate_guard: { t4: 'Compassionate Guard', t4only: true },
     friend_to_all: { t4: 'Friend to All', t4only: true },
     natural_leader: { t4: 'Natural Leader', t4only: true },
+    oh_captain: { t4: 'Oh Captain', t4only: true },
     wasteland_mentor: { t4: 'Wasteland Mentor', t4only: true },
   })
 
