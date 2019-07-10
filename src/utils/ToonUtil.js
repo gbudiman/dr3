@@ -4,49 +4,77 @@ import { calcXpComponents, totalStatXp, calcTotalXp } from './XpUtil';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
 import StrainUtil from './StrainUtil';
+import SkillUtil from './SkillUtil';
+import StatUtil from './StatUtil';
 import uuid from 'uuid';
 
 const lookupTablesConstructed = false;
 const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
+const fetchRemoteCharacters = async(su) => { return await axios.get(api('characters'), su.authConfig) }
 const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
+const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
+const login = async(su) => {
+  if (su.authConfig == null) {
+    const tokenResponse = await axios.get(
+      'http://devdrdb.dystopiarisingnetwork.com:5000/api/generateToken',
+      { auth: { username: 'test', password: 'test1234'} }
+    );
+    const config = {
+      headers: { 'Authorization': 'Bearer ' + tokenResponse.data.access_token }
+    }
+    su.authConfig = config;
+    su.setAuthConfig(su.authConfig);
+  }
+}
+const statUtil = StatUtil();
+const strainUtil = StrainUtil();
 
 const ToonUtil = () => { 
   const loadNewToon = async(su, tid) => {
-    const login = async() => {
-      const tokenResponse = await axios.get(
-        'http://devdrdb.dystopiarisingnetwork.com:5000/api/generateToken',
-        { auth: { username: 'test', password: 'test1234'} }
-      );
-      const config = {
-        headers: { 'Authorization': 'Bearer ' + tokenResponse.data.access_token }
+    
+    const fetchCharacter = (remoteId, config) => {
+      const work = () => {
+        const fetchRemote = axios.get('http://devdrdb.dystopiarisingnetwork.com:5000/api/character/' + remoteId, su.authConfig);
+        fetchRemote.then(remoteData => {
+          console.log('remote data available');
+          syncRemoteData(remoteData.data);
+          saveState(su);
+        })
       }
-      su.authConfig = config;
-      su.setAuthConfig(su.authConfig);
-    }
-    const fetchCharacter = async(remoteId, config) => {
-      if (su.authConfig == null) await login();
-      const remoteData = await axios.get('http://devdrdb.dystopiarisingnetwork.com:5000/api/character/' + remoteId, su.authConfig);
-      syncRemoteData(remoteData.data);
-      saveState(su);
+      login(su).then(work).then(() => {
+        strainUtil.handleStrainChange(su, su.selectedStrain);
+        statUtil.validateStatAndControls(su, 'hp');
+        statUtil.validateStatAndControls(su, 'mp');
+        statUtil.validateStatAndControls(su, 'rp');
+        statUtil.validateStatAndControls(su, 'inf');
+      });
     }
     const syncRemoteData = (data) => {
       const normalizedStrain = su.strainLookup[data.strain_id];
+      
+      
       if (normalizedStrain) {
         su.selectedStrain = su.strainLookup[data.strain_id];
         su.setSelectedStrain(su.selectedStrain);
       }
+      // console.log('updating strain...')
+      // strainUtil.handleStrainChange(su, normalizedStrain);
+      // console.log('done with strain');
+      // statUtil.handleStatChange(su, 'hp', data.body);
+      // statUtil.handleStatChange(su, 'mp', data.mind);
+      // statUtil.handleStatChange(su, 'rp', data.resolve);
+      // statUtil.handleStatChange(su, 'inf', data.infection);
+      // su.stat = {
+      //   hp: data.body,
+      //   mp: data.mind,
+      //   rp: data.resolve,
+      //   inf: data.infection,
+      //   ir: 0,
+      // };
 
-      su.stat = {
-        hp: data.body,
-        mp: data.mind,
-        rp: data.resolve,
-        inf: data.infection,
-        ir: 0,
-      };
-
-      su.setStat(su.stat);
-      calcXpComponents(su);
-      calcTotalXp(su);
+      // su.setStat(su.stat);
+      // calcXpComponents(su);
+      // calcTotalXp(su);
     }
     const hasRemoteData = 'remoteId' in su.toonStorage[tid] && su.toonStorage[tid].remoteId != null;
     const loadData = (j) => {
@@ -249,70 +277,39 @@ const ToonUtil = () => {
     }
   };
 
-  const constructLookupTables = async(su) => {
+  const constructLookupTables = (su) => {
     const strainUtil = StrainUtil();
-    const remoteStrains = await fetchRemoteStrains();
-      
-    strainUtil.buildLookupTable(su, remoteStrains.data);
+    const skillUtil = SkillUtil();
+    const promiseStrains = fetchRemoteStrains().then(strains => {
+      strainUtil.buildLookupTable(su, strains.data);
+    });
+    const promiseSkills = fetchRemoteSkills().then(skills => {
+      skillUtil.buildLookupTable(su, skills.data);
+    });
+
+    return Promise.all([promiseStrains, promiseSkills]);
   }
 
-  const handleAppLoad = async(su) => {
-    await constructLookupTables(su);
+  const handleAppLoad = (su) => {
+    console.log('app loaded');
+    login(su).then(() => {
+      fetchRemoteCharacters(su).then(data => { mergeRemoteToons(su, data.data) })
+    })
 
-    if (su.localStorageHasBeenLoaded === false) {
-      loadState(su);
-      su.setLocalStorageHasBeenLoaded(true);
-      console.log('finished loading local storage');
-    } else {
-      saveState(su);
-    }
+    constructLookupTables(su).then(() => {
+      console.log('done fetching tables')
+      if (su.localStorageHasBeenLoaded === false) {
+        loadState(su);
+        su.setLocalStorageHasBeenLoaded(true);
+        console.log('finished loading local storage');
+      } else {
+        saveState(su);
+      }
+    });
+
   }
 
-  // const syncToon = (su, payload) => {
-  //   const characterData = payload.characterData;
-  //   const strainLookup = payload.strainLookup;
-  //   const tid = payload.tid;
-
-  //   const remoteStats = {
-  //     hp: characterData.body,
-  //     mp: characterData.mind,
-  //     rp: characterData.resolve,
-  //     inf: characterData.infection,
-  //     ir: 0,
-  //   }
-  //   const statXp = calcXpComponents(remoteStats);
-
-  //   console.log(su.toonStorage);
-  //   su.currentToon = tid;
-  //   localStorage.setItem('currentToon', su.currentToon);
-  //   su.skillState = SkillInitializer();
-  //   su.skillXp = SkillCalc(su.skill_state);
-  //   su.skillHidden = {};
-  //   // su.skill_info_visible: su.skillInfoVisible;
-  //   su.selectedStrain = strainLookup[characterData.strain_id];
-  //   su.stat = remoteStats;
-  //   // su.stat: su.stat;
-  //   su.statXp = statXp;
-  //   // su.stat_xp: su.statXp;
-  //   su.statControl = {
-  //     hp: { inc: true, dec: false },
-  //     mp: { inc: true, dec: false },
-  //     rp: { inc: true, dec: false },
-  //     inf: { inc: true, dec: false },
-  //     ir: { inc: false, dec: false },
-  //   };
-  //   // su.innate: su.innate;
-  //   su.totalXp = {
-  //     stat: totalStatXp(su),
-  //     skill: 0,
-  //   }
-
-  //   saveState(su);
-  //   return su;
-  //   //handleToonChange(su, 'switch', tid);
-  // }
-
-  const mergeRemoteToons = (su, remoteToons, strainLookup) => {
+  const mergeRemoteToons = (su, remoteToons) => {
     const generateToonFromRemote = (remoteId, name) => {
       const tid = uuid.v1();
       su.toonStorage[tid] = { name: name, state: 'enabled', remoteId: remoteId };
@@ -342,13 +339,13 @@ const ToonUtil = () => {
 
     localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
 
-    return su.toonStorage;
+    console.log('remote characters merged!');
+    su.setToonStorage(su.toonStorage);
   }
 
   return {
     handleToonChange: handleToonChange,
     handleAppLoad: handleAppLoad,
-    //syncToon: syncToon,
     saveState: saveState,
     mergeRemoteToons: mergeRemoteToons,
   }

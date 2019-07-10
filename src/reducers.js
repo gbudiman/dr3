@@ -15,12 +15,12 @@ export default function reducer(state = {}, action) {
 
   switch(action.type) {
     case 'APP_LOAD': toonUtil.handleAppLoad(state); return state;
-    case 'LOGIN_SUCCESSFUL':
-      state.setAuthConfig(payload);
-      return {
-        ...state,
-        authConfig: payload,
-      }
+    // case 'LOGIN_SUCCESSFUL':
+    //   //state.setAuthConfig(payload);
+    //   return {
+    //     ...state,
+    //     authConfig: payload,
+    //   }
     case 'CREATE_NEW_CHARACTER': toonUtil.handleToonChange(state, 'new'); return state;
     case 'SWITCH_CHARACTER': 
       toonUtil.handleToonChange(state, 'switch', payload.toonId); 

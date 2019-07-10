@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import React from 'react';
 import SkillInfo from './SkillInfo';
 import SkillBox from './SkillBox';
@@ -8,8 +8,8 @@ import './SkillGrid.scss';
 
 function SkillContainer(props) {  
   const buildBoxes = () => {
-    return Object.keys(props.skillState).map(key => {
-      const value = props.skillState[key];
+    return Object.keys(skillState).map(key => {
+      const value = skillState[key];
       return (
         <React.Fragment key={key}>
           <SkillBox
@@ -23,10 +23,10 @@ function SkillContainer(props) {
             t4acquired={value.t4acquired}
             t4only={value.t4only}
             visible={value.visible}
-            passClick={props.handleClick}
-            infoExpanded={props.skillInfoVisible[key]}
+            passClick={handleClick}
+            infoExpanded={skillInfoVisible[key]}
           />
-          <Grow in={props.skillInfoVisible[key]} timeout={250}>
+          <Grow in={skillInfoVisible[key]} timeout={250}>
             <Paper elevation={0} style={{ transformOrigin: '0 0 0' }}>
               <SkillInfo
                 key={'info_' + key}
@@ -36,13 +36,46 @@ function SkillContainer(props) {
                 category={value.category}
                 visible={value.visible}
                 t4only={value.t4only}
-                expanded={props.skillInfoVisible[key]} />
+                expanded={skillInfoVisible[key]} />
             </Paper>
           </Grow>
         </React.Fragment>
       );
     });
   };
+  const dispatch = useDispatch();
+  const { skillState, skillInfoVisible, currentToon, toonStorage, inverseSkillLookup } = useSelector(
+    state => ({
+      skillState: state.skillState,
+      skillInfoVisible: state.skillInfoVisible,
+      currentToon: state.currentToon,
+      toonStorage: state.toonStorage,
+      inverseSkillLookup: state.inverseSkillLookup,
+    })
+  )
+  const handleClick = (sid, tier) => {
+    dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier } } )
+    dispatch({ type: 'SKILLS_CHANGED', 
+      payload: {
+        value: transformToRemoteData(),
+        remoteId: toonStorage[currentToon].remoteId,
+      }
+    })
+  }
+  const transformToRemoteData = () => {
+    const remoteArray = [];
+
+    console.log(inverseSkillLookup);
+    Object.entries(skillState).forEach(([key, value]) => {
+      if (value.acquired > 0) {
+        for (let i = 1; i <= value.acquired; i++) {
+          remoteArray.push(inverseSkillLookup[i][key].toString());
+        }
+      }
+    })
+
+    return remoteArray;
+  }
 
   return (
     <div className='skill-container'>
@@ -52,19 +85,4 @@ function SkillContainer(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    skillState: state.skillState,
-    skillInfoVisible: state.skillInfoVisible,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    handleClick: (sid, tier) => { 
-      dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier }})
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SkillContainer);
+export default SkillContainer;

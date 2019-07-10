@@ -25,3 +25,7 @@ export function tierify(s, tier) {
   const tierPrefix = { 1: 'basic', 2: 'proficient', 3: 'master' };
   return tierPrefix[tier] + upcase(camelize(s))
 }
+
+export function localize(s) {
+  return underscore(s.replace(/(Basic|Proficient|Master)\s+/, '')).replace(/-/, '_');
+}

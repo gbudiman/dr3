@@ -78,10 +78,12 @@ function* auth() {
 }
 
 function* fetchCharacters(params) {
-  const fetchCharacters = async() => { return await axios.get(api('characters'), config) }
+  const fetch = async() => { return await axios.get(api('characters'), config) }
 
   try {
-    const remoteCharacters = yield call(fetchCharacters);
+    console.log('begin fetching characters');
+    const remoteCharacters = yield call(fetch);
+    console.log('characters data available');
     yield put({ 
       type: 'REMOTE_CHARACTERS_LOADED', 
       payload: {
@@ -89,6 +91,7 @@ function* fetchCharacters(params) {
         strainLookup: strainLookup,
       }
     });
+
   } catch(e) {
     console.log(e);
   }
@@ -106,17 +109,17 @@ function* watchStatValidChange() {
   yield takeLatest('STAT_VALID_CHANGE', queueUpstream);
 }
 
+function* watchSkillsChange() {
+  yield takeLatest('SKILLS_CHANGED', queueUpstream);
+}
+
 function* watchLocalStorageLoaded() {
   yield takeLatest('APP_LOAD', auth);
 }
 
-function* watchLoginSuccessful() {
-  yield takeLatest('LOGIN_SUCCESSFUL', fetchCharacters);
-}
-
-function* watchSyncRemoteCharacter() {
-  yield takeLatest('SYNC_REMOTE_CHARACTER', fetchRemoteCharacter);
-}
+// function* watchLoginSuccessful() {
+//   yield takeLatest('LOGIN_SUCCESSFUL', fetchCharacters);
+// }
 
 function* queueUpstream(action) {
   const payload = action.payload;
@@ -127,6 +130,9 @@ function* queueUpstream(action) {
     case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
     case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
     case 'STAT_VALID_CHANGE': upstreamData = { [payload.stat]: payload.value }; break;
+    case 'SKILLS_CHANGED': 
+      upstreamData = { skills: payload.value }; 
+      break;
   }
 
   if (payload.remoteId) {
@@ -142,7 +148,7 @@ export function* appSaga() {
     watchNameChange(),
     watchStrainChange(),
     watchStatValidChange(),
-    watchSyncRemoteCharacter(),
-    watchLoginSuccessful(),
+    watchSkillsChange(),
+    // watchLoginSuccessful(),
   ]);
 }

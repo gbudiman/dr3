@@ -82,7 +82,7 @@ const StatUtil = () => {
     su.setStatControl(Object.assign({}, su.statControl));
     calcXp(su, changedStat, su.stat[changedStat]);
     crossValidateControl(su, changedStat, 'reduction');
-    console.log('validation done');
+    console.log('validation done for ' + changedStat);
   };
 
   const crossValidateControl = (su, changedStat, target) => {
