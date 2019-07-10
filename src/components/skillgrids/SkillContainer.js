@@ -69,7 +69,7 @@ function SkillContainer(props) {
     Object.entries(skillState).forEach(([key, value]) => {
       if (value.acquired > 0) {
         for (let i = 1; i <= value.acquired; i++) {
-          remoteArray.push(inverseSkillLookup[i][key].toString());
+          remoteArray.push(inverseSkillLookup[i][key]);
         }
       }
     })

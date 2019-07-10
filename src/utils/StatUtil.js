@@ -50,7 +50,8 @@ const StatUtil = () => {
     crossValidateControl(su, changedStat, 'main');
   };
 
-  const validateStatAndControls = (su, changedStat) => {
+  const validateStatAndControls = (su, changedStat, skipSetState=false) => {
+    console.log('begin validation for ' + changedStat);
     let h = statHelper(su, changedStat);
 
     if (h.totalValue() >= 0 && h.belowOrAtLimit() && h.acqValue() >= 0) {
@@ -73,19 +74,26 @@ const StatUtil = () => {
       }
     }
 
-    su.setStat(Object.assign({}, su.stat));
+    if (!skipSetState) su.setStat(Object.assign({}, su.stat));
     su.statControl[changedStat].inc = h.belowLimit();
     su.statControl[changedStat].dec =
       h.reductionValue() === 0
         ? h.acqValue() > 0
         : h.totalValue() > 0 && h.acqValue() > 0;
-    su.setStatControl(Object.assign({}, su.statControl));
+    if (!skipSetState) su.setStatControl(Object.assign({}, su.statControl));
     calcXp(su, changedStat, su.stat[changedStat]);
-    crossValidateControl(su, changedStat, 'reduction');
+    crossValidateControl(su, changedStat, 'reduction', skipSetState);
     console.log('validation done for ' + changedStat);
   };
 
-  const crossValidateControl = (su, changedStat, target) => {
+  const validateAllStatsAndControls = (su) => {
+    validateStatAndControls(su, 'hp', true);
+    validateStatAndControls(su, 'mp', true);
+    validateStatAndControls(su, 'rp', true);
+    validateStatAndControls(su, 'inf', true); 
+  }
+
+  const crossValidateControl = (su, changedStat, target, skipSetState=false) => {
     let controlKey =
       target === 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control =
@@ -101,7 +109,7 @@ const StatUtil = () => {
       control.inc = h.belowLimit();
       control.dec = h.totalValue() > 0 && h.acqValue() > 0;
     }
-    su.setStatControl(Object.assign({}, su.statControl));
+    if (!skipSetState) su.setStatControl(Object.assign({}, su.statControl));
   };
 
   const statHelper = (su, key) => {
@@ -146,6 +154,7 @@ const StatUtil = () => {
     handleStatChange: handleStatChange,
     handleStatReductionAdjustment: handleStatReductionAdjustment,
     validateStatAndControls: validateStatAndControls,
+    validateAllStatsAndControls: validateAllStatsAndControls,
   }
 }
 

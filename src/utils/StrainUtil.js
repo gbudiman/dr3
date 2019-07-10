@@ -1,17 +1,19 @@
 import StatUtil from './StatUtil';
 
 const StrainUtil = () => {
-  const handleStrainChange = (su, newStrain) => {
+  const handleStrainChange = (su, newStrain, skipSetState=false) => {
     const statUtil = StatUtil();
     const innateStats = getInnateStats(su, newStrain);    
 
     su.selectedStrain = newStrain;
-    su.setSelectedStrain(su.selectedStrain);
     su.innate = innateStats
-    su.setInnate(su.innate);
+    if (!skipSetState) {
+      su.setSelectedStrain(su.selectedStrain);
+      su.setInnate(su.innate);
 
-    for (const lstat in su.statLimit) {
-      statUtil.validateStatAndControls(su, lstat, true);
+      for (const lstat in su.statLimit) {
+        statUtil.validateStatAndControls(su, lstat, true, skipSetState);
+      }
     }
   }
 
