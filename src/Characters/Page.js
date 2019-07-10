@@ -26,30 +26,32 @@ const CharacterPage = props => {
   };
 
   return (
-    <div className='container'>
-      <StrainPicker
-        passStrainChange={handleStrainChange}
-        selectedStrain={props.su.selectedStrain}
-        lineages={props.su.lineageStrain.lineages}
-      />
-      <XpBar totalXp={props.su.totalXp} skillState={props.su.skillState} />
-      <StatSkill
-        passStatClick={handleStatClick}
-        passStatChange={handleStatChange}
-        passStatReductionChange={handleStatReductionChange}
-        passSkillVisibilityToggle={handleSkillVisibilityToggle}
-        stat={props.su.stat}
-        statXp={props.su.statXp}
-        statControl={props.su.statControl}
-        innate={props.su.innate}
-        skillXp={props.su.skillXp}
-        skillHidden={props.su.skillHidden}
-      />
-      <SkillContainer
-        passClick={handleSkillGridClick}
-        skillState={props.su.skillState}
-        skillInfoVisible={props.su.skillInfoVisible}
-      />
+    <div className='builder'>
+      <div className='container'>
+        <StrainPicker
+          passStrainChange={handleStrainChange}
+          selectedStrain={props.su.selectedStrain}
+          lineages={props.su.lineageStrain.lineages}
+        />
+        <XpBar totalXp={props.su.totalXp} skillState={props.su.skillState} />
+        <StatSkill
+          passStatClick={handleStatClick}
+          passStatChange={handleStatChange}
+          passStatReductionChange={handleStatReductionChange}
+          passSkillVisibilityToggle={handleSkillVisibilityToggle}
+          stat={props.su.stat}
+          statXp={props.su.statXp}
+          statControl={props.su.statControl}
+          innate={props.su.innate}
+          skillXp={props.su.skillXp}
+          skillHidden={props.su.skillHidden}
+        />
+        <SkillContainer
+          passClick={handleSkillGridClick}
+          skillState={props.su.skillState}
+          skillInfoVisible={props.su.skillInfoVisible}
+        />
+      </div>
     </div>
   );
 };

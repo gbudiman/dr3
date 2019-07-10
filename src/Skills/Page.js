@@ -6,21 +6,23 @@ import './styles.scss';
 
 export default () => (
   <React.Fragment>
-    <List>
-      {Object.keys(skillInfo).map(key => (
-        <ListItem key={key} className='noFlex'>
-          <div className='flexigrid'>
-            <div className='primary'>{skillInfo[key].name}</div>
-            <div className='page'>
-              Starting page: {skillInfo[key].startingPage}
+    <div className='builder'>
+      <List>
+        {Object.keys(skillInfo).map(key => (
+          <ListItem key={key} className='noFlex'>
+            <div className='flexigrid'>
+              <div className='primary'>{skillInfo[key].name}</div>
+              <div className='page'>
+                Starting page: {skillInfo[key].startingPage}
+              </div>
             </div>
-          </div>
-          <div className='flexigrid'>
-            <div className='secondary'>{skillInfo[key].description}</div>
-          </div>
-        </ListItem>
-      ))}
-    </List>
+            <div className='flexigrid'>
+              <div className='secondary'>{skillInfo[key].description}</div>
+            </div>
+          </ListItem>
+        ))}
+      </List>
+    </div>
     <div className='buffer' />
   </React.Fragment>
 );
