@@ -50,15 +50,20 @@ const ToonUtil = () => {
           const normalizedStrain = su.strainLookup[remoteData.strain_id];
 
           console.log('begin sync strain');
+          console.log(normalizedStrain);
           strainUtil.handleStrainChange(su, normalizedStrain, SKIP_SET_STATE);
+          console.log(su.selectedStrain);
           console.log('end sync strain');
           
           su.stat = {
-            hp: remoteData.body,
-            mp: remoteData.mind,
-            rp: remoteData.resolve,
-            inf: remoteData.infection,
-            ir: 0,
+            ...su.stat, 
+            ...{
+              hp: remoteData.body,
+              mp: remoteData.mind,
+              rp: remoteData.resolve,
+              inf: remoteData.infection,
+              //ir: 0,
+            }
           };
           statUtil.validateAllStatsAndControls(su);
           updateStates();
@@ -67,10 +72,10 @@ const ToonUtil = () => {
     }
 
     const updateStates = () => {
-      su.setSelectedStrain(su.selectedStrain);
-      su.setInnate(su.innate);
-      su.setStat(Object.assign({}, su.stat));
-      su.setStatControl(Object.assign({}, su.statControl));
+      //su.setSelectedStrain({...{}, ...su.selectedStrain});
+      su.setInnate({...{}, ...su.innate});
+      su.setStat({...{}, ...su.stat});
+      su.setStatControl({...{}, ...su.statControl});
       saveState(su);
     }
     
@@ -285,17 +290,6 @@ const ToonUtil = () => {
     })
 
     lutUtil.loadLookupTables(su, fetchRemoteStrains, fetchRemoteSkills);
-    // constructLookupTables(su).then(() => {
-    //   console.log('done building tables')
-    //   // if (su.localStorageHasBeenLoaded === false) {
-    //   //   loadState(su);
-    //   //   su.setLocalStorageHasBeenLoaded(true);
-    //   //   console.log('finished loading local storage');
-    //   // } else {
-    //   //   saveState(su);
-    //   // }
-    // });
-
   }
 
   const mergeRemoteToons = (su, remoteToons) => {

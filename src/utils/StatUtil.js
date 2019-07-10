@@ -13,94 +13,94 @@ const StatUtil = () => {
   };
 
   const handleStatReductionAdjustment = (su, changedStat, adjustment) => {
-    let reductionStatKey = changedStat[0] + 'r';
-    let h = statHelper(su, changedStat);
+    const reductionStatKey = changedStat[0] + 'r';
+    let currentReduction = su.stat[reductionStatKey];
+    let currentReductionControl = su.statControl[reductionStatKey];
+    const h = statHelper(su, changedStat, su.stat[changedStat], currentReduction);
 
-    su.statControl[reductionStatKey] = {};
-
-    if (h.reductionValue() < 0) {
-      su.stat[reductionStatKey] = 0;
-    } else if (h.reductionValue() + adjustment < 0) {
-      su.stat[reductionStatKey] = 0;
+    if (currentReduction < 0) {
+      currentReduction = 0;
+    } else if (currentReduction + adjustment < 0) {
+      currentReduction = 0;
     } else if (h.totalValue() < 0) {
-      su.stat[reductionStatKey] = -h.totalValue();
+      currentReduction = -h.totalValue();
     } else if (h.totalValue() === 0 && h.totalValue() - adjustment >= 0) {
-      su.stat[reductionStatKey] = h.reductionValue() + adjustment;
+      currentReduction = currentReduction + adjustment;
     } else if (h.totalValue() === 0 && h.totalValue() - adjustment < 0) {
-      su.stat[reductionStatKey] = h.reductionValue();
+      // no-op
     } else if (
       h.totalValue() === h.limit &&
       h.totalValue() - adjustment < h.limit
     ) {
-      su.stat[reductionStatKey] = h.reductionValue() + adjustment;
+      currentReduction = currentReduction + adjustment;
     } else if (
       h.totalValue() === h.limit &&
       h.totalValue() - adjustment >= h.limit
     ) {
-      su.stat[reductionStatKey] = h.reductionValue();
+      // no-op
     } else {
-      su.stat[reductionStatKey] = h.reductionValue() + adjustment;
+      currentReduction = currentReduction + adjustment;
     }
-    su.setStat(Object.assign({}, su.stat));
-    su.statControl[reductionStatKey].dec =
-      h.reductionValue() > 0 && h.belowLimit();
-    su.statControl[reductionStatKey].inc = h.totalValue() > 0;
-    su.setStatControl(Object.assign({}, su.statControl));
+
+    currentReductionControl.dec = currentReduction > 0 && h.belowLimitWithReduction(currentReduction);
+    currentReductionControl.inc = (h.totalValue() - adjustment) > 0;
+    updateHookStates(su, reductionStatKey, currentReduction, currentReductionControl);
     calcXp(su, changedStat, su.stat[changedStat]);
     crossValidateControl(su, changedStat, 'main');
   };
 
   const validateStatAndControls = (su, changedStat, skipSetState=false) => {
     console.log('begin validation for ' + changedStat);
-    let h = statHelper(su, changedStat);
+    const reductionStatKey = changedStat[0] + 'r';
+    let currentStat = su.stat[changedStat];
+    const currentStatControl = su.statControl[changedStat];
+    const h = statHelper(su, changedStat, currentStat, su.stat[reductionStatKey]);
 
     if (h.totalValue() >= 0 && h.belowOrAtLimit() && h.acqValue() >= 0) {
       // pass
     } else {
       if (h.reductionValue() === 0) {
         if (h.acqValue() - h.reductionValue() < 0) {
-          su.stat[changedStat] = h.reductionValue();
+          currentStat = h.reductionValue();
         }
       } else {
         if (h.acqValue() < 0) {
-          su.stat[changedStat] = 0;
+          currentStat = 0;
         } else if (h.totalValue() < 0) {
-          su.stat[changedStat] = h.acqValue() - h.totalValue();
+          currentStat = h.acqValue() - h.totalValue();
         }
       }
 
+
       if (h.limit !== undefined && h.aboveLimit()) {
-        su.stat[changedStat] = h.limit - h.innateValue() + h.reductionValue();
+        currentStat = h.limit - h.innateValue() + h.reductionValue();
       }
     }
 
-    if (!skipSetState) su.setStat(Object.assign({}, su.stat));
-    su.statControl[changedStat].inc = h.belowLimit();
-    su.statControl[changedStat].dec =
+    currentStatControl.inc = h.belowLimitWithStat(currentStat);
+    currentStatControl.dec =
       h.reductionValue() === 0
         ? h.acqValue() > 0
         : h.totalValue() > 0 && h.acqValue() > 0;
-    if (!skipSetState) su.setStatControl(Object.assign({}, su.statControl));
-    calcXp(su, changedStat, su.stat[changedStat]);
+
+    if (!skipSetState) updateHookStates(su, changedStat, currentStat, currentStatControl);
+    calcXp(su, changedStat, currentStat);
     crossValidateControl(su, changedStat, 'reduction', skipSetState);
     console.log('validation done for ' + changedStat);
+
+    return [currentStat, currentStatControl];
   };
 
-  const validateAllStatsAndControls = (su) => {
-    validateStatAndControls(su, 'hp', true);
-    validateStatAndControls(su, 'mp', true);
-    validateStatAndControls(su, 'rp', true);
-    validateStatAndControls(su, 'inf', true); 
-  }
-
   const crossValidateControl = (su, changedStat, target, skipSetState=false) => {
+    const reductionStat = changedStat[0] + 'r';
     let controlKey =
       target === 'reduction' ? changedStat[0] + 'r' : changedStat;
     let control =
       controlKey in su.statControl
         ? su.statControl[controlKey]
         : { inc: true, dec: true };
-    let h = statHelper(su, changedStat);
+
+    let h = statHelper(su, changedStat, su.stat[changedStat], su.stat[reductionStat]);
 
     if (target === 'reduction') {
       control.inc = h.totalValue() > 0;
@@ -112,30 +112,59 @@ const StatUtil = () => {
     if (!skipSetState) su.setStatControl(Object.assign({}, su.statControl));
   };
 
-  const statHelper = (su, key) => {
-    let reductionStatKey = key[0] + 'r';
-    let innateValue = () => {
+  const updateHookStates = (su, changedStat, stat, control) => {
+    const remergedStat = su.stat;
+    const remergedStatControl = su.statControl;
+
+    remergedStat[changedStat] = stat;
+    remergedStatControl[changedStat] = control;
+
+    su.setStat({...su.stat, ...remergedStat});
+    su.setStatControl({...su.statControl, ...remergedStatControl});
+  }
+
+  const validateAllStatsAndControls = (su) => {
+    const newStat = {};
+    const newStatControl = {};
+
+    ['hp', 'mp', 'rp', 'inf'].forEach(key => {
+      [newStat[key], newStatControl[key]] = validateStatAndControls(su, key, true);
+    })
+
+    su.setStat({...su.stat, ...newStat});
+    su.setStatControl({...su.statControl, ...newStatControl});
+  }
+
+  const statHelper = (su, key, currentValue, currentReduction) => {
+    const reductionStatKey = key[0] + 'r';
+    const innateValue = () => {
       return key in su.innate ? su.innate[key] : 0;
     };
-    let acqValue = () => {
-      return key in su.stat ? su.stat[key] : 0;
+    const acqValue = () => {
+      return key in su.stat ? currentValue : 0;
     };
-    let reductionValue = () => {
-      return reductionStatKey in su.stat ? su.stat[reductionStatKey] : 0;
+    const reductionValue = () => {
+      return reductionStatKey in su.stat ? currentReduction : 0;
     };
-    let totalValue = () => {
+    const totalValue = () => {
       return innateValue() + acqValue() - reductionValue();
     };
-    let limit = su.statLimit[key];
-    let belowOrAtLimit = () => {
+    const limit = su.statLimit[key];
+    const belowOrAtLimit = () => {
       return limit === undefined || totalValue() <= limit;
     };
-    let belowLimit = () => {
+    const belowLimit = () => {
       return limit === undefined || totalValue() < limit;
     };
-    let aboveLimit = () => {
+    const aboveLimit = () => {
       return limit === undefined || totalValue() > limit;
     };
+    const belowLimitWithReduction = (x) => {
+      return limit === undefined || (innateValue() + acqValue() - x) < limit;
+    }
+    const belowLimitWithStat = (x) => {
+      return limit === undefined || (innateValue() + x - reductionValue()) < limit;
+    }
 
     return {
       innateValue: innateValue,
@@ -145,7 +174,9 @@ const StatUtil = () => {
       limit: limit,
       belowOrAtLimit: belowOrAtLimit,
       belowLimit: belowLimit,
-      aboveLimit: aboveLimit
+      aboveLimit: aboveLimit,
+      belowLimitWithReduction: belowLimitWithReduction,
+      belowLimitWithStat: belowLimitWithStat,
     };
   };
 

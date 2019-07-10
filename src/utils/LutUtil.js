@@ -34,7 +34,7 @@ const LutUtil = () => {
     } else {
       console.log('LUT found');
       loadFromLocalStorage(su, parsedLut()); 
-      console.log(su);
+      console.log('LUT loaded');
     }
   }
 
