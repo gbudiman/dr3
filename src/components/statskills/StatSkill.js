@@ -17,6 +17,7 @@ function StatSkill(props) {
     civilized: 'closed',
     wasteland: 'closed',
     anomaly: 'closed',
+    community: 'closed',
   })
 
   let handlePopOpen = (key, state) => {
