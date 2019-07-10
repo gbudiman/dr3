@@ -89,9 +89,6 @@ const SkillUtil = () => {
       su.skillLookup[skill.id] = { name: localize(skill.name), tier: parseInt(skill.tier) }
       su.inverseSkillLookup[skill.tier][localize(skill.name)] = skill.id;
     })
-
-    su.setSkillLookup(su.skillLookup);
-    su.setInverseSkillLookup(su.inverseSkillLookup);
   }
 
   return {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { calcXpComponents, totalStatXp, calcTotalXp } from './XpUtil';
+import LutUtil from './LutUtil';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
 import StrainUtil from './StrainUtil';
@@ -23,7 +24,6 @@ const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
 const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
 
 const login = async(su) => {
-  console.log(su.authConfig);
   if (su.authConfig == null) {
     const tokenResponse = await fetchToken('test', 'test1234');
     const config = {
@@ -34,6 +34,7 @@ const login = async(su) => {
     console.log('authConfig set!');
   }
 }
+const lutUtil = LutUtil();
 const statUtil = StatUtil();
 const strainUtil = StrainUtil();
 
@@ -274,37 +275,26 @@ const ToonUtil = () => {
     }
   };
 
-  const constructLookupTables = (su) => {
-    const strainUtil = StrainUtil();
-    const skillUtil = SkillUtil();
-    const promiseStrains = fetchRemoteStrains().then(strains => {
-      strainUtil.buildLookupTable(su, strains.data);
-    });
-    const promiseSkills = fetchRemoteSkills().then(skills => {
-      skillUtil.buildLookupTable(su, skills.data);
-    });
-
-    return Promise.all([promiseStrains, promiseSkills]);
-  }
-
   const handleAppLoad = (su) => {
+    loadState(su);
     console.log('app loaded');
     console.log('login from handleAppLoad');
+
     login(su).then(() => {
       fetchRemoteCharacters(su).then(data => { mergeRemoteToons(su, data.data) })
     })
 
-    console.log('constructing lookup tables...');
-    constructLookupTables(su).then(() => {
-      console.log('done building tables')
-      if (su.localStorageHasBeenLoaded === false) {
-        loadState(su);
-        su.setLocalStorageHasBeenLoaded(true);
-        console.log('finished loading local storage');
-      } else {
-        saveState(su);
-      }
-    });
+    lutUtil.loadLookupTables(su, fetchRemoteStrains, fetchRemoteSkills);
+    // constructLookupTables(su).then(() => {
+    //   console.log('done building tables')
+    //   // if (su.localStorageHasBeenLoaded === false) {
+    //   //   loadState(su);
+    //   //   su.setLocalStorageHasBeenLoaded(true);
+    //   //   console.log('finished loading local storage');
+    //   // } else {
+    //   //   saveState(su);
+    //   // }
+    // });
 
   }
 
@@ -339,7 +329,7 @@ const ToonUtil = () => {
     localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
 
     console.log('remote characters merged!');
-    su.setToonStorage(su.toonStorage);
+    su.setToonStorage({...{}, ...su.toonStorage});
   }
 
   return {

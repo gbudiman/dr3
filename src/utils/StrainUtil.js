@@ -36,9 +36,6 @@ const StrainUtil = () => {
       su.strainLookup[strain.id] = strain.name;
       su.inverseStrainLookup[strain.name] = strain.id;
     });
-
-    su.setStrainLookup(su.strainLookup);
-    su.setInverseStrainLookup(su.inverseStrainLookup);
   }
 
   return {
