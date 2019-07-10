@@ -173,11 +173,14 @@ const ToonUtil = () => {
     localStorage.setItem('currentToon', su.currentToon);
   };
 
-  const generateNewToon = (su) => {
-    su.currentToon = uuid.v1();
-    su.toonStorage[su.currentToon] = { name: 'new', state: 'enabled' };
-    persistCurrentToon(su);
-    persistToonStorage(su, true);
+  const generateNewToon = (storage, data) => {
+    // su.currentToon = uuid.v1();
+    // su.toonStorage[su.currentToon] = { name: 'new', state: 'enabled' };
+    // persistCurrentToon(su);
+    // persistToonStorage(su, true);
+    const tid = uuid.v1();
+    storage[tid] = { name: 'new', state: 'enabled'};
+    
   };
 
   const saveStateInBackgroundSelective = (su, tid, mutation) => {
@@ -204,39 +207,45 @@ const ToonUtil = () => {
   };
 
   const loadState = (su) => {
-    su.toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
+    // su.toonStorage = JSON.parse(localStorage.getItem('toonStorage'));
+    const ts = localStorage.getItem('toonStorage');
+    const td = localStorage.getItem('toonData');
+    const toonStorage = ts && JSON.parse(ts);
+    const toonData = (td && JSON.parse(td)) || {};
 
     let firstEnabledToon;
     const getPreviousSessionToon = () => {
-      let previousSessionToon = localStorage.getItem('currentToon');
+      const previousSessionToon = localStorage.getItem('currentToon');
 
-      if (su.toonStorage != null && previousSessionToon) {
-        if (previousSessionToon in su.toonStorage) return previousSessionToon;
+      if (toonStorage != null && previousSessionToon) {
+        if (previousSessionToon in toonStorage) return previousSessionToon;
       }
     };
     const getFirstEnabledToon = () => {
-      return Object.keys(su.toonStorage).find(x => {
-        return su.toonStorage[x].state === 'enabled';
+      return Object.keys(toonStorage).find(x => {
+        return toonStorage[x].state === 'enabled';
       });
     };
 
-    if (su.toonStorage != null) {
+    if (toonStorage != null) {
       firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
-      const deferredDeletes = Object.keys(su.toonStorage).filter(
-        tid => su.toonStorage[tid].state === 'deleted'
+      const deferredDeletes = Object.keys(toonStorage).filter(
+        tid => toonStorage[tid].state === 'deleted'
       );
       deferredDeletes.forEach(tid => {
-        delete su.toonStorage[tid];
-        delete su.toonData[tid];
+        delete toonStorage[tid];
+        delete toonData[tid];
       });
 
-      persistToonStorage(su);
+      //persistToonStorage(su);
+      localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
+      localStorage.setItem('toonData', JSON.stringify(toonData));
     }
 
-    if (su.toonStorage == null) {
-      su.toonStorage = {};
-      generateNewToon(su);
+    if (toonStorage == null) {
+      const newStorageEntry = generateNewToon(toonStorage, toonData);
+      localStorage = {...localStorage, ...generateNewToon()};
       persistToonStorage(su, true);
       saveState(su);
     } else if (firstEnabledToon == null) {
