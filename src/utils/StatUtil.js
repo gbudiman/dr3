@@ -14,7 +14,7 @@ const StatUtil = () => {
 
   const handleStatReductionAdjustment = (su, changedStat, adjustment) => {
     const reductionStatKey = changedStat[0] + 'r';
-    let currentReduction = su.stat[reductionStatKey];
+    let currentReduction = su.stat[reductionStatKey] || 0;
     let currentReductionControl = su.statControl[reductionStatKey];
     const h = statHelper(su, changedStat, su.stat[changedStat], currentReduction);
 
@@ -52,7 +52,7 @@ const StatUtil = () => {
   const validateStatAndControls = (su, changedStat, skipSetState=false) => {
     console.log('begin validation for ' + changedStat);
     const reductionStatKey = changedStat[0] + 'r';
-    let currentStat = su.stat[changedStat];
+    let currentStat = su.stat[changedStat] || 0;
     const currentStatControl = su.statControl[changedStat];
     const h = statHelper(su, changedStat, currentStat, su.stat[reductionStatKey]);
 

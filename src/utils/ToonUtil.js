@@ -76,23 +76,33 @@ const ToonUtil = () => {
       su.setInnate({...{}, ...su.innate});
       su.setStat({...{}, ...su.stat});
       su.setStatControl({...{}, ...su.statControl});
+
       saveState(su);
     }
     
     const hasRemoteData = 'remoteId' in su.toonStorage[tid] && su.toonStorage[tid].remoteId != null;
     const loadData = (j) => {
-      su.skillState = Object.assign(SkillInitializer(), j.skill_state); su.setSkillState(su.skillState);
-      su.skillXp = j.skill_xp;                                          su.setSkillXp(su.skillXp);
-      su.skillHidden = j.skill_hidden;                                  su.setSkillHidden(su.skillHidden);
-      su.skillInfoVisible = j.skill_info_visible || {};                 su.setSkillInfoVisible(su.skillInfoVisible);
-      su.selectedStrain = j.selected_strain;                            su.setSelectedStrain(j.selected_strain);
-      su.stat = j.stat;                                                 su.setStat(su.stat);
-      su.statXp = j.stat_xp;                                            su.setStatXp(su.statXp);
-      su.statControl = j.stat_control;                                  su.setStatControl(su.statControl);
-      su.innate = j.innate;                                             su.setInnate(su.innate);
-      su.totalXp = j.total_xp;                                          su.setTotalXp(su.totalXp);
+      su.skillState = j.skill_state;
+      su.skillXp = SkillCalc(su.skillState);
+      su.skillHidden = j.skill_hidden;
+      su.skillInfoVisible = j.skill_info_visible;
+      su.stat = j.stat;
+      su.statXp = j.stat_xp;
+      su.statControl = j.stat_control;
+      su.innate = j.innate;
+      su.totalXp = j.total_xp;
+
+      su.setSkillState({...SkillInitializer(), ...su.skillState});
+      su.setSkillXp({...{}, ...su.skillXp});
+      su.setSkillHidden({...{}, ...su.skillHidden});
+      su.setSkillInfoVisible({...{}, ...su.skillInfoVisible});
+      su.setSelectedStrain(j.selected_strain);
+      su.setStat({...{}, ...su.stat});
+      su.setStatXp({...{}, ...su.statXp});
+      su.setStatControl({...{}, ...su.statControl});
+      su.setInnate({...{}, ...su.innate});
+      su.setTotalXp({...{}, ...su.totalXp});
     }
-    
     
     let j = su.toonData[tid];
     if (j == null) {
@@ -118,24 +128,32 @@ const ToonUtil = () => {
   };
 
   const loadBlankToon = (su) => {
-    su.skillState = SkillInitializer();
+    const skillInit = SkillInitializer();
 
-    su.setSkillState(su.skillState);
-    su.setSkillXp(SkillCalc(su.skillState));
-    su.setSkillHidden({});
-    su.setSkillInfoVisible({});
+    su.skillState = skillInit;
+    su.skillXp = SkillCalc(skillInit);
+    su.skillHidden = {};
+    su.skillInfoVisible = {};
+    su.stat = {};
+    su.statXp = {};
+    su.innate = {};
+
+    su.setSkillState({...{}, ...su.skillState});
+    su.setSkillXp({...{}, ...su.skillXp});
+    su.setSkillHidden({...{}, ...su.skillHidden});
+    su.setSkillInfoVisible({...{}, ...su.skillInfoVisible});
     su.setSelectedStrain(null);
-    su.setStat({});
-    su.setStatXp({});
-    su.setStatControl({
+    su.setStat({...{}, ...su.stat});
+    su.setStatXp({...{}, ...su.statXp});
+    su.setStatControl({...su.statControl, ...{
       hp: { inc: true, dec: false },
       mp: { inc: true, dec: false },
       rp: { inc: true, dec: false },
       inf: { inc: true, dec: false },
       ir: { inc: false, dec: false }
-    });
-    su.setInnate({});
-    su.setTotalXp({ stat: 0, skill: 0 });
+    }});
+    su.setInnate({...{}, ...su.innate});
+    su.setTotalXp({...su.totalXp, ...{ stat: 0, skill: 0 }});
 
     saveState(su);
   };
@@ -221,6 +239,7 @@ const ToonUtil = () => {
     };
 
     if (su.toonStorage != null) {
+      su.toonData = JSON.parse(localStorage.getItem('toonData'));
       firstEnabledToon = getPreviousSessionToon() || getFirstEnabledToon();
 
       const deferredDeletes = Object.keys(su.toonStorage).filter(
@@ -232,6 +251,7 @@ const ToonUtil = () => {
       });
 
       persistToonStorage(su);
+      localStorage.setItem('toonData', JSON.stringify(su.toonData));
     }
 
     if (su.toonStorage == null) {
@@ -245,9 +265,9 @@ const ToonUtil = () => {
       saveState(su);
     } else {
       su.currentToon = firstEnabledToon;
-      su.toonData = JSON.parse(localStorage.getItem('toonData'));
-      persistCurrentToon(su, su.currentToon);
-      su.setToonData(su.toonData);
+      const toonData = JSON.parse(localStorage.getItem('toonData'));
+      persistCurrentToon(su);
+      su.setToonData({...su.toonData, ...toonData});
       persistToonStorage(su, false);
       loadNewToon(su, su.currentToon);
     }
