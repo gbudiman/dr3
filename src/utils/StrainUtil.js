@@ -6,11 +6,11 @@ const StrainUtil = () => {
     const innateStats = getInnateStats(su, newStrain);    
 
     su.selectedStrain = newStrain;
-    su.setSelectedStrain(su.selectedStrain);
     su.innate = innateStats; // TODO(gbudiman): this looks like cheating, but doesn't update otherwise
-    su.setInnate({...{}, ...innateStats});
-
+    
     if (!skipSetState) {
+      su.setSelectedStrain(su.selectedStrain);
+      su.setInnate({...{}, ...innateStats});
       for (const lstat in su.statLimit) {
         statUtil.validateStatAndControls(su, lstat);
       }

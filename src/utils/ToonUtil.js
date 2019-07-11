@@ -72,7 +72,7 @@ const ToonUtil = () => {
     }
 
     const updateStates = () => {
-      //su.setSelectedStrain({...{}, ...su.selectedStrain});
+      su.setSelectedStrain(su.selectedStrain);
       su.setInnate({...{}, ...su.innate});
       su.setStat({...{}, ...su.stat});
       su.setStatControl({...{}, ...su.statControl});

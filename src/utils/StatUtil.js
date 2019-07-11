@@ -83,8 +83,10 @@ const StatUtil = () => {
         ? h.acqValue() > 0
         : h.totalValue() > 0 && h.acqValue() > 0;
 
-    if (!skipSetState) updateHookStates(su, changedStat, currentStat, currentStatControl);
-    calcXp(su, changedStat, currentStat);
+    if (!skipSetState) {
+      updateHookStates(su, changedStat, currentStat, currentStatControl);
+      calcXp(su, changedStat, currentStat);
+    }
     crossValidateControl(su, changedStat, 'reduction', skipSetState);
     console.log('validation done for ' + changedStat);
 
@@ -126,11 +128,13 @@ const StatUtil = () => {
   const validateAllStatsAndControls = (su) => {
     const newStat = {};
     const newStatControl = {};
+    const stats = ['hp', 'mp', 'rp', 'inf'];
 
-    ['hp', 'mp', 'rp', 'inf'].forEach(key => {
+    stats.forEach(key => {
       [newStat[key], newStatControl[key]] = validateStatAndControls(su, key, true);
     })
 
+    stats.forEach(key => { calcXp(su, key, newStat[key]) });
     su.setStat({...su.stat, ...newStat});
     su.setStatControl({...su.statControl, ...newStatControl});
   }
