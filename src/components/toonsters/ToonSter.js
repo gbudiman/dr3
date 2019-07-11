@@ -53,6 +53,9 @@ function ToonSter(props) {
         remoteId: toonStorage[toonId].remoteId,
       }
     })
+    dispatch({
+      type: 'UPDATE_LS_TOON_STORAGE'
+    })
   }
   const handleSwitch = (toonId) => {
     dispatch({ 

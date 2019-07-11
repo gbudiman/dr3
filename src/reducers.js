@@ -26,7 +26,15 @@ export default function reducer(state = {}, action) {
       toonUtil.handleToonChange(state, 'switch', payload.toonId); 
       return state;
     case 'RENAME_CHARACTER': 
-      toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); 
+      //toonUtil.handleToonChange(state, 'rename', payload.toonId, payload.value); 
+      const storage = state.toonStorage;
+      storage[payload.toonId].name = payload.value;
+      return {
+        ...state,
+        ...{ toonStorage: storage }
+      };
+    case 'UPDATE_LS_TOON_STORAGE':
+      toonUtil.handleToonChange(state, 'rename');
       return state;
     case 'DELETE_CHARACTER': toonUtil.handleToonChange(state, 'delete', payload.toonId); return state;
     case 'UNDELETE_CHARACTER': toonUtil.handleToonChange(state, 'undelete', payload.toonId); return state;

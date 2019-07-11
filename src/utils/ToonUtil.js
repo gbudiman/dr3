@@ -282,8 +282,9 @@ const ToonUtil = () => {
         loadBlankToon(su);
         break;
       case 'rename':
-        su.toonStorage[arg].name = arb;
-        persistToonStorage(su, true);
+        //su.toonStorage[arg].name = arb;
+        //persistToonStorage(su, true);
+        localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
         break;
       case 'switch':
         console.log('switching to ' + arg);
