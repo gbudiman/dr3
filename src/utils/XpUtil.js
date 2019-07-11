@@ -28,7 +28,7 @@ export function totalStatXp(su) {
   }, 0);
 }
 
-export function calcXp(su, changedStat, acquired) {
+export function calcXp(su, changedStat, acquired, skipSetState=false) {
   switch (changedStat) {
     case 'hp':
     case 'mp':
@@ -40,8 +40,10 @@ export function calcXp(su, changedStat, acquired) {
       break;
   }
 
-  su.setStatXp(Object.assign({}, su.statXp));
-  calcTotalXp(su);
+  if (!skipSetState) {
+    su.setStatXp(Object.assign({}, su.statXp));
+    calcTotalXp(su);
+  }
 };
 
 export function calcXpComponents(su) {

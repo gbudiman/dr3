@@ -125,7 +125,7 @@ const StatUtil = () => {
     su.setStatControl({...su.statControl, ...remergedStatControl});
   }
 
-  const validateAllStatsAndControls = (su) => {
+  const validateAllStatsAndControls = (su, skipSetState=false) => {
     const newStat = {};
     const newStatControl = {};
     const stats = ['hp', 'mp', 'rp', 'inf'];
@@ -134,9 +134,9 @@ const StatUtil = () => {
       [newStat[key], newStatControl[key]] = validateStatAndControls(su, key, true);
     })
 
-    stats.forEach(key => { calcXp(su, key, newStat[key]) });
-    su.setStat({...su.stat, ...newStat});
-    su.setStatControl({...su.statControl, ...newStatControl});
+    stats.forEach(key => { calcXp(su, key, newStat[key], skipSetState) });
+    // su.setStat({...su.stat, ...newStat});
+    // su.setStatControl({...su.statControl, ...newStatControl});
   }
 
   const statHelper = (su, key, currentValue, currentReduction) => {

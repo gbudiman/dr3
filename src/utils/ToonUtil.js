@@ -65,7 +65,7 @@ const ToonUtil = () => {
               //ir: 0,
             }
           };
-          statUtil.validateAllStatsAndControls(su);
+          statUtil.validateAllStatsAndControls(su, SKIP_SET_STATE);
           updateStates();
         }) 
       })
@@ -76,6 +76,8 @@ const ToonUtil = () => {
       su.setInnate({...{}, ...su.innate});
       su.setStat({...{}, ...su.stat});
       su.setStatControl({...{}, ...su.statControl});
+      su.setStatXp({...{}, ...su.statXp});
+      calcTotalXp(su);
 
       saveState(su);
     }
