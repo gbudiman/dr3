@@ -4,8 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import ToonSter from '../toonsters/ToonSter';
 import './AppBarWrapper.scss';
 
-function AppBarWrapper(props) {
-  return(
+const AppBarWrapper = () => {
+  return (
     <AppBar position='fixed'>
       <div className='container'>
         <div className='title'>DRpaedia3</div>
@@ -15,13 +15,13 @@ function AppBarWrapper(props) {
       </div>
     </AppBar>
   );
-}
+};
 
 const mapStateToProps = state => {
   return {
     currentToon: state.currentToon,
-    toonStorage: state.toonStorage,
-  }
-}
+    toonStorage: state.toonStorage
+  };
+};
 
 export default AppBarWrapper;

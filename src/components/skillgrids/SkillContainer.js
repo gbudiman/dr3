@@ -6,7 +6,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import './SkillGrid.scss';
 
-function SkillContainer(props) {  
+export default () => {
   const buildBoxes = () => {
     return Object.keys(skillState).map(key => {
       const value = skillState[key];
@@ -36,7 +36,8 @@ function SkillContainer(props) {
                 category={value.category}
                 visible={value.visible}
                 t4only={value.t4only}
-                expanded={skillInfoVisible[key]} />
+                expanded={skillInfoVisible[key]}
+              />
             </Paper>
           </Grow>
         </React.Fragment>
@@ -44,24 +45,29 @@ function SkillContainer(props) {
     });
   };
   const dispatch = useDispatch();
-  const { skillState, skillInfoVisible, currentToon, toonStorage, inverseSkillLookup } = useSelector(
-    state => ({
-      skillState: state.skillState,
-      skillInfoVisible: state.skillInfoVisible,
-      currentToon: state.currentToon,
-      toonStorage: state.toonStorage,
-      inverseSkillLookup: state.inverseSkillLookup,
-    })
-  )
+  const {
+    skillState,
+    skillInfoVisible,
+    currentToon,
+    toonStorage,
+    inverseSkillLookup
+  } = useSelector(state => ({
+    skillState: state.skillState,
+    skillInfoVisible: state.skillInfoVisible,
+    currentToon: state.currentToon,
+    toonStorage: state.toonStorage,
+    inverseSkillLookup: state.inverseSkillLookup
+  }));
   const handleClick = (sid, tier) => {
-    dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier } } )
-    dispatch({ type: 'SKILLS_CHANGED', 
+    dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier } });
+    dispatch({
+      type: 'SKILLS_CHANGED',
       payload: {
         value: transformToRemoteData(),
-        remoteId: toonStorage[currentToon].remoteId,
+        remoteId: toonStorage[currentToon].remoteId
       }
-    })
-  }
+    });
+  };
   const transformToRemoteData = () => {
     const remoteArray = [];
 
@@ -72,10 +78,10 @@ function SkillContainer(props) {
           remoteArray.push(inverseSkillLookup[i][key]);
         }
       }
-    })
+    });
 
     return remoteArray;
-  }
+  };
 
   return (
     <div className='skill-container'>
@@ -83,6 +89,4 @@ function SkillContainer(props) {
       <div className='buffer' />
     </div>
   );
-}
-
-export default SkillContainer;
+};

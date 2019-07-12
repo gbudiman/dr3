@@ -1,42 +1,35 @@
 import React, { useEffect } from 'react';
 import './App.scss';
-import Navigation from './components/navigation/Navigation';
 import StateUtil from './utils/StateUtil';
-import { switchTab } from './utils/NavigationUtil';
-import AppBarWrapper from './components/appbars/AppBarWrapper';
-
+import ToonUtil from './utils/ToonUtil';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import createSagaMiddleware from 'redux-saga';
+import createStore, { sagaMiddleware } from './store';
+import { ConnectedRouter } from 'connected-react-router';
+import history from './history';
+import AppBarWrapper from './components/appbars/AppBarWrapper';
+import Router from './Router';
+import Navigation from './components/Navigation/Navigation';
 import { appSaga } from './sagas/auth';
-import reducer from './reducers';
+import { APP_LOAD } from './Characters/types';
 
-const App = () => {
+export default () => {
   const su = StateUtil();
-  const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
-    reducer,
-    su,
-    //applyMiddleware(sagaMiddleware),
-    composeWithDevTools(applyMiddleware(sagaMiddleware))
-  );
-
+  const store = createStore(su);
   sagaMiddleware.run(appSaga);
-
+  const toonUtil = ToonUtil();
   useEffect(() => {
-    store.dispatch({ type: 'APP_LOAD' })
+    store.dispatch({ type: APP_LOAD });
   }, su);
 
   return (
     <Provider store={store}>
-      <div className='app-window'>
-        <AppBarWrapper />
-        <div className='builder'>{switchTab(su, store)}</div>
-        <Navigation setTab={su.setTab} tab={su.tab} />
-      </div>
+      <ConnectedRouter history={history}>
+        <div className='app-window'>
+          <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
+          <Router su={su} />
+          <Navigation setTab={su.setTab} tab={su.tab} />
+        </div>
+      </ConnectedRouter>
     </Provider>
   );
 };
-
-export default App;

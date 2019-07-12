@@ -73,8 +73,8 @@ const StateUtil = () => {
     inverseStrainLookup: inverseStrainLookup,
     setInverseStrainLookup: setInverseStrainLookup,
     inverseSkillLookup: inverseSkillLookup,
-    setInverseSkillLookup: setInverseSkillLookup,
-  }
-}
+    setInverseSkillLookup: setInverseSkillLookup
+  };
+};
 
 export default StateUtil;
