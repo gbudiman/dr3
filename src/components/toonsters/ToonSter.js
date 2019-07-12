@@ -38,9 +38,9 @@ function ToonSter(props) {
 
   const { authConfig, currentToon, toonStorage } = useSelector(
     state => ({
-      authConfig: state.authConfig,
-      currentToon: state.currentToon,
-      toonStorage: state.toonStorage,
+      authConfig: state.characters.authConfig,
+      currentToon: state.characters.currentToon,
+      toonStorage: state.characters.toonStorage,
     })
   )
   const dispatch = useDispatch();

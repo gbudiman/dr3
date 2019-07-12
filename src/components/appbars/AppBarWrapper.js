@@ -17,11 +17,4 @@ const AppBarWrapper = () => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currentToon: state.currentToon,
-    toonStorage: state.toonStorage
-  };
-};
-
 export default AppBarWrapper;

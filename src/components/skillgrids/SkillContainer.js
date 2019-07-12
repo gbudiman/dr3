@@ -52,11 +52,11 @@ export default () => {
     toonStorage,
     inverseSkillLookup
   } = useSelector(state => ({
-    skillState: state.skillState,
-    skillInfoVisible: state.skillInfoVisible,
-    currentToon: state.currentToon,
-    toonStorage: state.toonStorage,
-    inverseSkillLookup: state.inverseSkillLookup
+    skillState: state.characters.skillState,
+    skillInfoVisible: state.characters.skillInfoVisible,
+    currentToon: state.characters.currentToon,
+    toonStorage: state.characters.toonStorage,
+    inverseSkillLookup: state.characters.inverseSkillLookup,
   }));
   const handleClick = (sid, tier) => {
     dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier } });

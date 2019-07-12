@@ -1,6 +1,5 @@
-import { connect } from 'react-redux';
 import './StrainPicker.scss';
-import { useSelector, useDispatch } from 'react-redux'
+import { connect, useSelector, useDispatch  } from 'react-redux';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -33,11 +32,11 @@ const StrainPicker = () => {
   const dispatch = useDispatch();
   const { lineages, selectedStrain, inverseStrainLookup, currentToon, toonStorage } = useSelector(
     state => ({
-      lineages: state.lineageStrain.lineages,
-      selectedStrain: state.selectedStrain,
-      currentToon: state.currentToon,
-      toonStorage: state.toonStorage,
-      inverseStrainLookup: state.inverseStrainLookup,
+      lineages: state.characters.lineageStrain.lineages,
+      selectedStrain: state.characters.selectedStrain,
+      currentToon: state.characters.currentToon,
+      toonStorage: state.characters.toonStorage,
+      inverseStrainLookup: state.characters.inverseStrainLookup,
     })
   )
   const statCompressor = (stat) => { return [stat.hp, stat.mp, stat.rp, stat.inf].join('/') }

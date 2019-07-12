@@ -49,12 +49,12 @@ function StatQuad(props) {
   const dispatch = useDispatch();
   const { stat, statXp, statControl, innate, currentToon, toonStorage } = useSelector(
     state => ({
-      stat: state.stat,
-      statXp: state.statXp,
-      statControl: state.statControl,
-      innate: state.innate,
-      currentToon: state.currentToon,
-      toonStorage: state.toonStorage,
+      stat: state.characters.stat,
+      statXp: state.characters.statXp,
+      statControl: state.characters.statControl,
+      innate: state.characters.innate,
+      currentToon: state.characters.currentToon,
+      toonStorage: state.characters.toonStorage,
     })
   )
   const handleStatAdjustment = (changedStat, adjustment) => {

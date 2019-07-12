@@ -1,31 +1,44 @@
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch  } from 'react-redux';
 import React from 'react';
 import SkillGrid from './SkillGrid';
 import './SkillQuad.scss';
 
 function SkillQuad(props) {
-  let categories = ['combat', 'civilized', 'wasteland', 'anomaly', 'community'];
-  let placement = {
+  const dispatch = useDispatch();
+  const categories = ['combat', 'civilized', 'wasteland', 'anomaly', 'community'];
+  const placement = {
     combat: 'top-start',
     wasteland: 'top',
     civilized: 'top',
     anomaly: 'top',
     community: 'top-end',
   }
-  let handlePopOpen = (category, openState) => { props.passPopOpen(category, openState) }
-  let generateSkillGrids = () => {
+  const handlePopOpen = (category, openState) => { props.passPopOpen(category, openState) }
+  const generateSkillGrids = () => {
     return categories.map(category => {
       return <SkillGrid 
         key={category}
         category={category}
-        skillTotalXp={props.skillXp.sum[category]}
-        skillQuantity={props.skillXp.grid.grid[category]}
-        skillXp={props.skillXp.grid.xp[category]}
+        skillTotalXp={skillXp.sum[category]}
+        skillQuantity={skillXp.grid.grid[category]}
+        skillXp={skillXp.grid.xp[category]}
         passPopOpen={handlePopOpen}
-        passSkillVisibilityToggle={props.handleSkillVisibilityToggle}
+        passSkillVisibilityToggle={handleSkillVisibilityToggle}
         placement={placement[category]}
         openState={props.openState[category]}
-        toggleState={props.skillHidden[category]} />
+        toggleState={skillHidden[category]} />
+    })
+  }
+  const { skillXp, skillHidden } = useSelector(
+    state => ({
+      skillXp: state.characters.skillXp,
+      skillHidden: state.characters.skillHidden,
+    })
+  )
+  const handleSkillVisibilityToggle = (category) => {
+    dispatch({
+      type: 'TOGGLE_SKILL_CATEGORY_VISIBILITY',
+      payload: category,
     })
   }
   
@@ -36,23 +49,24 @@ function SkillQuad(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    skillXp: state.skillXp,
-    skillHidden: state.skillHidden,
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     skillXp: state.characters.skillXp,
+//     skillHidden: state.characters.skillHidden,
+//   }
+// }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    handleSkillVisibilityToggle: (category) => dispatch({
-      type: 'TOGGLE_SKILL_CATEGORY_VISIBILITY',
-      payload: category,
-    }),
-  }
-}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     handleSkillVisibilityToggle: (category) => dispatch({
+//       type: 'TOGGLE_SKILL_CATEGORY_VISIBILITY',
+//       payload: category,
+//     }),
+//   }
+// }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SkillQuad);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(SkillQuad);
+export default SkillQuad;

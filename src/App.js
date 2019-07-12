@@ -8,7 +8,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import history from './history';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import Router from './Router';
-import Navigation from './components/Navigation/Navigation';
+import Navigation from './components/navigation/Navigation';
 import { appSaga } from './sagas/auth';
 import { APP_LOAD } from './Characters/types';
 
@@ -25,7 +25,7 @@ export default () => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <div className='app-window'>
-          <AppBarWrapper su={su} passChange={toonUtil.handleToonChange} />
+          <AppBarWrapper />
           <Router su={su} />
           <Navigation setTab={su.setTab} tab={su.tab} />
         </div>
