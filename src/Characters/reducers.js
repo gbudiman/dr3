@@ -2,7 +2,6 @@ import ToonUtil from '../utils/ToonUtil';
 import SkillUtil from '../utils/SkillUtil';
 import StatUtil from '../utils/StatUtil';
 import StrainUtil from '../utils/StrainUtil';
-import StateUtil from '../utils/StateUtil';
 import { toonUpdateSaga } from '../sagas/auth';
 import {
   APP_LOAD,
@@ -31,10 +30,11 @@ const save = state => {
   return state;
 };
 
-export default (state = StateUtil(), { payload, type }) => {
+export default (state={}, { payload, type }) => {
   switch (type) {
     case APP_LOAD:
       toonUtil.handleAppLoad(state);
+      console.log(state);
       return state;
     // case 'LOGIN_SUCCESSFUL':
     //   //state.setAuthConfig(payload);

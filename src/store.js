@@ -15,6 +15,6 @@ const middleware = [routerMiddleware(history), sagaMiddleware];
 export default su =>
   createStore(
     createRootReducer(history),
-    su,
+    { characters: su },
     enhancer(applyMiddleware(...middleware))
   );
