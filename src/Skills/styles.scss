@@ -1,34 +1,34 @@
 @import '../colors.scss';
 
-.primary {
-  color: $color-light;
-  font-family: Alegreya, serif;
-  font-size: 18px;
-  text-decoration: underline;
-}
-
-.secondary {
-  color: $color-light;
-  font-family: Alegreya, serif;
-  text-align: justify;
-  text-justify: auto;
-}
-
-.page {
-  color: $color-gray;
-  font-family: Alegreya, serif;
-  font-style: italic;
-}
-
 .flexigrid {
   display: flex;
   justify-content: space-between;
+
+  .primary {
+    color: $color-light;
+    font-family: Alegreya, serif;
+    font-size: 18px;
+    text-decoration: underline;
+  }
+
+  .secondary {
+    color: $color-light;
+    font-family: Alegreya, serif;
+    text-align: justify;
+    text-justify: auto;
+  }
+
+  .page {
+    color: $color-gray;
+    font-family: Alegreya, serif;
+    font-style: italic;
+  }
 }
 
 .buffer {
   height: 64px;
 }
 
-.noFlex {
+.noFlex.MuiListItem-root {
   display: inline-block;
 }
