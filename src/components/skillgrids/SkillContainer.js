@@ -64,6 +64,7 @@ export default () => {
     const newState = updateSkillState(sid, tier);
     dispatch({ type: 'CLICK_SKILL_GRID', payload: { sid: sid, newState: newState } });
     dispatch({ type: 'RECALCULATE_XP' });
+    dispatch({ type: 'SAVE_STATE' });
     dispatch({
       type: 'SKILLS_CHANGED',
       payload: {
@@ -72,6 +73,7 @@ export default () => {
       }
     });
   };
+
   const updateSkillState = (sid, tier) => {
     const ssid = skillState[sid];
 
@@ -100,6 +102,8 @@ export default () => {
       }
       
       if (!ssid.t4only && ssid.t4acquired && ssid.acquired <= 2) ssid.acquired = 2;
+    } else if (tier === 0) {
+
     }
 
     return ssid;

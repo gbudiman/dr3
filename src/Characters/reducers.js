@@ -21,6 +21,7 @@ import {
   STRAIN_CHANGED,
   REMOTE_CHARACTERS_LOADED,
   RECALCULATE_XP,
+  SAVE_STATE,
 } from './types';
 
 const toonUtil = ToonUtil();
@@ -36,7 +37,6 @@ export default (state={}, { payload, type }) => {
   switch (type) {
     case APP_LOAD:
       toonUtil.handleAppLoad(state);
-      console.log(state);
       return state;
     // case 'LOGIN_SUCCESSFUL':
     //   //state.setAuthConfig(payload);
@@ -44,6 +44,8 @@ export default (state={}, { payload, type }) => {
     //     ...state,
     //     authConfig: payload,
     //   }
+    case SAVE_STATE:
+      return save(state);
     case CREATE_CHARACTER:
       toonUtil.handleToonChange(state, 'new');
       return state;

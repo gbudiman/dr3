@@ -212,12 +212,6 @@ const ToonUtil = () => {
     persistToonStorage(su, true);
   };
 
-  const saveStateInBackgroundSelective = (su, tid, mutation) => {
-    Object.assign(su.toonData[tid], mutation);
-    localStorage.setItem('toonData', JSON.stringify(su.toonData));
-    console.log(JSON.parse(localStorage.getItem('toonData')));
-  };
-
   const saveState = su => {
     console.log('saving state');
     su.toonData[su.currentToon] = {
