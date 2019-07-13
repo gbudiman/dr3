@@ -8,7 +8,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import history from './history';
 import AppBarWrapper from './components/appbars/AppBarWrapper';
 import Router from './Router';
-import Navigation from './components/navigation/Navigation';
+import Navigation from './components/Navigation/Navigation';
 import { appSaga } from './sagas/auth';
 import { APP_LOAD } from './Characters/types';
 

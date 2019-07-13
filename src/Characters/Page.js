@@ -6,7 +6,7 @@ import XpBar from '../components/xpbars/XpBar';
 import './styles.scss';
 
 export default () => (
-  <div className='container'>
+  <div className='builder'>
     <StrainPicker />
     <XpBar />
     <StatSkill />
