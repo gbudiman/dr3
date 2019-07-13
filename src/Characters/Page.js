@@ -7,9 +7,11 @@ import './styles.scss';
 
 export default () => (
   <div className='builder'>
-    <StrainPicker />
-    <XpBar />
-    <StatSkill />
-    <SkillContainer />
+    <div className='container'>
+      <StrainPicker />
+      <XpBar />
+      <StatSkill />
+      <SkillContainer />
+    </div>
   </div>
 );
