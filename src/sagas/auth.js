@@ -22,6 +22,12 @@ const configureJWT = (token) => { config.headers['Authorization'] = 'Bearer ' + 
 const updateCharacter = async(remoteId, body) => {
   return await axios.put(api('character/' + remoteId), body, config);
 }
+function* createSession(action) {
+  yield put({
+    type: 'SESSION_CREATED',
+    payload: action.payload,
+  });
+}
 // const fetchCharacter = async(remoteId) => { return await axios.get(api('character/' + remoteId), config) }
 // const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
 // const fetchRemoteSkills = async() => { return await axios.get(api('skills')) }
@@ -117,6 +123,10 @@ function* watchLocalStorageLoaded() {
 //   yield takeLatest('LOGIN_SUCCESSFUL', fetchCharacters);
 // }
 
+function* watchCreateSession() {
+  yield takeLatest('CREATE_SESSION', createSession);
+}
+
 function* queueUpstream(action) {
   const payload = action.payload;
   const timeNow = parseInt(Date.now() / 1000);
@@ -151,6 +161,7 @@ export function* appSaga() {
     watchStrainChange(),
     watchStatValidChange(),
     watchSkillsChange(),
+    watchCreateSession(),
     // watchLoginSuccessful(),
   ]);
 }

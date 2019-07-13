@@ -1,17 +1,19 @@
 import axios from 'axios';
 import { CREATE_SESSION } from '../types';
 
-export default values => dispatch =>
+export default (values) => dispatch =>
   axios
-    .post('/api/login', values)
+    .get('http://devdrdb.dystopiarisingnetwork.com:5000/api/generateToken', {
+      auth: {
+        username: values.email,
+        password: values.password,
+      }
+    })
     .then(res =>
       dispatch({
         type: CREATE_SESSION,
         payload: {
-          firstName: res.data.firstName,
-          lastName: res.data.lastName,
-          email: res.data.email,
-          token: res.data.token
+          access_token: res.data.access_token,
         }
       })
     )

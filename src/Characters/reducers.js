@@ -24,6 +24,7 @@ import {
   RECALCULATE_XP,
   SAVE_STATE,
   SKILL_INFO_TOGGLED,
+  SESSION_CREATED,
 } from './types';
 
 const toonUtil = ToonUtil();
@@ -46,6 +47,10 @@ export default (state={}, { payload, type }) => {
     //     ...state,
     //     authConfig: payload,
     //   }
+    case SESSION_CREATED:
+      console.log(payload);
+      console.log(type);
+      return state;
     case SAVE_STATE:
       return save(state);
     case CREATE_CHARACTER:
