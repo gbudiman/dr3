@@ -3,6 +3,7 @@ import { localize } from './StringUtil';
 import SkillCalc from './SkillCalc';
 
 const SkillUtil = () => {
+  // ported
   const handleSkillGridClick = (su, sid, tier) => {
     if (tier === 0) {
       updateSkillInfoVisibility(su, sid);
@@ -14,6 +15,7 @@ const SkillUtil = () => {
     }
   };
 
+  // ported
   const handleSkillVisibilityToggle = (su, category) => {
     if (!(category in su.skillHidden)) {
       su.skillHidden[category] = true;
@@ -74,6 +76,7 @@ const SkillUtil = () => {
     }
   };
 
+  // ported
   const setSkillVisibility = (su, category, state) => {
     for (const key in su.skillState) {
       const unacquired = su.skillState[key].acquired === 0 && !su.skillState[key].t4acquired;
@@ -97,6 +100,23 @@ const SkillUtil = () => {
     handleSkillGridClick: handleSkillGridClick,
     handleSkillVisibilityToggle: handleSkillVisibilityToggle,
     buildLookupTable: buildLookupTable,
+  }
+}
+
+export const toggleSkillCategoryVisibility = (skillState, skillHidden, category) => {
+  if (!(category) in skillHidden) {
+    skillHidden[category] = true;
+  } else {
+    skillHidden[category] = !skillHidden[category];
+  }
+
+  const cachedValue = !skillHidden[category];
+
+  for (const key in skillState) {
+    const unacquired = skillState[key].acquired === 0 && !skillState[key].t4acquired;
+    if (unacquired && skillState[key].category === category) {
+      skillState[key].visible = cachedValue;
+    }
   }
 }
 

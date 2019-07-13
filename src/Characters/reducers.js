@@ -4,6 +4,7 @@ import StatUtil from '../utils/StatUtil';
 import StrainUtil from '../utils/StrainUtil';
 import SkillCalc from '../utils/SkillCalc';
 import { toonUpdateSaga } from '../sagas/auth';
+import { toggleSkillCategoryVisibility } from '../utils/SkillUtil';
 import {
   APP_LOAD,
   CREATE_CHARACTER,
@@ -73,8 +74,12 @@ export default (state={}, { payload, type }) => {
     case SYNC_REMOTE_CHARACTER:
       return state;
     case TOGGLE_SKILL_CATEGORY_VISIBILITY:
-      skillUtil.handleSkillVisibilityToggle(state, payload);
-      return save(state);
+      toggleSkillCategoryVisibility(state.skillState, state.skillHidden, payload);
+      return {
+        ...state,
+        skillHidden: state.skillHidden,
+        skillState: state.skillState,
+      }
     case CLICK_SKILL_GRID:
       return {
         ...state,

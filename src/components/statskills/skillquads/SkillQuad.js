@@ -40,6 +40,7 @@ function SkillQuad(props) {
       type: 'TOGGLE_SKILL_CATEGORY_VISIBILITY',
       payload: category,
     })
+    dispatch({ type: 'SAVE_STATE' });
   }
   
   return(
@@ -49,24 +50,4 @@ function SkillQuad(props) {
   )
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     skillXp: state.characters.skillXp,
-//     skillHidden: state.characters.skillHidden,
-//   }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     handleSkillVisibilityToggle: (category) => dispatch({
-//       type: 'TOGGLE_SKILL_CATEGORY_VISIBILITY',
-//       payload: category,
-//     }),
-//   }
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(SkillQuad);
 export default SkillQuad;
