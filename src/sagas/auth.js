@@ -105,8 +105,7 @@ function* watchStatValidChange() {
 }
 
 function* watchSkillsChange() {
-  //yield takeLatest('SKILLS_CHANGED', queueUpstream);
-  yield throttle(1000, 'SKILLS_CHANGED', queueUpstream);
+  yield takeLatest('SKILLS_CHANGED', queueUpstream);
 }
 
 function* watchLocalStorageLoaded() {
