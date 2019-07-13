@@ -61,19 +61,30 @@ export default () => {
     setSkillState: state.characters.setSkillState,
   }));
   const handleClick = (sid, tier) => {
-    const newState = updateSkillState(sid, tier);
-    dispatch({ type: 'CLICK_SKILL_GRID', payload: { sid: sid, newState: newState } });
-    dispatch({ type: 'RECALCULATE_XP' });
-    dispatch({ type: 'SAVE_STATE' });
-    dispatch({
-      type: 'SKILLS_CHANGED',
-      payload: {
-        value: transformToRemoteData(),
-        remoteId: toonStorage[currentToon].remoteId
-      }
-    });
+    if (tier === 0) {
+      const newState = updateSkillInfoVisibility(sid);
+      dispatch({ type: 'SKILL_INFO_TOGGLED', payload: { sid: sid, newState: newState }});
+      dispatch({ type: 'SAVE_STATE' });
+    } else {
+      const newState = updateSkillState(sid, tier);
+      dispatch({ type: 'CLICK_SKILL_GRID', payload: { sid: sid, newState: newState } });
+      dispatch({ type: 'RECALCULATE_XP' });
+      dispatch({ type: 'SAVE_STATE' });
+      dispatch({
+        type: 'SKILLS_CHANGED',
+        payload: {
+          value: transformToRemoteData(),
+          remoteId: toonStorage[currentToon].remoteId
+        }
+      });
+    }
   };
 
+  const updateSkillInfoVisibility = (sid) => {
+    let visibility = true;
+    if (sid in skillInfoVisible) visibility = !skillInfoVisible[sid];
+    return visibility;
+  }
   const updateSkillState = (sid, tier) => {
     const ssid = skillState[sid];
 
@@ -102,8 +113,6 @@ export default () => {
       }
       
       if (!ssid.t4only && ssid.t4acquired && ssid.acquired <= 2) ssid.acquired = 2;
-    } else if (tier === 0) {
-
     }
 
     return ssid;

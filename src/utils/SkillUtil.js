@@ -25,6 +25,7 @@ const SkillUtil = () => {
     su.setSkillHidden(Object.assign({}, su.skillHidden));
   };
 
+  // ported
   const updateSkillInfoVisibility = (su, sid) => {
     if (sid in su.skillInfoVisible) {
       su.skillInfoVisible[sid] = !su.skillInfoVisible[sid];

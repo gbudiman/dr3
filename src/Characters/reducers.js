@@ -22,6 +22,7 @@ import {
   REMOTE_CHARACTERS_LOADED,
   RECALCULATE_XP,
   SAVE_STATE,
+  SKILL_INFO_TOGGLED,
 } from './types';
 
 const toonUtil = ToonUtil();
@@ -79,6 +80,14 @@ export default (state={}, { payload, type }) => {
         ...state,
         skillState: {
           ...state.skillState,
+          [payload.sid]: payload.newState
+        }
+      }
+    case SKILL_INFO_TOGGLED:
+      return {
+        ...state,
+        skillInfoVisible: {
+          ...state.skillInfoVisible,
           [payload.sid]: payload.newState
         }
       }
