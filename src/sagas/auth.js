@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { call, put, putResolve, takeEvery, takeLatest, all, race, throttle } from 'redux-saga/effects'
+import { call, put, putResolve, takeEvery, takeLatest, all, race, throttle, fork } from 'redux-saga/effects'
 
+let lastPayload = null;
 const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
 const config = {
   headers: {
@@ -118,20 +119,26 @@ function* watchLocalStorageLoaded() {
 
 function* queueUpstream(action) {
   const payload = action.payload;
+  const timeNow = parseInt(Date.now() / 1000);
   let upstreamData = null;
 
-  console.log(action);
-  switch(action.type) {
-    case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
-    case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
-    case 'STAT_VALID_CHANGE': upstreamData = { [payload.stat]: payload.value }; break;
-    case 'SKILLS_CHANGED': 
-      upstreamData = { skills: payload.value }; 
-      break;
-  }
+  if (lastPayload === payload) {
+    // pass
+  } else {
+    lastPayload = payload;
+    console.log(action);
+    switch(action.type) {
+      case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
+      case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
+      case 'STAT_VALID_CHANGE': upstreamData = { [payload.stat]: payload.value }; break;
+      case 'SKILLS_CHANGED': 
+        upstreamData = { skills: payload.value }; 
+        break;
+    }
 
-  if (payload.remoteId) {
-    yield updateCharacter(payload.remoteId, upstreamData);
+    if (payload.remoteId) {
+      yield updateCharacter(payload.remoteId, upstreamData);
+    }
   }
 }
 
@@ -147,3 +154,16 @@ export function* appSaga() {
     // watchLoginSuccessful(),
   ]);
 }
+
+// export function* appSaga() {
+//   yield all([
+//     // fetchStrains(),
+//     // fetchSkills(),
+//     call(watchLocalStorageLoaded),
+//     // watchNameChange(),
+//     // watchStrainChange(),
+//     call(watchStatValidChange),
+//     // watchSkillsChange(),
+//     // watchLoginSuccessful(),
+//   ]);
+// }
