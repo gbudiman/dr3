@@ -2,6 +2,7 @@ import ToonUtil from '../utils/ToonUtil';
 import SkillUtil from '../utils/SkillUtil';
 import StatUtil from '../utils/StatUtil';
 import StrainUtil from '../utils/StrainUtil';
+import SkillCalc from '../utils/SkillCalc';
 import { toonUpdateSaga } from '../sagas/auth';
 import {
   APP_LOAD,
@@ -18,7 +19,8 @@ import {
   STAT_REDUCTION_ADJUSTED,
   STAT_CHANGED,
   STRAIN_CHANGED,
-  REMOTE_CHARACTERS_LOADED
+  REMOTE_CHARACTERS_LOADED,
+  RECALCULATE_XP,
 } from './types';
 
 const toonUtil = ToonUtil();
@@ -71,8 +73,23 @@ export default (state={}, { payload, type }) => {
       skillUtil.handleSkillVisibilityToggle(state, payload);
       return save(state);
     case CLICK_SKILL_GRID:
-      skillUtil.handleSkillGridClick(state, payload.sid, payload.tier);
-      return save(state);
+      return {
+        ...state,
+        skillState: {
+          ...state.skillState,
+          [payload.sid]: payload.newState
+        }
+      }
+    case RECALCULATE_XP:
+      const newSkillXp = SkillCalc(state.skillState);
+      return {
+        ...state,
+        skillXp: newSkillXp,
+        totalXp: {
+          ...state.totalXp,
+          skill: newSkillXp.total,
+        }
+      }
     case STAT_ADJUSTED:
       statUtil.handleStatAdjustment(state, payload.stat, payload.adjustment);
       return save(state);

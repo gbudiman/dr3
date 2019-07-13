@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { call, put, putResolve, takeEvery, takeLatest, all, race } from 'redux-saga/effects'
+import { call, put, putResolve, takeEvery, takeLatest, all, race, throttle } from 'redux-saga/effects'
 
 const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
 const config = {
@@ -105,7 +105,8 @@ function* watchStatValidChange() {
 }
 
 function* watchSkillsChange() {
-  yield takeLatest('SKILLS_CHANGED', queueUpstream);
+  //yield takeLatest('SKILLS_CHANGED', queueUpstream);
+  yield throttle(1000, 'SKILLS_CHANGED', queueUpstream);
 }
 
 function* watchLocalStorageLoaded() {

@@ -50,16 +50,20 @@ export default () => {
     skillInfoVisible,
     currentToon,
     toonStorage,
-    inverseSkillLookup
+    inverseSkillLookup,
+    setSkillState,
   } = useSelector(state => ({
     skillState: state.characters.skillState,
     skillInfoVisible: state.characters.skillInfoVisible,
     currentToon: state.characters.currentToon,
     toonStorage: state.characters.toonStorage,
     inverseSkillLookup: state.characters.inverseSkillLookup,
+    setSkillState: state.characters.setSkillState,
   }));
   const handleClick = (sid, tier) => {
-    dispatch({ type: 'CLICKED_SKILL_GRID', payload: { sid: sid, tier: tier } });
+    const newState = updateSkillState(sid, tier);
+    dispatch({ type: 'CLICK_SKILL_GRID', payload: { sid: sid, newState: newState } });
+    dispatch({ type: 'RECALCULATE_XP' });
     dispatch({
       type: 'SKILLS_CHANGED',
       payload: {
@@ -68,6 +72,38 @@ export default () => {
       }
     });
   };
+  const updateSkillState = (sid, tier) => {
+    const ssid = skillState[sid];
+
+    if (tier > 0 && tier <= 3) {
+      const t4acquired = 't4acquired' in ssid && ssid.t4acquired === true;
+      const clickedAcquired = tier <= ssid.acquired || (tier === 4 && t4acquired);
+      const clickedAtTier = tier === ssid.acquired || (tier === 4 && t4acquired);
+
+      if (clickedAtTier && clickedAcquired) {
+        if (tier === 2 && t4acquired) {
+          ssid.t4acquired = false;
+        } else {
+          ssid.acquired = tier - 1;
+        }
+      } else {
+        ssid.acquired = tier;
+      }
+
+      if (ssid.acquired < 2) ssid.t4acquired = false;
+      if (ssid.acquired === 1 && ssid.innate) ssid.acquired = 0;
+    } else if (tier === 4) {
+      if (!('t4acquired' in ssid)) {
+        ssid.t4acquired = true;
+      } else {
+        ssid.t4acquired = !ssid.t4acquired;
+      }
+      
+      if (!ssid.t4only && ssid.t4acquired && ssid.acquired <= 2) ssid.acquired = 2;
+    }
+
+    return ssid;
+  }
   const transformToRemoteData = () => {
     const remoteArray = [];
 

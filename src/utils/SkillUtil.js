@@ -35,6 +35,7 @@ const SkillUtil = () => {
     su.setSkillInfoVisible(Object.assign({}, su.skillInfoVisible));
   }
 
+  // ported
   const updateSkillState = (su, sid, tier) => {
     if (tier > 0 && tier <= 3) {
       const t4acquired =
