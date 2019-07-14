@@ -1,28 +1,55 @@
-.container {
-  width: auto;
-  display: block;
-  margin: 0px 24px;
-  @media only screen and (min-width: 448px) {
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+@import '../colors.scss';
+
+.app-window {
+  min-height: 100vh;
+
+  .login-container {
+    width: auto;
+    display: block;
+    margin: 0px 24px;
+    margin-top: -32px;
+    padding-top: 64px;
+    padding-bottom: 320px;
+
+    @media only screen and (min-width: 448px) {
+      width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .paper {
+
+      margin-top: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 24px 24px;
+      background-color: $color-light;
+
+      .MuiTypography-root {
+        font-family: Alegreya, serif;
+      }
+
+      .form {
+        width: 100%;
+        margin-top: 8px;
+
+        .MuiFormControl-root {
+          label {
+            font-family: Alegreya, serif;
+          }
+          .MuiInputBase-root {
+            font-family: Alegreya, serif;  
+          }
+        }
+
+        .submit {
+          font-family: Alegreya, serif;
+          margin-top: 24px;
+          background-color: $color-dark;
+          color: $color-light;
+        } 
+      }
+    }
   }
-}
-
-.paper {
-  margin-top: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px 24px 24px;
-}
-
-.submit {
-  font-family: Alegreya, serif;
-  margin-top: 24px;
-}
-
-.form {
-  width: 100%;
-  margin-top: 8px;
 }

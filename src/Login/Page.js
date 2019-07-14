@@ -5,7 +5,7 @@ import './styles.scss';
 
 const Page = ({ createSession }) => {
   return (
-    <div className='container'>
+    <div className='login-container'>
       <Paper className='paper'>
         <Typography component='h1' variant='h5'>
           Sign In
