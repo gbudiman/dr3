@@ -423,13 +423,20 @@ const ToonUtil = () => {
     };
 
     const indexRemoteToons = storage => {
-      return Object.fromEntries(
-        Object.keys(storage)
-          .filter(x => 'remoteId' in storage[x])
-          .map(uuid => {
-            return [storage[uuid].remoteId, uuid];
-          })
-      );
+      // fucking old browser support
+      // return Object.fromEntries(
+      //   Object.keys(storage)
+      //     .filter(x => 'remoteId' in storage[x])
+      //     .map(uuid => {
+      //       return [storage[uuid].remoteId, uuid];
+      //     })
+      // );
+
+      const t = {};
+      Object.keys(storage).filter(x => 'remoteId' in storage[x]).forEach(uuid => {
+        t[storage[uuid].remoteId] = uuid;
+      })
+      return t;
     };
     const syncName = (tid, value) => {
       su.toonStorage[tid].name = value;

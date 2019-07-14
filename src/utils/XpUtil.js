@@ -64,9 +64,16 @@ export function calcTotalXp(su) {
 };
 
 export function computeStatXp(stat) {
-  return Object.fromEntries(Object.keys(stat).map(attribute => {
-    return [attribute, statXp(attribute, stat[attribute])];
-  }));
+  // fucking old browser support
+  // return Object.fromEntries(Object.keys(stat).map(attribute => {
+  //   return [attribute, statXp(attribute, stat[attribute])];
+  // }));
+
+  const t = {};
+  Object.keys(stat).forEach(attribute => {
+    t[attribute] = statXp(attribute, stat[attribute]);
+  })
+  return t;
 }
 
 export function computeAggregateStatXp(stat) {
