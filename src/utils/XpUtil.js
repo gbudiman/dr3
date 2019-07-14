@@ -22,12 +22,14 @@ const deciCalc = x => {
   return totalCost;
 };
 
+// ported
 export function totalStatXp(su) {
   return Object.values(su.statXp).reduce((a, b) => {
     return a + b;
   }, 0);
 }
 
+// ported
 export function calcXp(su, changedStat, acquired, skipSetState=false) {
   switch (changedStat) {
     case 'hp':
@@ -68,6 +70,7 @@ export function computeStatXp(stat) {
 }
 
 export function computeAggregateStatXp(stat) {
+  console.log(computeStatXp(stat));
   return Object.values(computeStatXp(stat)).reduce((a, b) => { return a + b }, 0);
 }
 
@@ -77,5 +80,6 @@ function statXp(attribute, value) {
     case 'mp': return deciCalc(value || 0);
     case 'rp':
     case 'inf': return linearCalc(value || 0);
+    case 'ir': return 0;
   }
 }
