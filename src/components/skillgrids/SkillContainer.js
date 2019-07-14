@@ -123,7 +123,8 @@ export default () => {
     console.log(inverseSkillLookup);
     Object.entries(skillState).forEach(([key, value]) => {
       if (value.acquired > 0) {
-        for (let i = 1; i <= value.acquired; i++) {
+        const minTier = value.innate ? 2 : 1;
+        for (let i = minTier; i <= value.acquired; i++) {
           remoteArray.push(inverseSkillLookup[i][key]);
         }
       }

@@ -23,6 +23,7 @@ const StateUtil = () => {
   });
   let [innate, setInnate] = useState({});
   let [totalXp, setTotalXp] = useState({ stat: 0, skill: 0 });
+  let [maxXp, setMaxXp] = useState(null);
   let [toonStorage, setToonStorage] = useState({});
   let [toonData, setToonData] = useState({});
   let [currentToon, setCurrentToon] = useState({});
@@ -55,6 +56,8 @@ const StateUtil = () => {
     setInnate: setInnate,
     totalXp: totalXp,
     setTotalXp: setTotalXp,
+    maxXp: maxXp,
+    setMaxXp: setMaxXp,
     toonStorage: toonStorage,
     setToonStorage: setToonStorage,
     toonData: toonData,

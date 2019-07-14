@@ -31,18 +31,40 @@ const fetchRemoteStrains = async () => {
 const fetchRemoteSkills = async () => {
   return await axios.get(api('skills'));
 };
-
-const login = async su => {
-  if (su.authConfig == null) {
-    const tokenResponse = await fetchToken('test', 'test1234');
-    const config = {
-      headers: { Authorization: 'Bearer ' + tokenResponse.data.access_token }
-    };
-    su.authConfig = config;
-    su.setAuthConfig(su.authConfig);
-    console.log('authConfig set!');
+const authAtAllCost = async(su) => {
+  const getSessionStorageToken = () => {
+    const ss = sessionStorage.getItem('authConfig')
+    if (ss) {
+      return JSON.parse(ss);
+    }
+    return false;
   }
+
+  const fromSessionStorage = getSessionStorageToken();
+
+  if (fromSessionStorage) {
+    configureAuth(su, fromSessionStorage);
+    return Promise.resolve(true);
+  } 
+
+  return Promise.resolve(false);
 };
+const configureAuth = (su, jwt) => {
+  console.log(jwt);
+  su.authConfig = jwt;
+  su.setAuthConfig({...{}, ...jwt});
+  console.log('authConfig set!');
+}
+const configureJWT = (su, xtoken) => {
+  if (xtoken === null) return;
+  const config = {
+    headers: { 'Authorization': `Bearer ${xtoken}` },
+    expireBy: Date.now() + 86400000, // 1 day expiration
+  };
+  sessionStorage.setItem('authConfig', JSON.stringify(config));
+  configureAuth(su, config);
+}
+
 const lutUtil = LutUtil();
 const statUtil = StatUtil();
 const strainUtil = StrainUtil();
@@ -51,41 +73,69 @@ const ToonUtil = () => {
   const loadNewToon = async (su, tid) => {
     const fetch = remoteId => {
       console.log('login from loadNewToon');
-      login(su).then(() => {
-        fetchRemoteCharacter(su, remoteId).then(data => {
-          const remoteData = data.data;
-          console.log('fetch remote character complete');
-          const normalizedStrain = su.strainLookup[remoteData.strain_id];
+      //devLogin(su, 'test', 'test1234').then(() => {
 
-          console.log('begin sync strain');
-          console.log(normalizedStrain);
-          strainUtil.handleStrainChange(su, normalizedStrain, SKIP_SET_STATE);
-          console.log(su.selectedStrain);
-          console.log('end sync strain');
+      //if (authAtAllCost(su)) {
+      authAtAllCost(su).then(x => {
+        if (x) {
+          fetchRemoteCharacter(su, remoteId).then(data => {
+            const remoteData = data.data;
+            console.log('fetch remote character complete');
+            const normalizedStrain = su.strainLookup[remoteData.strain_id];
 
-          su.stat = {
-            ...su.stat,
-            ...{
-              hp: remoteData.body,
-              mp: remoteData.mind,
-              rp: remoteData.resolve,
-              inf: remoteData.infection
-              //ir: 0,
-            }
-          };
-          statUtil.validateAllStatsAndControls(su, SKIP_SET_STATE);
-          updateStates();
-        });
-      });
-    };
+            console.log('begin sync strain');
+            console.log(normalizedStrain);
+            strainUtil.handleStrainChange(su, normalizedStrain, SKIP_SET_STATE);
+            console.log(su.selectedStrain);
+            console.log('end sync strain');
+
+            su.stat = {
+              ...su.stat,
+              ...{
+                hp: remoteData.body,
+                mp: remoteData.mind,
+                rp: remoteData.resolve,
+                inf: remoteData.infection
+                //ir: 0,
+              }
+            };
+            su.maxXp = remoteData.xp_earned;
+            statUtil.validateAllStatsAndControls(su, SKIP_SET_STATE);
+
+            console.log(remoteData.skills);
+            const blankSkillTemplate = SkillInitializer();
+            remoteData.skills.forEach(remoteSkill => {
+              const localMapping = su.skillLookup[remoteSkill.skill_id];
+              const tier = localMapping.tier;
+              const skillEntry = blankSkillTemplate[localMapping.name];
+
+              if (tier == 4) {
+                skillEntry.t4acquired = true;
+              } else if (tier > skillEntry.acquired) {
+                skillEntry.acquired = tier;
+              }
+            })
+            su.skillState = blankSkillTemplate;
+            updateStates();
+          });
+        } else {
+          console.log('aborting fetch character. no token');
+        }
+      })
+    }
 
     const updateStates = () => {
       su.setSelectedStrain(su.selectedStrain);
+      su.setSkillState({ ...{}, ...su.skillState });
       su.setInnate({ ...{}, ...su.innate });
       su.setStat({ ...{}, ...su.stat });
       su.setStatControl({ ...{}, ...su.statControl });
       su.setStatXp({ ...{}, ...su.statXp });
+      su.setSkillXp({ ...{}, ...SkillCalc(su.skillState) });
+      su.setMaxXp(su.maxXp);
       calcTotalXp(su);
+
+      console.log(su.maxXp);
 
       saveState(su);
     };
@@ -311,17 +361,45 @@ const ToonUtil = () => {
 
   const handleAppLoad = su => {
     loadState(su);
-    console.log('app loaded');
-    console.log('login from handleAppLoad');
-
-    login(su).then(() => {
-      fetchRemoteCharacters(su).then(data => {
-        mergeRemoteToons(su, data.data);
-      });
-    });
-
     lutUtil.loadLookupTables(su, fetchRemoteStrains, fetchRemoteSkills);
+    console.log('app loaded');
+
+    // const sessionToken = sessionStorage.getItem('authConfig');
+    // if (sessionToken) {
+    //   const authConfig = JSON.parse(sessionToken);
+    //   su.setAuthConfig({...{}, ...authConfig});
+
+    //   console.log(su.authConfig);
+    // }
+
+    authAtAllCost(su).then(x => {
+      if (x) {
+        fetchRemoteCharacters(su).then(data => {
+          mergeRemoteToons(su, data.data);
+        });
+      }
+    })
+      //console.log(accessToken);
+    //   executeLoginChain(su, res.data.access_token); 
+    // });
+    
   };
+
+  const executeLoginChain = (su, accessToken) => {
+    console.log(accessToken);
+    configureJWT(su, accessToken);
+    fetchRemoteCharacters(su).then(data => {
+      mergeRemoteToons(su, data.data);
+    });
+  }
+
+  // const devLogin = async(su, username, password) => {
+  //   if (su.authConfig == null && username && password) {
+  //     return await fetchToken(username, password);
+  //   }
+
+  //   return false;
+  // };
 
   const mergeRemoteToons = (su, remoteToons) => {
     const generateToonFromRemote = (remoteId, name) => {
@@ -367,7 +445,8 @@ const ToonUtil = () => {
     handleToonChange: handleToonChange,
     handleAppLoad: handleAppLoad,
     saveState: saveState,
-    mergeRemoteToons: mergeRemoteToons
+    mergeRemoteToons: mergeRemoteToons,
+    executeLoginChain: executeLoginChain,
   };
 };
 

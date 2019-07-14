@@ -48,8 +48,7 @@ export default (state={}, { payload, type }) => {
     //     authConfig: payload,
     //   }
     case SESSION_CREATED:
-      console.log(payload);
-      console.log(type);
+      toonUtil.executeLoginChain(state, payload);
       return state;
     case SAVE_STATE:
       return save(state);

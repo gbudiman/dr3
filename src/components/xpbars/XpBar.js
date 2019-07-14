@@ -3,7 +3,7 @@ import './XpBar.scss';
 import React, { useRef, useEffect } from 'react';
 import WarningIcon from '@material-ui/icons/Warning';
 
-function XpBar(props) {
+const XpBar = () => {
   const parentRef = useRef(null);
   const t1Ref = useRef(null);
   const t2Ref = useRef(null);
@@ -11,10 +11,11 @@ function XpBar(props) {
   const tier2bar = 180;
   const tier3bar = 200;
   const minCurve = 0;
-  const { totalXp, skillState } = useSelector(
+  const { totalXp, skillState, maxXp } = useSelector(
     state => ({
       totalXp: state.characters.totalXp,
       skillState: state.characters.skillState,
+      maxXp: state.characters.maxXp,
     })
   )
 
@@ -26,7 +27,9 @@ function XpBar(props) {
     let t1width = tier1bar/tier3bar * shiftedParentWidth + minCurve;
     let t2width = tier2bar/tier3bar * shiftedParentWidth + minCurve;
     let backgroundWidth = xpSum * 100 / tier3bar;
-    let linearGradientStyle = ['#777 ' + backgroundWidth + '%', '#333 ' + backgroundWidth + '%'].join(',')
+    let limitExceeded = maxXp != null && xpSum > maxXp;
+    let acquiredClass = limitExceeded ? '#FCA' : '#777';
+    let linearGradientStyle = [acquiredClass + ' ' + backgroundWidth + '%', '#333 ' + backgroundWidth + '%'].join(',')
     t1Ref.current.setAttribute('style', 'width: ' + t1width + 'px');
     t2Ref.current.setAttribute('style', 'width: ' + t2width + 'px');
     
@@ -41,10 +44,14 @@ function XpBar(props) {
   }
 
   const getNextTier = () => {
-    const xpSum = totalXp.stat + totalXp.skill;
-    if (xpSum < tier1bar) return '/' + tier1bar;
-    if (xpSum < tier2bar) return '/' + tier2bar;
-    return '';
+    if (maxXp === null) {
+      // const xpSum = totalXp.stat + totalXp.skill;
+      // if (xpSum < tier1bar) return '/' + tier1bar;
+      // if (xpSum < tier2bar) return '/' + tier2bar;
+      return '';
+    }
+
+    return '/' + maxXp;
   }
 
   const getWarningClassName = (tier) => {
@@ -58,9 +65,22 @@ function XpBar(props) {
     }
   }
 
+  const getXpLimitClassName = () => {
+    const classes = ['text'];
+    if (maxXp != null) {
+      if (totalXp.stat + totalXp.skill > maxXp) {
+        classes.push('error');
+      }
+    }
+
+    return classes.join(' ');
+  }
+
   return(
     <div className='xpbar' ref={parentRef}>
-      <div className='text'>T{getTier()}: {totalXp.stat + totalXp.skill}{getNextTier()} XP</div>
+      <div className={getXpLimitClassName()}>
+        T{getTier()}: {totalXp.stat + totalXp.skill}{getNextTier()} XP
+      </div>
       <div className='tier-placeholder tier-placeholder-1' ref={t1Ref}>
         <WarningIcon className={getWarningClassName(1)} />
       </div>
