@@ -3,7 +3,7 @@ import { call, put, takeLatest, all } from 'redux-saga/effects'
 import history from '../history';
 
 let lastPayload = null;
-const api = (path) => { return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
+const api = (path) => { return '//devdrdb.dystopiarisingnetwork.com:5000/api/' + path }
 const config = {
   headers: {
     'Authorization': null

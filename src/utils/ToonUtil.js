@@ -12,7 +12,7 @@ import uuid from 'uuid';
 const SKIP_SET_STATE = true;
 const lookupTablesConstructed = false;
 const api = path => {
-  return 'http://devdrdb.dystopiarisingnetwork.com:5000/api/' + path;
+  return '//devdrdb.dystopiarisingnetwork.com:5000/api/' + path;
 };
 const fetchToken = async (username, password) => {
   return await axios.get(api('generateToken'), {
