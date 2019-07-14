@@ -119,8 +119,6 @@ export default () => {
   }
   const transformToRemoteData = () => {
     const remoteArray = [];
-
-    console.log(inverseSkillLookup);
     Object.entries(skillState).forEach(([key, value]) => {
       if (value.acquired > 0) {
         const minTier = value.innate ? 2 : 1;

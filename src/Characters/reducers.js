@@ -3,6 +3,7 @@ import SkillUtil from '../utils/SkillUtil';
 import StatUtil from '../utils/StatUtil';
 import StrainUtil from '../utils/StrainUtil';
 import SkillCalc from '../utils/SkillCalc';
+import { computeStatXp, computeAggregateStatXp } from '../utils/XpUtil';
 import { toonUpdateSaga } from '../sagas/auth';
 import { toggleSkillCategoryVisibility } from '../utils/SkillUtil';
 import {
@@ -108,11 +109,15 @@ export default (state={}, { payload, type }) => {
       }
     case RECALCULATE_XP:
       const newSkillXp = SkillCalc(state.skillState);
+      const newStatXp = computeStatXp(state.stat);
+
       return {
         ...state,
         skillXp: newSkillXp,
+        statXp: newStatXp,
         totalXp: {
           ...state.totalXp,
+          stat: computeAggregateStatXp(state.stat),
           skill: newSkillXp.total,
         }
       }

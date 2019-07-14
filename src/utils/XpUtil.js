@@ -46,6 +46,7 @@ export function calcXp(su, changedStat, acquired, skipSetState=false) {
   }
 };
 
+// ported
 export function calcXpComponents(su) {
   Object.keys(su.stat).forEach(stat => {
     calcXp(su, stat, su.stat[stat]);
@@ -59,3 +60,22 @@ export function calcTotalXp(su) {
   };
   su.setTotalXp(Object.assign({}, su.totalXp));
 };
+
+export function computeStatXp(stat) {
+  return Object.fromEntries(Object.keys(stat).map(attribute => {
+    return [attribute, statXp(attribute, stat[attribute])];
+  }));
+}
+
+export function computeAggregateStatXp(stat) {
+  return Object.values(computeStatXp(stat)).reduce((a, b) => { return a + b }, 0);
+}
+
+function statXp(attribute, value) {
+  switch(attribute) {
+    case 'hp':
+    case 'mp': return deciCalc(value || 0);
+    case 'rp':
+    case 'inf': return linearCalc(value || 0);
+  }
+}
