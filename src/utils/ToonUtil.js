@@ -72,11 +72,10 @@ const ToonUtil = () => {
   const loadNewToon = async (su, tid) => {
     const fetch = remoteId => {
       console.log('login from loadNewToon');
-      //devLogin(su, 'test', 'test1234').then(() => {
-
-      //if (authAtAllCost(su)) {
       authAtAllCost(su).then(x => {
         if (x) {
+          su.isLoading = true;
+          su.setIsLoading(su.isLoading);
           fetchRemoteCharacter(su, remoteId).then(data => {
             const remoteData = data.data;
             console.log('fetch remote character complete');
@@ -112,6 +111,10 @@ const ToonUtil = () => {
             
             su.skillState = blankSkillTemplate;
             updateStates();
+            
+          }).finally(() => {
+            su.isLoading = false;
+            su.setIsLoading(su.isLoading);
           });
         } else {
           console.log('aborting fetch character. no token');
@@ -163,6 +166,7 @@ const ToonUtil = () => {
     };
 
     let j = su.toonData[tid];
+
     if (j == null) {
       if (hasRemoteData) {
         loadBlankToon(su);

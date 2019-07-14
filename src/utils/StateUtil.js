@@ -33,6 +33,7 @@ const StateUtil = () => {
   let [inverseStrainLookup, setInverseStrainLookup] = useState({});
   let [skillLookup, setSkillLookup] = useState({});
   let [inverseSkillLookup, setInverseSkillLookup] = useState({});
+  let [isLoading, setIsLoading] = useState(false);
 
   return {
     lineageStrain: lineageStrain,
@@ -76,7 +77,9 @@ const StateUtil = () => {
     inverseStrainLookup: inverseStrainLookup,
     setInverseStrainLookup: setInverseStrainLookup,
     inverseSkillLookup: inverseSkillLookup,
-    setInverseSkillLookup: setInverseSkillLookup
+    setInverseSkillLookup: setInverseSkillLookup,
+    isLoading: isLoading,
+    setIsLoading: setIsLoading,
   };
 };
 

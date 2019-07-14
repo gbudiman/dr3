@@ -70,7 +70,6 @@ export function computeStatXp(stat) {
 }
 
 export function computeAggregateStatXp(stat) {
-  console.log(computeStatXp(stat));
   return Object.values(computeStatXp(stat)).reduce((a, b) => { return a + b }, 0);
 }
 
