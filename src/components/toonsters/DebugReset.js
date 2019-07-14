@@ -8,6 +8,7 @@ function DebugReset(props) {
   let handleClearClick = () => {
     if (confirmLeft.current.checked && confirmRight.current.checked) {
       localStorage.clear();
+      sessionStorage.clear();
       debugState = 'resetting';
       setDebugState(debugState);
       window.location.reload();

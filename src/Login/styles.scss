@@ -9,7 +9,8 @@
     margin: 0px 24px;
     margin-top: -32px;
     padding-top: 64px;
-    padding-bottom: calc(100vh - 384px);
+    padding-bottom: calc(100vh);
+    overflow-y: hidden;
 
     @media only screen and (min-width: 448px) {
       width: 400px;
