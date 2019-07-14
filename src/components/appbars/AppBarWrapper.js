@@ -8,6 +8,7 @@ import SyncDisabled from '@material-ui/icons/SyncDisabled';
 
 const AppBarWrapper = () => {
   const dispatch = useDispatch();
+  const home = () => history.push('/');
   const login = () => history.push('/login');
   const logout = () => dispatch({type: 'LOGOUT'});
   const { authConfig } = useSelector(
@@ -48,17 +49,32 @@ const AppBarWrapper = () => {
         </div>
       )
     } else {
-      return <div className='title login' onClick={login}>DR3 &raquo; Login</div>
+      return(
+        <div className='title login'>
+          <span onClick={home}>DR3</span>
+          &nbsp;
+          &raquo;
+          &nbsp;
+          <span onClick={login}>Login</span>
+        </div>
+      )
     }
+  }
+  const toonsterContainer = () => {
+    if (history.location.pathname == '/login') return <div />
+
+    return(
+      <div className='toonster-container'>
+        <ToonSter />
+      </div>
+    )
   }
 
   return (
     <AppBar position='fixed'>
       <div className='container'>
         {titleBar()}
-        <div className='toonster-container'>
-          <ToonSter />
-        </div>
+        {toonsterContainer()}
       </div>
     </AppBar>
   );
