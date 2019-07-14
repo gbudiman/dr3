@@ -1,7 +1,7 @@
 @import '../colors.scss';
 
 .app-window {
-  min-height: 100vh;
+  //min-height: 100vh;
 
   .login-container {
     width: auto;
@@ -9,7 +9,7 @@
     margin: 0px 24px;
     margin-top: -32px;
     padding-top: 64px;
-    padding-bottom: 320px;
+    padding-bottom: calc(100vh - 384px);
 
     @media only screen and (min-width: 448px) {
       width: 400px;

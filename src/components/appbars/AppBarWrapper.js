@@ -36,11 +36,15 @@ const AppBarWrapper = () => {
         return 'Fetching...';
       }
     }
+
+    ///*<SyncDisabled onClick={logout} />*/
     if (hasValidToken()) {
       return(
         <div className='title'>
           { getLoggedInUsername() }
-          <SyncDisabled onClick={logout} />
+          <div className='logout'>
+            <div onClick={logout}>Logout</div>
+          </div>
         </div>
       )
     } else {

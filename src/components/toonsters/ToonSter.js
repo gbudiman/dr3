@@ -67,7 +67,7 @@ function ToonSter(props) {
   const handleDelete = (toonId) => {
     dispatch({ type: 'DELETE_CHARACTER', payload: { toonId: toonId } })
   }
-  const handleNewToon = () => { dispatch({ type: 'CREATE_NEW_CHARACTER' })}
+  const handleNewToon = () => { dispatch({ type: 'CREATE_CHARACTER' })}
   const handleUndelete = (toonId) => {
     dispatch({ type: 'UNDELETE_CHARACTER', payload: { toonId: toonId } })
   }

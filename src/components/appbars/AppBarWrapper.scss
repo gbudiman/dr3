@@ -9,30 +9,40 @@
   .container {
     display: flex;
     align-content: center;
+    justify-container: space-between;
     max-width: 480px;
     width: 100%;
     margin: 0 auto;
     padding: 2px 0px 0px 0px;
 
     .title {
-      width: 60%;
+      width: 40%;
       padding: 8px 4px 8px 16px;
+      display: flex;
 
       &.login {
         cursor: pointer;
       }
 
-      .MuiSvgIcon-root {
-        margin-top: 4px;
-        margin-bottom: -6px;
-        margin-left: 12px;
+      .logout {
+        border: 1px solid $color-midtone;
+        border-radius: 8px;
         cursor: pointer;
-      }
+        margin-left: 8px;
+        display: flex;
+
+        div {
+          font-size: 16px;
+          padding: 2px 4px;
+        }
+      } 
     }
 
     .toonster-container {
-      width: 100%;
+      width: 60%;
       text-align: right;
+      margin-right: auto;
+      margin-left: 0;
     }
   }
 }
