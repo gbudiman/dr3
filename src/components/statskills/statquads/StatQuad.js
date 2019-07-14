@@ -4,7 +4,7 @@ import './StatQuad.scss';
 import React from 'react';
 import StatGrid from './StatGrid';
 
-function StatQuad(props) {
+const StatQuad = (props) => {
   const stats = ['hp', 'mp', 'rp', 'inf'];
   const placement = {
     hp: 'bottom-start',
@@ -114,4 +114,4 @@ function StatQuad(props) {
   )
 }
 
-export default StatQuad;
+export default React.memo(StatQuad);

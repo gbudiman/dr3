@@ -50,4 +50,4 @@ function SkillQuad(props) {
   )
 }
 
-export default SkillQuad;
+export default React.memo(SkillQuad);

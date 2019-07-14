@@ -81,4 +81,4 @@ const AppBarWrapper = () => {
 };
 
 
-export default AppBarWrapper;
+export default React.memo(AppBarWrapper);

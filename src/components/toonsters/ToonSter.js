@@ -12,7 +12,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import NewToon from './NewToon';
 import DebugReset from './DebugReset';
 
-function ToonSter(props) {
+const ToonSter = (props) => {
   let [anchorEl, setAnchorEl] = useState(null);
   const handleClick = event => { setAnchorEl(anchorEl ? null : event.currentTarget) }
   let open = Boolean(anchorEl);
@@ -105,4 +105,4 @@ function ToonSter(props) {
   );
 }
 
-export default ToonSter;
+export default React.memo(ToonSter);

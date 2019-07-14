@@ -89,4 +89,4 @@ const StrainPicker = () => {
   )
 }
 
-export default StrainPicker;
+export default React.memo(StrainPicker);

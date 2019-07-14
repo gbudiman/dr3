@@ -91,4 +91,4 @@ const XpBar = () => {
   )
 }
 
-export default XpBar;
+export default React.memo(XpBar);

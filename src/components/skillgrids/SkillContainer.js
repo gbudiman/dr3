@@ -6,7 +6,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import './SkillGrid.scss';
 
-export default () => {
+const SkillContainer = () => {
   const buildBoxes = () => {
     return Object.keys(skillState).map(key => {
       const value = skillState[key];
@@ -138,3 +138,5 @@ export default () => {
     </div>
   );
 };
+
+export default React.memo(SkillContainer);

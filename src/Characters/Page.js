@@ -8,7 +8,7 @@ import LoadingOverlay from 'react-loading-overlay'
 import Loader from 'react-spinners/RingLoader'
 import './styles.scss';
 
-export default () => {
+const Page = () => {
   const { isLoading } = useSelector(
     state => ({
       isLoading: state.characters.isLoading,
@@ -32,3 +32,5 @@ export default () => {
     </LoadingOverlay>
   )
 }
+
+export default React.memo(Page);
