@@ -76,6 +76,7 @@ function StatQuad(props) {
         }
       })
     }
+    dispatch({type: 'SAVE_STATE'});
   }
   const handleReductionAdjustment = (changedStat, adjustment) => {
     dispatch({
@@ -85,6 +86,7 @@ function StatQuad(props) {
         adjustment: adjustment,
       }
     })
+    dispatch({type: 'SAVE_STATE'});
   }
   const handleStatChange = (changedStat, value) => {
     dispatch({
@@ -102,6 +104,7 @@ function StatQuad(props) {
         remoteId: toonStorage[currentToon].remoteId,
       }
     })
+    dispatch({type: 'SAVE_STATE'});
   }
 
   return(

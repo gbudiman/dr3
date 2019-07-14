@@ -122,18 +122,60 @@ export default (state={}, { payload, type }) => {
         }
       }
     case STAT_ADJUSTED:
-      statUtil.handleStatAdjustment(state, payload.stat, payload.adjustment);
-      return save(state);
+      statUtil.adjustStat(state.stat, payload.stat, payload.adjustment)
+      var [st, stc, rc] = statUtil.validateStatAndControls(state, payload.stat, true);
+      state.stat[payload.stat] = st;
+      return {
+        ...state,
+        skillXp: SkillCalc(state.skillState),
+        statXp: computeStatXp(state.stat),
+        statControl: {
+          ...state.statControl,
+          [payload.stat]: stc,
+        },
+        totalXp: {
+          ...state.totalXp,
+          stat: computeAggregateStatXp(state.stat),
+          skillXp: SkillCalc(state.skillState).total
+        }
+      }
     case STAT_REDUCTION_ADJUSTED:
-      statUtil.handleStatReductionAdjustment(
-        state,
-        payload.stat,
-        payload.adjustment
-      );
-      return save(state);
+      const reductionKey = payload.stat[0] + 'r';
+      var [rst, rc, sc] = statUtil.handleStatReductionAdjustment(state, payload.stat, payload.adjustment, true);
+      state.stat[reductionKey] = rst;
+      return {
+        ...state,
+        skillXp: SkillCalc(state.skillState),
+        statXp: computeStatXp(state.stat),
+        statControl: {
+          ...state.statControl,
+          [payload.stat]: sc,
+          [reductionKey]: rc,
+        },
+        totalXp: {
+          ...state.totalXp,
+          stat: computeAggregateStatXp(state.stat),
+          skillXp: SkillCalc(state.skillState).total
+        }
+      }
     case STAT_CHANGED:
-      statUtil.handleStatChange(state, payload.stat, payload.value);
-      return save(state);
+      statUtil.changeStat(state.stat, payload.stat, payload.value);
+      var [st, stc, rc] = statUtil.validateStatAndControls(state, payload.stat, true);
+      state.stat[payload.stat] = st;
+      return {
+        ...state,
+        skillXp: SkillCalc(state.skillState),
+        statXp: computeStatXp(state.stat),
+        statControl: {
+          ...state.statControl,
+          [payload.stat]: stc,
+        },
+        totalXp: {
+          ...state.totalXp,
+          stat: computeAggregateStatXp(state.stat),
+          skillXp: SkillCalc(state.skillState).total
+        }
+      }
     case STRAIN_CHANGED:
       strainUtil.handleStrainChange(state, payload.strain);
       return save(state);

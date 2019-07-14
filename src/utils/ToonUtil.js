@@ -118,6 +118,8 @@ const ToonUtil = () => {
           });
         } else {
           console.log('aborting fetch character. no token');
+          sessionStorage.clear();
+          logout(su);
         }
       })
     }
@@ -152,6 +154,7 @@ const ToonUtil = () => {
       su.statControl = j.stat_control;
       su.innate = j.innate;
       su.totalXp = j.total_xp;
+      su.maxXp = null;
 
       su.setSkillState({ ...SkillInitializer(), ...su.skillState });
       su.setSkillXp({ ...{}, ...su.skillXp });
@@ -163,6 +166,7 @@ const ToonUtil = () => {
       su.setStatControl({ ...{}, ...su.statControl });
       su.setInnate({ ...{}, ...su.innate });
       su.setTotalXp({ ...{}, ...su.totalXp });
+      su.setMaxXp(su.maxXp);
     };
 
     let j = su.toonData[tid];

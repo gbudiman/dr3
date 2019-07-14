@@ -1,18 +1,29 @@
 import { calcXp } from './XpUtil';
 
 const StatUtil = () => {
+  // ported
   const handleStatAdjustment = (su, changedStat, adjustment) => {
     let currentStat = changedStat in su.stat ? su.stat[changedStat] : 0;
     su.stat[changedStat] = currentStat + adjustment;
     validateStatAndControls(su, changedStat);
   };
 
+  const adjustStat = (stat, changedStat, adjustment) => {
+    let currentStat = changedStat in stat ? stat[changedStat] : 0;
+    stat[changedStat] = currentStat + adjustment;
+  }
+
+  const changeStat = (stat, changedStat, newValue) => {
+    stat[changedStat] = parseInt(newValue) || 0;
+  }
+
+  // ported
   const handleStatChange = (su, changedStat, newValue) => {
     su.stat[changedStat] = parseInt(newValue) || 0;
     validateStatAndControls(su, changedStat);
   };
 
-  const handleStatReductionAdjustment = (su, changedStat, adjustment) => {
+  const handleStatReductionAdjustment = (su, changedStat, adjustment, skipSetState = false) => {
     const reductionStatKey = changedStat[0] + 'r';
     let currentReduction = su.stat[reductionStatKey] || 0;
     let currentReductionControl = su.statControl[reductionStatKey];
@@ -50,14 +61,21 @@ const StatUtil = () => {
     currentReductionControl.dec =
       currentReduction > 0 && h.belowLimitWithReduction(currentReduction);
     currentReductionControl.inc = h.totalValue() - adjustment > 0;
-    updateHookStates(
-      su,
-      reductionStatKey,
-      currentReduction,
-      currentReductionControl
-    );
-    calcXp(su, changedStat, su.stat[changedStat]);
-    crossValidateControl(su, changedStat, 'main');
+
+    if (!skipSetState) {
+      updateHookStates(
+        su,
+        reductionStatKey,
+        currentReduction,
+        currentReductionControl
+      );
+      calcXp(su, changedStat, su.stat[changedStat]);
+    }
+
+    su.stat[reductionStatKey] = currentReduction;
+    const mainControl = crossValidateControl(su, changedStat, 'main', skipSetState);
+
+    return [currentReduction, currentReductionControl, mainControl];
   };
 
   const validateStatAndControls = (su, changedStat, skipSetState = false) => {
@@ -101,9 +119,14 @@ const StatUtil = () => {
       updateHookStates(su, changedStat, currentStat, currentStatControl);
       calcXp(su, changedStat, currentStat);
     }
-    crossValidateControl(su, changedStat, 'reduction', skipSetState);
+    const reductionControl = crossValidateControl(
+      su, 
+      changedStat, 
+      'reduction', 
+      skipSetState
+    );
 
-    return [currentStat, currentStatControl];
+    return [currentStat, currentStatControl, reductionControl];
   };
 
   const crossValidateControl = (
@@ -135,6 +158,8 @@ const StatUtil = () => {
       control.dec = h.totalValue() > 0 && h.acqValue() > 0;
     }
     if (!skipSetState) su.setStatControl(Object.assign({}, su.statControl));
+
+    return control;
   };
 
   const updateHookStates = (su, changedStat, stat, control) => {
@@ -220,7 +245,9 @@ const StatUtil = () => {
     handleStatChange: handleStatChange,
     handleStatReductionAdjustment: handleStatReductionAdjustment,
     validateStatAndControls: validateStatAndControls,
-    validateAllStatsAndControls: validateAllStatsAndControls
+    validateAllStatsAndControls: validateAllStatsAndControls,
+    adjustStat: adjustStat,
+    changeStat: changeStat,
   };
 };
 
