@@ -19,17 +19,28 @@ const generateToken = async() => {
   );
 }
 
+const unexecutedPayload = (payload) => {
+  if (lastPayload === payload) return false;
+  lastPayload = payload;
+  return true;
+}
 const configureJWT = (token) => { config.headers['Authorization'] = 'Bearer ' + token }
+const teardownJWT = () => { config.headers['Authorization'] = null };
 const updateCharacter = async(remoteId, body) => {
   return await axios.put(api('character/' + remoteId), body, config);
 }
 function* createSession(action) {
+  if (!unexecutedPayload(action.payload)) return;
   yield configureJWT(action.payload.access_token);
   yield put({
     type: 'SESSION_CREATED',
     payload: action.payload.access_token,
   });
   yield history.push('/');
+}
+function* logout() {
+  yield teardownJWT();
+  window.location.href = '/';
 }
 // const fetchCharacter = async(remoteId) => { return await axios.get(api('character/' + remoteId), config) }
 // const fetchRemoteStrains = async() => { return await axios.get(api('strains')) }
@@ -122,6 +133,10 @@ function* watchLocalStorageLoaded() {
   yield takeLatest('APP_LOAD', auth);
 }
 
+function* watchLogout() {
+  yield takeLatest('LOGOUT', logout);
+}
+
 // function* watchLoginSuccessful() {
 //   yield takeLatest('LOGIN_SUCCESSFUL', fetchCharacters);
 // }
@@ -132,26 +147,22 @@ function* watchCreateSession() {
 
 function* queueUpstream(action) {
   const payload = action.payload;
-  const timeNow = parseInt(Date.now() / 1000);
+
+  if (!unexecutedPayload(payload)) return;
+
   let upstreamData = null;
+  console.log(action);
+  switch(action.type) {
+    case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
+    case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
+    case 'STAT_VALID_CHANGE': upstreamData = { [payload.stat]: payload.value }; break;
+    case 'SKILLS_CHANGED': 
+      upstreamData = { skills: payload.value }; 
+      break;
+  }
 
-  if (lastPayload === payload) {
-    // pass
-  } else {
-    lastPayload = payload;
-    console.log(action);
-    switch(action.type) {
-      case 'STRAIN_CHANGED': upstreamData = { strain_id: payload.strainId }; break;
-      case 'RENAME_CHARACTER': upstreamData = { name: payload.value }; break;
-      case 'STAT_VALID_CHANGE': upstreamData = { [payload.stat]: payload.value }; break;
-      case 'SKILLS_CHANGED': 
-        upstreamData = { skills: payload.value }; 
-        break;
-    }
-
-    if (payload.remoteId) {
-      yield updateCharacter(payload.remoteId, upstreamData);
-    }
+  if (payload.remoteId) {
+    yield updateCharacter(payload.remoteId, upstreamData);
   }
 }
 
@@ -165,6 +176,7 @@ export function* appSaga() {
     watchStatValidChange(),
     watchSkillsChange(),
     watchCreateSession(),
+    watchLogout(),
     // watchLoginSuccessful(),
   ]);
 }

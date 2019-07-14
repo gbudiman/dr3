@@ -61,7 +61,6 @@ const StatUtil = () => {
   };
 
   const validateStatAndControls = (su, changedStat, skipSetState = false) => {
-    console.log('begin validation for ' + changedStat);
     const reductionStatKey = changedStat[0] + 'r';
     let currentStat = su.stat[changedStat] || 0;
     const currentStatControl = su.statControl[changedStat];
@@ -103,7 +102,6 @@ const StatUtil = () => {
       calcXp(su, changedStat, currentStat);
     }
     crossValidateControl(su, changedStat, 'reduction', skipSetState);
-    console.log('validation done for ' + changedStat);
 
     return [currentStat, currentStatControl];
   };

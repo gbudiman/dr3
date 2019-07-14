@@ -50,7 +50,6 @@ const authAtAllCost = async(su) => {
   return Promise.resolve(false);
 };
 const configureAuth = (su, jwt) => {
-  console.log(jwt);
   su.authConfig = jwt;
   su.setAuthConfig({...{}, ...jwt});
   console.log('authConfig set!');
@@ -59,7 +58,7 @@ const configureJWT = (su, xtoken) => {
   if (xtoken === null) return;
   const config = {
     headers: { 'Authorization': `Bearer ${xtoken}` },
-    expireBy: Date.now() + 86400000, // 1 day expiration
+    expireBy: Date.now() + 3600000, // 1 hour expiration
   };
   sessionStorage.setItem('authConfig', JSON.stringify(config));
   configureAuth(su, config);
@@ -83,12 +82,7 @@ const ToonUtil = () => {
             console.log('fetch remote character complete');
             const normalizedStrain = su.strainLookup[remoteData.strain_id];
 
-            console.log('begin sync strain');
-            console.log(normalizedStrain);
             strainUtil.handleStrainChange(su, normalizedStrain, SKIP_SET_STATE);
-            console.log(su.selectedStrain);
-            console.log('end sync strain');
-
             su.stat = {
               ...su.stat,
               ...{
@@ -102,7 +96,7 @@ const ToonUtil = () => {
             su.maxXp = remoteData.xp_earned;
             statUtil.validateAllStatsAndControls(su, SKIP_SET_STATE);
 
-            console.log(remoteData.skills);
+            
             const blankSkillTemplate = SkillInitializer();
             remoteData.skills.forEach(remoteSkill => {
               const localMapping = su.skillLookup[remoteSkill.skill_id];
@@ -115,6 +109,7 @@ const ToonUtil = () => {
                 skillEntry.acquired = tier;
               }
             })
+            
             su.skillState = blankSkillTemplate;
             updateStates();
           });
@@ -134,9 +129,6 @@ const ToonUtil = () => {
       su.setSkillXp({ ...{}, ...SkillCalc(su.skillState) });
       su.setMaxXp(su.maxXp);
       calcTotalXp(su);
-
-      console.log(su.maxXp);
-
       saveState(su);
     };
 
@@ -364,14 +356,6 @@ const ToonUtil = () => {
     lutUtil.loadLookupTables(su, fetchRemoteStrains, fetchRemoteSkills);
     console.log('app loaded');
 
-    // const sessionToken = sessionStorage.getItem('authConfig');
-    // if (sessionToken) {
-    //   const authConfig = JSON.parse(sessionToken);
-    //   su.setAuthConfig({...{}, ...authConfig});
-
-    //   console.log(su.authConfig);
-    // }
-
     authAtAllCost(su).then(x => {
       if (x) {
         fetchRemoteCharacters(su).then(data => {
@@ -379,27 +363,36 @@ const ToonUtil = () => {
         });
       }
     })
-      //console.log(accessToken);
-    //   executeLoginChain(su, res.data.access_token); 
-    // });
-    
   };
 
   const executeLoginChain = (su, accessToken) => {
-    console.log(accessToken);
     configureJWT(su, accessToken);
     fetchRemoteCharacters(su).then(data => {
       mergeRemoteToons(su, data.data);
     });
   }
 
-  // const devLogin = async(su, username, password) => {
-  //   if (su.authConfig == null && username && password) {
-  //     return await fetchToken(username, password);
-  //   }
+  const logout = (su) => {
+    const toonStorage = su.toonStorage;
+    const toonData = su.toonData;
+    const remoteTids = Object.keys(toonStorage).filter(tid => {
+      return toonStorage[tid].remoteId != null
+    }).map(x => x);
 
-  //   return false;
-  // };
+    remoteTids.map(x => {
+      delete toonStorage[x];
+      delete toonData[x];
+    })
+
+    localStorage.setItem('toonStorage', JSON.stringify(toonStorage));
+    localStorage.setItem('toonData', JSON.stringify(toonData));
+
+    su.authConfig = {};
+    su.setAuthConfig({...{}, ...{}});
+    sessionStorage.clear();
+
+    return { toonStorage: toonStorage, toonData: toonData }
+  }
 
   const mergeRemoteToons = (su, remoteToons) => {
     const generateToonFromRemote = (remoteId, name) => {
@@ -424,6 +417,7 @@ const ToonUtil = () => {
       su.toonStorage[tid].name = value;
     };
 
+    let username = null;
     const mergedRemoteToons = indexRemoteToons(su.toonStorage);
 
     remoteToons.forEach(remoteToon => {
@@ -433,10 +427,19 @@ const ToonUtil = () => {
       } else {
         syncName(mergedRemoteToons[remoteId], remoteToon.name);
       }
+      username = remoteToon.user.username;
     });
 
     localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
-
+    
+    const authConfig = su.authConfig;
+    authConfig.username = username;
+    su.setAuthConfig({
+      ...su.authConfig,
+      ...authConfig
+    })
+    console.log(su.authConfig);
+    sessionStorage.setItem('authConfig', JSON.stringify(authConfig));
     console.log('remote characters merged!');
     su.setToonStorage({ ...{}, ...su.toonStorage });
   };
@@ -447,6 +450,7 @@ const ToonUtil = () => {
     saveState: saveState,
     mergeRemoteToons: mergeRemoteToons,
     executeLoginChain: executeLoginChain,
+    logout: logout,
   };
 };
 

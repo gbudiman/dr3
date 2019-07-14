@@ -20,3 +20,4 @@ export const RECALCULATE_XP = 'RECALCULATE_XP';
 export const SAVE_STATE = 'SAVE_STATE';
 export const SKILL_INFO_TOGGLED = 'SKILL_INFO_TOGGLED';
 export const SESSION_CREATED = 'SESSION_CREATED';
+export const LOGOUT = 'LOGOUT';

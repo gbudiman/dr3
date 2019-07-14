@@ -25,6 +25,7 @@ import {
   SAVE_STATE,
   SKILL_INFO_TOGGLED,
   SESSION_CREATED,
+  LOGOUT,
 } from './types';
 
 const toonUtil = ToonUtil();
@@ -50,6 +51,11 @@ export default (state={}, { payload, type }) => {
     case SESSION_CREATED:
       toonUtil.executeLoginChain(state, payload);
       return state;
+    case LOGOUT:
+      return {
+        ...state,
+        ...toonUtil.logout(state)
+      }
     case SAVE_STATE:
       return save(state);
     case CREATE_CHARACTER:
