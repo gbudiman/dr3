@@ -41,8 +41,7 @@ const authAtAllCost = async(su) => {
   }
 
   const fromSessionStorage = getSessionStorageToken();
-
-  if (fromSessionStorage) {
+  if (fromSessionStorage && Date.now() < fromSessionStorage.expireBy) {
     configureAuth(su, fromSessionStorage);
     return Promise.resolve(true);
   } 
@@ -120,6 +119,7 @@ const ToonUtil = () => {
           console.log('aborting fetch character. no token');
           sessionStorage.clear();
           logout(su);
+          window.location.href = '/';
         }
       })
     }
@@ -380,8 +380,13 @@ const ToonUtil = () => {
 
   const executeLoginChain = (su, accessToken) => {
     configureJWT(su, accessToken);
+    su.isLoading = true;
+    su.setIsLoading(su.isLoading);
     fetchRemoteCharacters(su).then(data => {
       mergeRemoteToons(su, data.data);
+    }).finally(() => {
+      su.isLoading = false;
+      su.setIsLoading(su.isLoading);
     });
   }
 
