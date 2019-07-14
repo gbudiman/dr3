@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { calcXpComponents, totalStatXp, calcTotalXp } from './XpUtil';
+import { calcXpComponents, /*totalStatXp, calcTotalXp,*/ computeStatXp, computeAggregateStatXp } from './XpUtil';
 import LutUtil from './LutUtil';
 import SkillInitializer from './SkillInitializer';
 import SkillCalc from './SkillCalc';
@@ -120,15 +120,20 @@ const ToonUtil = () => {
     }
 
     const updateStates = () => {
+      const newSkillXp = SkillCalc(su.skillState);
+      const newStatXp = computeStatXp(su.stat);
       su.setSelectedStrain(su.selectedStrain);
       su.setSkillState({ ...{}, ...su.skillState });
       su.setInnate({ ...{}, ...su.innate });
       su.setStat({ ...{}, ...su.stat });
       su.setStatControl({ ...{}, ...su.statControl });
-      su.setStatXp({ ...{}, ...su.statXp });
-      su.setSkillXp({ ...{}, ...SkillCalc(su.skillState) });
+      su.setStatXp({ ...{}, ...newStatXp });
+      su.setSkillXp({ ...{}, ...newSkillXp });
+      su.setTotalXp({ ...{}, ...{
+        stat: computeAggregateStatXp(su.stat),
+        skill: newSkillXp.total
+      }});
       su.setMaxXp(su.maxXp);
-      calcTotalXp(su);
       saveState(su);
     };
 
@@ -431,7 +436,7 @@ const ToonUtil = () => {
     });
 
     localStorage.setItem('toonStorage', JSON.stringify(su.toonStorage));
-    
+
     const authConfig = su.authConfig;
     authConfig.username = username;
     su.setAuthConfig({
