@@ -31,6 +31,7 @@ function ToonSter(props) {
           tid={tid}
           selected={tid === currentToon}
           existance={tprop.state}
+          remoteId={tprop.remoteId}
         />
       );
     });

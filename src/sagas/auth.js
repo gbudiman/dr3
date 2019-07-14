@@ -9,8 +9,6 @@ const config = {
     'Authorization': null
   }
 }
-// const inverseStrainLookup = {};
-// const strainLookup = {};
 
 const generateToken = async() => {
   return await axios.get(

@@ -3,32 +3,35 @@ import InputBase from '@material-ui/core/InputBase';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Undo from '@material-ui/icons/Undo';
+import Synchronized from '@material-ui/icons/CloudDone';
 
 function ToonName(props) {
-  let handleChange = (event) => {
-    props.passChange(props.tid, event.target.value);
-  }
-
-  let handleSwitch = () => {
-    props.passSwitch(props.tid);
-  }
-
-  let handleDelete = () => {
-    props.passDelete(props.tid);
-  }
-
-  let handleUndelete = () => {
-    props.passUndelete(props.tid);
-  }
-
-  let handleSelectAllText = (event) => {
-    event.target.select();
+  const handleChange = (event) => props.passChange(props.tid, event.target.value);
+  const handleSwitch = () => props.passSwitch(props.tid);
+  const handleDelete = () => props.passDelete(props.tid);
+  const handleUndelete = () => props.passUndelete(props.tid);
+  const handleSelectAllText = (event) => event.target.select();
+  const syncStatus = () => {
+    const isRemote = props.remoteId;
+    const className = props.remoteId ? '' : 'hidden';
+    if (isRemote) {
+      return <Synchronized className={className} />;
+    } else {
+      return(
+        <React.Fragment>
+          <DeleteForever className={'toon-delete ' + ((props.existance === 'deleted') ? 'hidden' : '')} onClick={handleDelete} />
+          <Undo 
+            className={'toon-undelete ' + ((props.existance === 'enabled') ? 'hidden' : '')} 
+            onClick={handleUndelete} 
+          />
+        </React.Fragment>
+      )
+    }
   }
 
   return(
     <div className='toon-row'>
-      <DeleteForever className={'toon-delete ' + ((props.existance === 'deleted') ? 'hidden' : '')} onClick={handleDelete} />
-      <Undo className={'toon-undelete ' + ((props.existance === 'enabled') ? 'hidden' : '')} onClick={handleUndelete} />
+      { syncStatus() }
       <div className='toon-subrow'>
         <InputBase
           className={'toon-entry ' + (props.selected ? 'highlighted' : '')}
@@ -45,6 +48,5 @@ function ToonName(props) {
     </div>
   )
 }
-
 
 export default ToonName;
