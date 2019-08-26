@@ -3,11 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      if (
-        !window.location.host.match(/localhost/) &&
-        window.location.protocol != 'https:'
-      ) {
-        window.location.protocol = 'https';
+      if (window.location.protocol != 'http:') {
+        window.location.protocol = 'http';
       }
     </script>
     <link rel="shortcut icon" href="%PUBLIC_URL%/dr.png" />
