@@ -83,6 +83,7 @@ body {
 
 .getout {
   width: 400px;
+  max-width: 75vw;
   position: absolute;
   background-color: $color-light;
   color: $color-dark;
@@ -93,6 +94,18 @@ body {
   top: 50%;
   border-radius: 16px;
   padding: 16px;
+  animation-name: fadeIn;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 1s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 @keyframes App-logo-spin {
   from {

@@ -41,6 +41,13 @@ const App = () => {
           </a>
           &nbsp;
           as DRpaedia will no longer receive updates.
+          If you haven't received your invitation email, simply
+          &nbsp;
+          <a href="//evolved.dystopiarisingnetwork.com/reset">
+            reset your password
+          </a>
+          .
+          <br />
           <br />
           This app will remain online for the time being for archival purpose.
           <hr />
